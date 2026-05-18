@@ -1,0 +1,566 @@
+[
+  {
+    "horse": "M.T.Tomorrows Hopes6",
+    "speed_score": 22.0,
+    "track_score": 100,
+    "total_score": 45.4
+  },
+  {
+    "horse": "Lonely Nightss5",
+    "speed_score": 22.0,
+    "track_score": 100,
+    "total_score": 45.4
+  },
+  {
+    "horse": "Ezekiel Faceh4",
+    "speed_score": 23.33,
+    "track_score": 95,
+    "total_score": 44.83
+  },
+  {
+    "horse": "Gretzky Broddev4",
+    "speed_score": 23.0,
+    "track_score": 95,
+    "total_score": 44.6
+  },
+  {
+    "horse": "Rendezvous Zonv5",
+    "speed_score": 20.0,
+    "track_score": 100,
+    "total_score": 44.0
+  },
+  {
+    "horse": "Fearless Fliers6",
+    "speed_score": 22.0,
+    "track_score": 95,
+    "total_score": 43.9
+  },
+  {
+    "horse": "Godfatherv8",
+    "speed_score": 22.0,
+    "track_score": 95,
+    "total_score": 43.9
+  },
+  {
+    "horse": "Digital Broddeh4",
+    "speed_score": 20.75,
+    "track_score": 95,
+    "total_score": 43.02
+  },
+  {
+    "horse": "Raphaelv4",
+    "speed_score": 20.75,
+    "track_score": 95,
+    "total_score": 43.02
+  },
+  {
+    "horse": "Eleven O'Clockv6",
+    "speed_score": 20.75,
+    "track_score": 95,
+    "total_score": 43.02
+  },
+  {
+    "horse": "Cuarto de B.s4",
+    "speed_score": 20.75,
+    "track_score": 95,
+    "total_score": 43.02
+  },
+  {
+    "horse": "Alvena Royv6",
+    "speed_score": 20.75,
+    "track_score": 95,
+    "total_score": 43.02
+  },
+  {
+    "horse": "Rania Zons5",
+    "speed_score": 20.75,
+    "track_score": 95,
+    "total_score": 43.02
+  },
+  {
+    "horse": "Legliginh5",
+    "speed_score": 20.6,
+    "track_score": 95,
+    "total_score": 42.92
+  },
+  {
+    "horse": "Per Linderoth\t4%\t+0.52\t62,90\tBjörn Goop\t\tVanlig\tStod för en okej insats på V85 senast. Betydligt bättre innan det. Har bra fart. Bud.",
+    "speed_score": 20.6,
+    "track_score": 95,
+    "total_score": 42.92
+  },
+  {
+    "horse": "Phantom le Soleilv5",
+    "speed_score": 20.6,
+    "track_score": 95,
+    "total_score": 42.92
+  },
+  {
+    "horse": "Urbina Southwinds7",
+    "speed_score": 20.6,
+    "track_score": 95,
+    "total_score": 42.92
+  },
+  {
+    "horse": "Tangerinas5",
+    "speed_score": 19.6,
+    "track_score": 95,
+    "total_score": 42.22
+  },
+  {
+    "horse": "Montanarov4",
+    "speed_score": 19.6,
+    "track_score": 95,
+    "total_score": 42.22
+  },
+  {
+    "horse": "Amazing Hazelv8",
+    "speed_score": 19.6,
+    "track_score": 95,
+    "total_score": 42.22
+  },
+  {
+    "horse": "Global Educationh6",
+    "speed_score": 21.5,
+    "track_score": 90,
+    "total_score": 42.05
+  },
+  {
+    "horse": "Mondo Pelliniv4",
+    "speed_score": 21.4,
+    "track_score": 90,
+    "total_score": 41.98
+  },
+  {
+    "horse": "Digital Lasts4",
+    "speed_score": 20.75,
+    "track_score": 90,
+    "total_score": 41.52
+  },
+  {
+    "horse": "Tabasco C.D.v10",
+    "speed_score": 20.75,
+    "track_score": 90,
+    "total_score": 41.52
+  },
+  {
+    "horse": "Florenzov4",
+    "speed_score": 22.67,
+    "track_score": 85,
+    "total_score": 41.37
+  },
+  {
+    "horse": "Maroon Dayv6",
+    "speed_score": 22.5,
+    "track_score": 85,
+    "total_score": 41.25
+  },
+  {
+    "horse": "Soldier of Fortunev4",
+    "speed_score": 22.0,
+    "track_score": 85,
+    "total_score": 40.9
+  },
+  {
+    "horse": "Meghan B.R.s6",
+    "speed_score": 24.0,
+    "track_score": 80,
+    "total_score": 40.8
+  },
+  {
+    "horse": "Mix the Boozev5",
+    "speed_score": 19.6,
+    "track_score": 90,
+    "total_score": 40.72
+  },
+  {
+    "horse": "I Love Esther M.L.s5",
+    "speed_score": 19.6,
+    "track_score": 90,
+    "total_score": 40.72
+  },
+  {
+    "horse": "Love Express W.F.s5",
+    "speed_score": 21.4,
+    "track_score": 85,
+    "total_score": 40.48
+  },
+  {
+    "horse": "J.H.Oliverv4",
+    "speed_score": 21.0,
+    "track_score": 85,
+    "total_score": 40.2
+  },
+  {
+    "horse": "Helan Gårh4",
+    "speed_score": 21.0,
+    "track_score": 85,
+    "total_score": 40.2
+  },
+  {
+    "horse": "Bicc's Tobeev6",
+    "speed_score": 23.0,
+    "track_score": 80,
+    "total_score": 40.1
+  },
+  {
+    "horse": "Chribo Hillh4",
+    "speed_score": 20.75,
+    "track_score": 85,
+    "total_score": 40.02
+  },
+  {
+    "horse": "Just Jokingv4",
+    "speed_score": 20.75,
+    "track_score": 85,
+    "total_score": 40.02
+  },
+  {
+    "horse": "Jackpot Mearasv7",
+    "speed_score": 20.75,
+    "track_score": 85,
+    "total_score": 40.02
+  },
+  {
+    "horse": "A Fair Dayv7",
+    "speed_score": 20.75,
+    "track_score": 85,
+    "total_score": 40.02
+  },
+  {
+    "horse": "Riverdale Z.s7",
+    "speed_score": 22.0,
+    "track_score": 80,
+    "total_score": 39.4
+  },
+  {
+    "horse": "Staro Stevenv5",
+    "speed_score": 19.6,
+    "track_score": 85,
+    "total_score": 39.22
+  },
+  {
+    "horse": "Moonshine Mearasv4",
+    "speed_score": 19.6,
+    "track_score": 85,
+    "total_score": 39.22
+  },
+  {
+    "horse": "Devs Despacitov4",
+    "speed_score": 21.6,
+    "track_score": 80,
+    "total_score": 39.12
+  },
+  {
+    "horse": "Nash Keeperv5",
+    "speed_score": 21.5,
+    "track_score": 80,
+    "total_score": 39.05
+  },
+  {
+    "horse": "Run N'Colav8",
+    "speed_score": 21.4,
+    "track_score": 80,
+    "total_score": 38.98
+  },
+  {
+    "horse": "Lotusorchides4",
+    "speed_score": 21.0,
+    "track_score": 80,
+    "total_score": 38.7
+  },
+  {
+    "horse": "Zipora C.D.s5",
+    "speed_score": 20.75,
+    "track_score": 80,
+    "total_score": 38.52
+  },
+  {
+    "horse": "Chimih7",
+    "speed_score": 20.75,
+    "track_score": 80,
+    "total_score": 38.52
+  },
+  {
+    "horse": "Mellby Maybes5",
+    "speed_score": 20.75,
+    "track_score": 80,
+    "total_score": 38.52
+  },
+  {
+    "horse": "Brionnes4",
+    "speed_score": 20.6,
+    "track_score": 80,
+    "total_score": 38.42
+  },
+  {
+    "horse": "Staro Thunder Roadh4",
+    "speed_score": 22.5,
+    "track_score": 75,
+    "total_score": 38.25
+  },
+  {
+    "horse": "I.D.Inner Circleh4",
+    "speed_score": 22.0,
+    "track_score": 75,
+    "total_score": 37.9
+  },
+  {
+    "horse": "Double Deceiverv7",
+    "speed_score": 22.0,
+    "track_score": 75,
+    "total_score": 37.9
+  },
+  {
+    "horse": "Orosei Bokoh5",
+    "speed_score": 19.6,
+    "track_score": 80,
+    "total_score": 37.72
+  },
+  {
+    "horse": "Savastanov6",
+    "speed_score": 19.6,
+    "track_score": 80,
+    "total_score": 37.72
+  },
+  {
+    "horse": "Call Me Ottilias5",
+    "speed_score": 19.6,
+    "track_score": 80,
+    "total_score": 37.72
+  },
+  {
+    "horse": "Perfects6",
+    "speed_score": 23.33,
+    "track_score": 70,
+    "total_score": 37.33
+  },
+  {
+    "horse": "Kalle Mayv5",
+    "speed_score": 21.0,
+    "track_score": 75,
+    "total_score": 37.2
+  },
+  {
+    "horse": "Louis Vuittonv5",
+    "speed_score": 20.75,
+    "track_score": 75,
+    "total_score": 37.02
+  },
+  {
+    "horse": "Hugo Boss Shadowv7",
+    "speed_score": 22.5,
+    "track_score": 70,
+    "total_score": 36.75
+  },
+  {
+    "horse": "Sven the Forestmanv6",
+    "speed_score": 22.0,
+    "track_score": 70,
+    "total_score": 36.4
+  },
+  {
+    "horse": "Intrigantev5",
+    "speed_score": 22.0,
+    "track_score": 70,
+    "total_score": 36.4
+  },
+  {
+    "horse": "Parma di Quattros4",
+    "speed_score": 22.0,
+    "track_score": 70,
+    "total_score": 36.4
+  },
+  {
+    "horse": "Merlene Bokos7",
+    "speed_score": 19.6,
+    "track_score": 75,
+    "total_score": 36.22
+  },
+  {
+    "horse": "Let Me Inv6",
+    "speed_score": 19.6,
+    "track_score": 75,
+    "total_score": 36.22
+  },
+  {
+    "horse": "Head of Statev7",
+    "speed_score": 20.75,
+    "track_score": 70,
+    "total_score": 35.52
+  },
+  {
+    "horse": "Aegon J.W.h4",
+    "speed_score": 22.0,
+    "track_score": 65,
+    "total_score": 34.9
+  },
+  {
+    "horse": "Gudrid Faces5",
+    "speed_score": 22.0,
+    "track_score": 65,
+    "total_score": 34.9
+  },
+  {
+    "horse": "Västerbo Voodoov6",
+    "speed_score": 19.6,
+    "track_score": 70,
+    "total_score": 34.72
+  },
+  {
+    "horse": "Unicumh4",
+    "speed_score": 19.6,
+    "track_score": 70,
+    "total_score": 34.72
+  },
+  {
+    "horse": "Olympia Schermers5",
+    "speed_score": 19.6,
+    "track_score": 70,
+    "total_score": 34.72
+  },
+  {
+    "horse": "Carros First Kingv4",
+    "speed_score": 20.75,
+    "track_score": 65,
+    "total_score": 34.02
+  },
+  {
+    "horse": "Ready Starh7",
+    "speed_score": 20.75,
+    "track_score": 65,
+    "total_score": 34.02
+  },
+  {
+    "horse": "Tamacti Junv6",
+    "speed_score": 20.75,
+    "track_score": 65,
+    "total_score": 34.02
+  },
+  {
+    "horse": "Barack Faceh7",
+    "speed_score": 20.75,
+    "track_score": 65,
+    "total_score": 34.02
+  },
+  {
+    "horse": "J.H.Ellens5",
+    "speed_score": 20.6,
+    "track_score": 65,
+    "total_score": 33.92
+  },
+  {
+    "horse": "Sandsjöns Indianas4",
+    "speed_score": 22.5,
+    "track_score": 60,
+    "total_score": 33.75
+  },
+  {
+    "horse": "Tvingens Calippov4",
+    "speed_score": 21.4,
+    "track_score": 60,
+    "total_score": 32.98
+  },
+  {
+    "horse": "Stamsiteh6",
+    "speed_score": 20.75,
+    "track_score": 60,
+    "total_score": 32.52
+  },
+  {
+    "horse": "Due Duev5",
+    "speed_score": 22.0,
+    "track_score": 55,
+    "total_score": 31.9
+  },
+  {
+    "horse": "Quattro Hålerydv6",
+    "speed_score": 19.6,
+    "track_score": 60,
+    "total_score": 31.72
+  },
+  {
+    "horse": "Opening Nighth5",
+    "speed_score": 19.6,
+    "track_score": 60,
+    "total_score": 31.72
+  },
+  {
+    "horse": "Express Lovev9",
+    "speed_score": 19.6,
+    "track_score": 60,
+    "total_score": 31.72
+  },
+  {
+    "horse": "Nikki Lanes6",
+    "speed_score": 19.6,
+    "track_score": 60,
+    "total_score": 31.72
+  },
+  {
+    "horse": "Fröken Crawlys4",
+    "speed_score": 19.6,
+    "track_score": 60,
+    "total_score": 31.72
+  },
+  {
+    "horse": "Graces Birds6",
+    "speed_score": 21.4,
+    "track_score": 55,
+    "total_score": 31.48
+  },
+  {
+    "horse": "Pato Bokoh4",
+    "speed_score": 23.33,
+    "track_score": 50,
+    "total_score": 31.33
+  },
+  {
+    "horse": "Great Time Trotv7",
+    "speed_score": 20.75,
+    "track_score": 55,
+    "total_score": 31.02
+  },
+  {
+    "horse": "Queen of Powers6",
+    "speed_score": 20.75,
+    "track_score": 55,
+    "total_score": 31.02
+  },
+  {
+    "horse": "Funny Moneyv6",
+    "speed_score": 22.67,
+    "track_score": 50,
+    "total_score": 30.87
+  },
+  {
+    "horse": "Jobsposth7",
+    "speed_score": 24.0,
+    "track_score": 45,
+    "total_score": 30.3
+  },
+  {
+    "horse": "Seventh Heavens8",
+    "speed_score": 19.6,
+    "track_score": 45,
+    "total_score": 27.22
+  },
+  {
+    "horse": "I'm Still Standings5",
+    "speed_score": 20.75,
+    "track_score": 40,
+    "total_score": 26.52
+  },
+  {
+    "horse": "Nephtys Bokos6",
+    "speed_score": 20.75,
+    "track_score": 0,
+    "total_score": 14.52
+  },
+  {
+    "horse": "Västerbo Henryv6",
+    "speed_score": 20.6,
+    "track_score": 0,
+    "total_score": 14.42
+  }
+]

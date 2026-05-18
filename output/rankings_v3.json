@@ -1,0 +1,560 @@
+[
+  {
+    "horse": "Double Deceiverv7",
+    "speed": 22,
+    "track": 16,
+    "total": 38
+  },
+  {
+    "horse": "Meghan B.R.s6",
+    "speed": 22,
+    "track": 14,
+    "total": 36
+  },
+  {
+    "horse": "Jobsposth7",
+    "speed": 24,
+    "track": 10,
+    "total": 34
+  },
+  {
+    "horse": "Bicc's Tobeev6",
+    "speed": 20,
+    "track": 14,
+    "total": 34
+  },
+  {
+    "horse": "Chimih7",
+    "speed": 17,
+    "track": 14,
+    "total": 31
+  },
+  {
+    "horse": "Godfatherv8",
+    "speed": 15,
+    "track": 15,
+    "total": 30
+  },
+  {
+    "horse": "A Fair Dayv7",
+    "speed": 17,
+    "track": 13,
+    "total": 30
+  },
+  {
+    "horse": "Savastanov6",
+    "speed": 15,
+    "track": 14,
+    "total": 29
+  },
+  {
+    "horse": "Phantom le Soleilv5",
+    "speed": 10,
+    "track": 18,
+    "total": 28
+  },
+  {
+    "horse": "Ready Starh7",
+    "speed": 15,
+    "track": 13,
+    "total": 28
+  },
+  {
+    "horse": "Great Time Trotv7",
+    "speed": 15,
+    "track": 12,
+    "total": 27
+  },
+  {
+    "horse": "Barack Faceh7",
+    "speed": 13,
+    "track": 13,
+    "total": 26
+  },
+  {
+    "horse": "Run N'Colav8",
+    "speed": 10,
+    "track": 14,
+    "total": 24
+  },
+  {
+    "horse": "Urbina Southwinds7",
+    "speed": 8,
+    "track": 15,
+    "total": 23
+  },
+  {
+    "horse": "J.H.Ellens5",
+    "speed": 8,
+    "track": 14,
+    "total": 22
+  },
+  {
+    "horse": "Jackpot Mearasv7",
+    "speed": 8,
+    "track": 14,
+    "total": 22
+  },
+  {
+    "horse": "Intrigantev5",
+    "speed": 8,
+    "track": 13,
+    "total": 21
+  },
+  {
+    "horse": "Legliginh5",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Digital Broddeh4",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Mix the Boozev5",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Gretzky Broddev4",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Eleven O'Clockv6",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Fearless Fliers6",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Tangerinas5",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Montanarov4",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Amazing Hazelv8",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "Tabasco C.D.v10",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "I Love Esther M.L.s5",
+    "speed": 1,
+    "track": 18,
+    "total": 19
+  },
+  {
+    "horse": "M.T.Tomorrows Hopes6",
+    "speed": 1,
+    "track": 17,
+    "total": 18
+  },
+  {
+    "horse": "Lonely Nightss5",
+    "speed": 1,
+    "track": 17,
+    "total": 18
+  },
+  {
+    "horse": "Zipora C.D.s5",
+    "speed": 1,
+    "track": 16,
+    "total": 17
+  },
+  {
+    "horse": "Devs Despacitov4",
+    "speed": 1,
+    "track": 16,
+    "total": 17
+  },
+  {
+    "horse": "Brionnes4",
+    "speed": 1,
+    "track": 16,
+    "total": 17
+  },
+  {
+    "horse": "Let Me Inv6",
+    "speed": 1,
+    "track": 16,
+    "total": 17
+  },
+  {
+    "horse": "Raphaelv4",
+    "speed": 1,
+    "track": 15,
+    "total": 16
+  },
+  {
+    "horse": "Global Educationh6",
+    "speed": 1,
+    "track": 15,
+    "total": 16
+  },
+  {
+    "horse": "Cuarto de B.s4",
+    "speed": 1,
+    "track": 15,
+    "total": 16
+  },
+  {
+    "horse": "Alvena Royv6",
+    "speed": 1,
+    "track": 15,
+    "total": 16
+  },
+  {
+    "horse": "Seventh Heavens8",
+    "speed": 1,
+    "track": 15,
+    "total": 16
+  },
+  {
+    "horse": "Rania Zons5",
+    "speed": 1,
+    "track": 15,
+    "total": 16
+  },
+  {
+    "horse": "Chribo Hillh4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Stamsiteh6",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "J.H.Oliverv4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Staro Stevenv5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Staro Thunder Roadh4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Quattro Hålerydv6",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Opening Nighth5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Express Lovev9",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Orosei Bokoh5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Nash Keeperv5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Riverdale Z.s7",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Gudrid Faces5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Nikki Lanes6",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Helan Gårh4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Soldier of Fortunev4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Just Jokingv4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Moonshine Mearasv4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Tvingens Calippov4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Unicumh4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Maroon Dayv6",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Love Express W.F.s5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Lotusorchides4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Call Me Ottilias5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Fröken Crawlys4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Sandsjöns Indianas4",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Mellby Maybes5",
+    "speed": 1,
+    "track": 14,
+    "total": 15
+  },
+  {
+    "horse": "Florenzov4",
+    "speed": 1,
+    "track": 13,
+    "total": 14
+  },
+  {
+    "horse": "Aegon J.W.h4",
+    "speed": 1,
+    "track": 13,
+    "total": 14
+  },
+  {
+    "horse": "Västerbo Voodoov6",
+    "speed": 1,
+    "track": 13,
+    "total": 14
+  },
+  {
+    "horse": "Carros First Kingv4",
+    "speed": 1,
+    "track": 13,
+    "total": 14
+  },
+  {
+    "horse": "Hugo Boss Shadowv7",
+    "speed": 1,
+    "track": 13,
+    "total": 14
+  },
+  {
+    "horse": "Tamacti Junv6",
+    "speed": 1,
+    "track": 13,
+    "total": 14
+  },
+  {
+    "horse": "Due Duev5",
+    "speed": 1,
+    "track": 12,
+    "total": 13
+  },
+  {
+    "horse": "Pato Bokoh4",
+    "speed": 1,
+    "track": 12,
+    "total": 13
+  },
+  {
+    "horse": "Funny Moneyv6",
+    "speed": 1,
+    "track": 12,
+    "total": 13
+  },
+  {
+    "horse": "Graces Birds6",
+    "speed": 1,
+    "track": 12,
+    "total": 13
+  },
+  {
+    "horse": "Ezekiel Faceh4",
+    "speed": 1,
+    "track": 12,
+    "total": 13
+  },
+  {
+    "horse": "Queen of Powers6",
+    "speed": 1,
+    "track": 12,
+    "total": 13
+  },
+  {
+    "horse": "Sven the Forestmanv6",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Digital Lasts4",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Kalle Mayv5",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Merlene Bokos7",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "I.D.Inner Circleh4",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Head of Statev7",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Louis Vuittonv5",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Perfects6",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Mondo Pelliniv4",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Parma di Quattros4",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Olympia Schermers5",
+    "speed": 1,
+    "track": 11,
+    "total": 12
+  },
+  {
+    "horse": "Rendezvous Zonv5",
+    "speed": 1,
+    "track": 10,
+    "total": 11
+  },
+  {
+    "horse": "I'm Still Standings5",
+    "speed": 1,
+    "track": 10,
+    "total": 11
+  },
+  {
+    "horse": "Västerbo Henryv6",
+    "speed": 1,
+    "track": 0,
+    "total": 1
+  },
+  {
+    "horse": "Nephtys Bokos6",
+    "speed": 1,
+    "track": 0,
+    "total": 1
+  }
+]

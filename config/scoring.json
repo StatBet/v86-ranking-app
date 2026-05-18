@@ -1,0 +1,22 @@
+{
+  "form_points": {
+    "1": 10,
+    "2": 7,
+    "3": 5,
+    "4": 3,
+    "5": 1
+  },
+
+  "weights": {
+    "form": 0.45,
+    "driver": 0.20,
+    "odds": 0.15,
+    "speed": 0.20
+  },
+
+  "driver_bonus_map": {
+    "default": 1.0,
+    "elite": 1.08,
+    "good": 1.03
+  }
+}

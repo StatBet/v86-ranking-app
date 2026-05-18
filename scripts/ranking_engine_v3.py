@@ -1,0 +1,962 @@
+# =========================================================
+# RANKING ENGINE V3 - JSON CONFIG VERSION
+# =========================================================
+
+import json
+import re
+
+from scripts.speed_feature import (
+    calculate_avg_time,
+    normalize_distance,
+    speed_score_from_avg_times
+)
+from scripts.speed_ranking import speed_score
+from scripts.parser_v2 import parse_input
+
+
+# =========================================================
+# PATHS
+# =========================================================
+
+INPUT_PATH = "input\\input_word_new.txt"
+
+TRACK_POINTS_PATH = "config\\track_points.json"
+DRIVER_POINTS_PATH = "config\\driver_points.json"
+MANUAL_POINTS_PATH = "config\\manual_points.json"
+SCORING_RULES_PATH = "config\\scoring_rules.json"
+
+
+# =========================================================
+# LOAD JSON
+# =========================================================
+
+def load_json(path):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+track_points = load_json(TRACK_POINTS_PATH)
+driver_points = load_json(DRIVER_POINTS_PATH)
+manual_points = load_json(MANUAL_POINTS_PATH)
+scoring_rules = load_json(SCORING_RULES_PATH)
+
+
+# =========================================================
+# HELPERS
+# =========================================================
+
+def split_history_parts(raw):
+    return [
+        p.strip()
+        for p in raw.split("\t")
+        if p.strip()
+    ]
+
+
+def format_decimal(value):
+    if value is None:
+        return "-"
+
+    return str(value).replace(".", ",")
+
+
+def get_track_distance_group(distance):
+    if 1609 <= distance <= 1680:
+        return "1600"
+
+    if 2100 <= distance <= 2200:
+        return "2100"
+
+    if 2600 <= distance <= 3200:
+        return "2600"
+
+    if distance < 1900:
+        return "1600"
+
+    if distance < 2500:
+        return "2100"
+
+    return "2600"
+
+
+def is_time_token(token):
+    token = token.strip().replace(" ", "")
+
+    return re.match(
+        r"^\d{1,2},\d[a-zA-Z]*$",
+        token
+    ) is not None
+
+
+def is_decimal_token(token):
+    token = token.strip().replace(" ", "")
+
+    return re.match(
+        r"^\d{1,3},\d{1,2}$",
+        token
+    ) is not None
+
+
+def parse_decimal_comma(value):
+    try:
+        return float(value.replace(",", "."))
+    except:
+        return None
+
+
+# =========================================================
+# DRIVER / MANUAL
+# =========================================================
+
+def get_driver_score(driver):
+    return driver_points.get(driver, 0)
+
+
+def get_shoe_score(horse):
+    return manual_points.get(
+        "shoes",
+        {}
+    ).get(
+        horse["horse"],
+        0
+    )
+
+
+def get_custom_score(horse):
+    return manual_points.get(
+        "custom",
+        {}
+    ).get(
+        horse["horse"],
+        0
+    )
+
+
+# =========================================================
+# POST / TRACK POINTS
+# =========================================================
+
+def get_post_score(post, race):
+    distance_group = get_track_distance_group(
+        race["distance"]
+    )
+
+    key = f"{distance_group}_{race['start']}"
+
+    points = track_points.get(key)
+
+    if not points:
+        return 0
+
+    if post <= 0:
+        return 0
+
+    index = post - 1
+
+    if index >= len(points):
+        return points[-1]
+
+    return points[index]
+
+
+# =========================================================
+# FORM
+# =========================================================
+
+def get_form_score(history):
+    if not history:
+        return 0
+
+    score = 0
+
+    form_points = scoring_rules.get(
+        "form_points",
+        {}
+    )
+
+    track_form_points = scoring_rules.get(
+        "track_form_points",
+        {}
+    )
+
+    for race in history[:5]:
+        raw = race.get("raw", "")
+        parts = split_history_parts(raw)
+
+        if len(parts) < 3:
+            continue
+
+        placement = parts[2].strip().lower()
+
+        score += form_points.get(
+            placement,
+            0
+        )
+
+        track_part = parts[0].strip()
+
+        for track_name, bonus in track_form_points.items():
+            if track_part.startswith(track_name):
+                score += bonus
+                break
+
+    return score
+
+
+def get_latest_start_score(history):
+    if not history:
+        return 0
+
+    raw = history[0].get("raw", "")
+    parts = split_history_parts(raw)
+
+    if len(parts) < 3:
+        return 0
+
+    placement = parts[2].strip().lower()
+
+    return scoring_rules.get(
+        "latest_start_points",
+        {}
+    ).get(
+        placement,
+        0
+    )
+
+
+# =========================================================
+# RECORD
+# =========================================================
+
+def record_to_float(record):
+    if not record:
+        return None
+
+    try:
+        cleaned = record
+
+        for token in [
+            "aK",
+            "aM",
+            "aL",
+            "a",
+            "K",
+            "M",
+            "L",
+            "g"
+        ]:
+            cleaned = cleaned.replace(
+                token,
+                ""
+            )
+
+        cleaned = cleaned.replace(",", ".")
+        cleaned = cleaned.replace(" ", "")
+
+        return float(cleaned)
+
+    except:
+        return None
+
+
+def get_record_score(record):
+    value = record_to_float(record)
+
+    if value is None:
+        return 0
+
+    for row in scoring_rules.get(
+        "record_points",
+        []
+    ):
+        if value <= row["max"]:
+            return row["points"]
+
+    return 0
+
+
+# =========================================================
+# STARTS / WIN% / PLACE%
+# =========================================================
+
+def extract_stats_string(raw_text):
+    match = re.search(
+        r"\b(\d+)-(\d+)-(\d+)\b",
+        raw_text
+    )
+
+    if not match:
+        return None
+
+    first_part = match.group(1)
+
+    seconds = int(match.group(2))
+    thirds = int(match.group(3))
+
+    if len(first_part) >= 4:
+        starts = int(first_part[:-2])
+        wins = int(first_part[-2:])
+    else:
+        starts = int(first_part[:-1])
+        wins = int(first_part[-1])
+
+    return {
+        "starts": starts,
+        "wins": wins,
+        "seconds": seconds,
+        "thirds": thirds
+    }
+
+
+def get_starts_score(starts):
+    if starts <= 0:
+        return 0
+
+    for row in scoring_rules.get(
+        "starts_points",
+        []
+    ):
+        if row["min"] <= starts <= row["max"]:
+            return row["points"]
+
+    return 0
+
+
+# =========================================================
+# GROUP SCORING
+# =========================================================
+
+def grouped_absolute_scores(
+    horses,
+    value_key,
+    points_table,
+    threshold
+):
+    valid = []
+
+    for horse in horses:
+        value = horse.get(value_key)
+
+        if value is not None:
+            valid.append(horse)
+
+    sorted_horses = sorted(
+        valid,
+        key=lambda x: x[value_key],
+        reverse=True
+    )
+
+    groups = []
+    current_group = []
+    current_group_start = None
+
+    for horse in sorted_horses:
+        value = horse[value_key]
+
+        if not current_group:
+            current_group = [horse]
+            current_group_start = value
+            continue
+
+        diff = current_group_start - value
+
+        if diff <= threshold:
+            current_group.append(horse)
+        else:
+            groups.append(current_group)
+            current_group = [horse]
+            current_group_start = value
+
+    if current_group:
+        groups.append(current_group)
+
+    result = {}
+
+    for i, group in enumerate(groups):
+        score = points_table[i] if i < len(points_table) else 0
+
+        for horse in group:
+            result[horse["horse"]] = score
+
+    return result
+
+
+def grouped_relative_scores(
+    horses,
+    value_key,
+    points_table,
+    threshold_percent
+):
+    valid = []
+
+    for horse in horses:
+        value = horse.get(value_key)
+
+        if value is not None and value > 0:
+            valid.append(horse)
+
+    sorted_horses = sorted(
+        valid,
+        key=lambda x: x[value_key],
+        reverse=True
+    )
+
+    groups = []
+    current_group = []
+    current_group_start = None
+
+    for horse in sorted_horses:
+        value = horse[value_key]
+
+        if not current_group:
+            current_group = [horse]
+            current_group_start = value
+            continue
+
+        diff_percent = (
+            (current_group_start - value)
+            / current_group_start
+        ) * 100
+
+        if diff_percent <= threshold_percent:
+            current_group.append(horse)
+        else:
+            groups.append(current_group)
+            current_group = [horse]
+            current_group_start = value
+
+    if current_group:
+        groups.append(current_group)
+
+    result = {}
+
+    for i, group in enumerate(groups):
+        score = points_table[i] if i < len(points_table) else 0
+
+        for horse in group:
+            result[horse["horse"]] = score
+
+    return result
+
+
+# =========================================================
+# PRIZE MONEY
+# =========================================================
+
+def extract_prize_money(horse):
+    raw = horse.get("raw", "")
+    lines = [
+        line.strip()
+        for line in raw.split("\n")
+        if line.strip()
+    ]
+
+    if len(lines) < 2:
+        return 0
+
+    info_line = lines[1]
+
+    match = re.search(
+        r"\d{4}\s*:\s*\d+\s+([0-9 ]+?)\s+\d+%",
+        info_line
+    )
+
+    if not match:
+        return 0
+
+    money_text = match.group(1).replace(" ", "")
+
+    try:
+        return int(money_text)
+    except:
+        return 0
+
+
+# =========================================================
+# AVG ODDS
+# =========================================================
+
+def extract_odds_from_history_row(raw):
+    parts = split_history_parts(raw)
+
+    time_index = None
+
+    for i, part in enumerate(parts):
+        if is_time_token(part):
+            time_index = i
+            break
+
+    if time_index is None:
+        return None
+
+    for part in parts[time_index + 1:]:
+        clean = part.strip().replace(" ", "")
+
+        if clean in [
+            "--",
+            "-"
+        ]:
+            continue
+
+        if is_decimal_token(clean):
+            return parse_decimal_comma(clean)
+
+    return None
+
+
+def calculate_avg_odds(history):
+    odds_values = []
+
+    for race in history[:5]:
+        raw = race.get("raw", "")
+
+        odds = extract_odds_from_history_row(raw)
+
+        if odds is not None:
+            odds_values.append(odds)
+
+    if not odds_values:
+        return None
+
+    avg = sum(odds_values) / len(odds_values)
+
+    return round(avg, 2)
+
+
+def get_avg_odds_score(avg_odds):
+    if avg_odds is None:
+        return 0
+
+    odds_index = avg_odds * 10
+
+    for row in scoring_rules.get(
+        "avg_odds_ranges",
+        []
+    ):
+        if row["min"] <= odds_index <= row["max"]:
+            return row["points"]
+
+    return 0
+
+
+# =========================================================
+# DISTANCE ADDITION
+# =========================================================
+
+def get_distance_addition_score(horse, race):
+    horse_distance = horse.get("distance", 0)
+    race_distance = race.get("distance", 0)
+
+    if horse_distance <= race_distance:
+        return 0
+
+    extra_meters = horse_distance - race_distance
+    additions = extra_meters // 20
+
+    if additions <= 0:
+        return 0
+
+    distance_group = normalize_distance(race_distance)
+
+    penalty_map = scoring_rules.get(
+        "distance_addition_penalty",
+        {}
+    )
+
+    if distance_group == 1640:
+        penalty = penalty_map.get("1640", 0)
+    elif distance_group == 2140:
+        penalty = penalty_map.get("2140", 0)
+    else:
+        penalty = penalty_map.get("2640", 0)
+
+    return int(additions * penalty)
+
+
+# =========================================================
+# GENDER
+# =========================================================
+
+def get_gender_score(horse, horses):
+    gender = horse.get("gender", "")
+
+    if gender != "s":
+        return 0
+
+    mixed = any(
+        h.get("gender", "") in ["h", "v"]
+        for h in horses
+    )
+
+    if mixed:
+        return scoring_rules.get(
+            "gender_penalty_sto_mixed",
+            0
+        )
+
+    return 0
+
+
+# =========================================================
+# GALLOP
+# =========================================================
+
+def count_gallops(history):
+    count = 0
+
+    for race in history[:5]:
+        raw = race.get("raw", "").lower()
+        parts = split_history_parts(raw)
+
+        for part in parts:
+            clean = part.strip().lower().replace(" ", "")
+
+            if is_time_token(clean) and "g" in clean:
+                count += 1
+                break
+
+            if clean in [
+                "g",
+                "galopp",
+                "dg",
+                "ug",
+                "ag",
+                "uag"
+            ]:
+                count += 1
+                break
+
+    return count
+
+
+def get_gallop_score(history):
+    gallops = count_gallops(history)
+
+    min_count = scoring_rules.get(
+        "gallop_penalty_min_count",
+        2
+    )
+
+    if gallops >= min_count:
+        return scoring_rules.get(
+            "gallop_penalty",
+            0
+        )
+
+    return 0
+
+
+# =========================================================
+# WAGON / SHOES
+# =========================================================
+
+def count_american_wagon_last_5(history):
+    count = 0
+
+    for race in history[:5]:
+        raw = race.get("raw", "")
+
+        if "Amerikansk" in raw:
+            count += 1
+
+    return count
+
+
+def get_wagon_score(horse):
+
+    current_equipment = horse.get(
+        "equipment",
+        ""
+    )
+
+    equipment = current_equipment.lower().strip()
+
+    if "amerikansk" not in equipment:
+        return 0
+
+    recent_count = count_american_wagon_last_5(
+        horse.get("history", [])
+    )
+
+    max_recent_count = scoring_rules.get(
+        "american_wagon_max_recent_count",
+        1
+    )
+
+    if recent_count <= max_recent_count:
+        return scoring_rules.get(
+            "american_wagon_bonus",
+            0
+        )
+
+    return 0
+
+
+# =========================================================
+# DYNAMIC SCORES
+# =========================================================
+
+# scripts/ranking_engine_v3.py
+
+def add_dynamic_scores(horses, race, **kwargs):
+
+    target_distance = normalize_distance(
+        race["distance"]
+    )
+
+    target_auto = race["start"] == "auto"
+
+    speed_input = []
+
+    for horse in horses:
+
+        avg_time = calculate_avg_time(
+            history=horse["history"],
+            target_distance=target_distance,
+            target_auto=target_auto
+        )
+
+        horse["avg_time"] = avg_time
+
+        if avg_time is not None:
+            speed_input.append({
+                "horse": horse["horse"],
+                "avg_time": avg_time
+            })
+
+    speed_map = speed_score_from_avg_times(speed_input)
+
+    for horse in horses:
+
+        horse["speed_score"] = speed_map.get(horse["horse"], 0)
+
+        stats = extract_stats_string(
+            horse.get("raw", "")
+        )
+
+        if stats:
+            starts = stats["starts"]
+            wins = stats["wins"]
+            seconds = stats["seconds"]
+            thirds = stats["thirds"]
+        else:
+            starts = 0
+            wins = 0
+            seconds = 0
+            thirds = 0
+
+        horse["starts"] = starts
+        horse["wins"] = wins
+        horse["seconds"] = seconds
+        horse["thirds"] = thirds
+
+        if starts > 0:
+            horse["win_percent"] = round((wins / starts) * 100, 1)
+            horse["place_percent"] = round(
+                ((wins + seconds + thirds) / starts) * 100,
+                1
+            )
+        else:
+            horse["win_percent"] = 0
+            horse["place_percent"] = 0
+
+        horse["prize_money"] = extract_prize_money(horse)
+        horse["avg_odds"] = calculate_avg_odds(horse["history"])
+
+    win_score_map = grouped_absolute_scores(
+        horses,
+        "win_percent",
+        scoring_rules.get("win_percent_points", []),
+        scoring_rules.get("win_percent_group_threshold", 2)
+    )
+
+    place_score_map = grouped_absolute_scores(
+        horses,
+        "place_percent",
+        scoring_rules.get("place_percent_points", []),
+        scoring_rules.get("place_percent_group_threshold", 2)
+    )
+
+    spel_score_map = grouped_absolute_scores(
+        horses,
+        "percent",
+        scoring_rules.get("spel_percent_points", []),
+        scoring_rules.get("spel_percent_group_threshold", 2)
+    )
+
+    prize_money_score_map = grouped_relative_scores(
+        horses,
+        "prize_money",
+        scoring_rules.get("prize_money_points", []),
+        scoring_rules.get("prize_money_group_threshold_percent", 4)
+    )
+
+    for horse in horses:
+
+        horse["form_score"] = get_form_score(horse["history"])
+        horse["latest_start_score"] = get_latest_start_score(horse["history"])
+        horse["post_score"] = get_post_score(horse["post"], race)
+        horse["driver_score"] = get_driver_score(horse["driver"])
+        horse["record_score"] = get_record_score(horse["record"])
+        horse["starts_score"] = get_starts_score(horse["starts"])
+
+        horse["win_score"] = win_score_map.get(horse["horse"], 0)
+        horse["place_score"] = place_score_map.get(horse["horse"], 0)
+        horse["spel_score"] = spel_score_map.get(horse["horse"], 0)
+        horse["prize_money_score"] = prize_money_score_map.get(horse["horse"], 0)
+        horse["avg_odds_score"] = get_avg_odds_score(horse["avg_odds"])
+
+        horse["distance_addition_score"] = get_distance_addition_score(
+            horse,
+            race
+        )
+
+        horse["gender_score"] = get_gender_score(
+            horse,
+            horses
+        )
+
+        horse["gallop_score"] = get_gallop_score(
+            horse["history"]
+        )
+
+        horse["wagon_score"] = get_wagon_score(horse)
+        horse["shoe_score"] = get_shoe_score(horse)
+        horse["custom_score"] = get_custom_score(horse)
+
+    return horses
+
+
+# =========================================================
+# TOTAL
+# =========================================================
+
+def calculate_total_score(horse):
+    total = (
+        horse["speed_score"] +
+        horse["form_score"] +
+        horse["latest_start_score"] +
+        horse["post_score"] +
+        horse["driver_score"] +
+        horse["record_score"] +
+        horse["starts_score"] +
+        horse["win_score"] +
+        horse["place_score"] +
+        horse.get("spel_score", 0) +
+        horse["prize_money_score"] +
+        horse["avg_odds_score"] +
+        horse["distance_addition_score"] +
+        horse["gender_score"] +
+        horse["gallop_score"] +
+        horse["wagon_score"] +
+        horse["shoe_score"] +
+        horse["custom_score"]
+    )
+
+    return int(total)
+
+# =========================================================
+# LABEL
+# =========================================================
+
+def get_label(rank, horse):
+    percent = horse["percent"]
+
+    if rank == 1:
+        return "A"
+
+    if rank <= 3:
+        return "B"
+
+    if percent <= 5:
+        return "SKRÄLL"
+
+    return "C"
+
+
+# =========================================================
+# MAIN
+# =========================================================
+
+if __name__ == "__main__":
+
+    with open(INPUT_PATH, "r", encoding="utf-8") as f:
+        raw_data = f.read()
+
+    races = parse_input(raw_data)
+
+    for race_data in races:
+        race = race_data["race"]
+        horses = race_data["horses"]
+
+        horses = add_dynamic_scores(
+            horses,
+            race
+        )
+
+        ranked = []
+
+        for horse in horses:
+            horse["total_score"] = calculate_total_score(
+                horse
+            )
+
+            ranked.append(horse)
+
+        ranked = sorted(
+            ranked,
+            key=lambda x: x["total_score"],
+            reverse=True
+        )
+
+        print()
+        print("=" * 230)
+
+        print(
+            f"V86 Avdelning {race['race_no']} "
+            f"- {race['track']} "
+            f"{race['distance']}m "
+            f"{race['start']}"
+        )
+
+        print("=" * 230)
+
+        for i, horse in enumerate(ranked, start=1):
+            label = get_label(i, horse)
+
+            print(
+                f"{i:>2}. "
+                f"[{label:<7}] "
+                f"{horse['horse']:<26} "
+                f"Tot:{horse['total_score']:<4} "
+                f"| Spd {horse['speed_score']:<2} "
+                f"Form {horse['form_score']:<3} "
+                f"Sen {horse['latest_start_score']:<2} "
+                f"| Spår {horse['post_score']:<2} "
+                f"Kusk {horse['driver_score']:<2} "
+                f"Rek {horse['record_score']:<2} "
+                f"| Start {horse['starts_score']:<3} "
+                f"V% {horse['win_score']:<2} "
+                f"P% {horse['place_score']:<2} "
+                f"| Pris {horse['prize_money_score']:<2} "
+                f"Odds {horse['avg_odds_score']:<2} "
+                f"| Vagn {horse['wagon_score']:<2} "
+                f"Skor {horse['shoe_score']:<2} "
+                f"Man {horse['custom_score']:<2} "
+                f"| Till {horse['distance_addition_score']:<3} "
+                f"Kön {horse['gender_score']:<3} "
+                f"Gal {horse['gallop_score']:<3}"
+            )
+
+            print(
+                f"    AvgTid: {format_decimal(horse['avg_time']):<6} "
+                f"Snittodds: {format_decimal(horse['avg_odds']):<6} "
+                f"Prissumma: {horse['prize_money']:<9} "
+                f"Starter: {horse['starts']:<3} "
+                f"Seger%: {horse['win_percent']:<5} "
+                f"Plats%: {horse['place_percent']:<5} "
+                f"Vagn idag: {horse['equipment']:<10} "
+                f"Kusk: {horse['driver']}"
+            )
+
+            print("-" * 230)

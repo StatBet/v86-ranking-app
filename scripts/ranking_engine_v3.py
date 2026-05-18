@@ -18,12 +18,12 @@ from scripts.parser_v2 import parse_input
 # PATHS
 # =========================================================
 
-INPUT_PATH = "input\\input_word_new.txt"
+INPUT_PATH = "input/input_word_new.txt"
 
-TRACK_POINTS_PATH = "config\\track_points.json"
-DRIVER_POINTS_PATH = "config\\driver_points.json"
-MANUAL_POINTS_PATH = "config\\manual_points.json"
-SCORING_RULES_PATH = "config\\scoring_rules.json"
+TRACK_POINTS_PATH = "config/track_points.json"
+DRIVER_POINTS_PATH = "config/driver_points.json"
+MANUAL_POINTS_PATH = "config/manual_points.json"
+SCORING_RULES_PATH = "config/scoring_rules.json"
 
 
 # =========================================================

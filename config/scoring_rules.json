@@ -1,65 +1,78 @@
 {
-  "form_points": {
-    "1": 10,
-    "2": 7,
-    "3": 5,
-    "4": 3,
-    "5": 2,
-    "0": 0,
-    "d": 0
-  },
-  "track_form_points": {
-    "Solvalla": 4,
-    "Åby": 2,
-    "Jägersro": 1
-  },
-  "latest_start_points": {
-    "1": 10,
-    "2": 7,
-    "3": 5
-  },
-  "win_percent_points": [25, 22, 20, 17, 14, 10, 6, 3],
-  "place_percent_points": [20, 17, 15, 12, 9, 5, 3, 2],
-  "spel_percent_points": [25, 22, 20, 17, 14, 10, 6, 3],
-"spel_percent_group_threshold": 2,
-  "prize_money_points": [20, 17, 15, 13, 11, 9, 6, 4],
-  "starts_points": [
-    { "min": 1, "max": 5, "points": -15 },
-    { "min": 6, "max": 10, "points": -10 },
-    { "min": 11, "max": 15, "points": -5 },
-    { "min": 16, "max": 20, "points": 0 },
-    { "min": 21, "max": 999, "points": 10 }
-  ],
-  "record_points": [
-    { "max": 10.5, "points": 10 },
-    { "max": 11.0, "points": 9 },
-    { "max": 11.5, "points": 8 },
-    { "max": 12.0, "points": 7 },
-    { "max": 12.5, "points": 6 },
-    { "max": 13.0, "points": 5 },
-    { "max": 13.5, "points": 4 },
-    { "max": 14.0, "points": 3 },
-    { "max": 99.0, "points": 2 }
-  ],
-  "avg_odds_ranges": [
-    { "min": 10, "max": 39, "points": 20 },
-    { "min": 40, "max": 59, "points": 16 },
-    { "min": 60, "max": 79, "points": 12 },
-    { "min": 80, "max": 99, "points": 8 },
-    { "min": 100, "max": 150, "points": 5 },
-    { "min": 151, "max": 9999, "points": 2 }
-  ],
-  "win_percent_group_threshold": 2,
-  "place_percent_group_threshold": 2,
-  "prize_money_group_threshold_percent": 4,
-  "american_wagon_bonus": 10,
-  "american_wagon_max_recent_count": 1,
-  "gender_penalty_sto_mixed": -10,
-  "gallop_penalty": -10,
-  "gallop_penalty_min_count": 2,
-  "distance_addition_penalty": {
-    "1640": -15,
-    "2140": -10,
-    "2640": -5
-  }
+"spel_percent_points": [25, 20, 16, 12, 8, 4, 0],
+"spel_percent_group_threshold": 3,
+
+"avg_odds_ranges": [
+{"min": 0, "max": 3, "points": 20},
+{"min": 3, "max": 6, "points": 16},
+{"min": 6, "max": 10, "points": 12},
+{"min": 10, "max": 20, "points": 8},
+{"min": 20, "max": 999, "points": 0}
+],
+
+"win_percent_points": [25, 20, 16, 12, 8, 4, 0],
+"win_percent_group_threshold": 5,
+
+"place_percent_points": [20, 16, 12, 8, 4, 2, 0],
+"place_percent_group_threshold": 5,
+
+"prize_money_points": [20, 16, 12, 8, 4, 2, 0],
+"prize_money_group_threshold_percent": 5,
+
+"form_points": {
+"1": 10,
+"2": 7,
+"3": 5,
+"4": 3,
+"5": 2,
+"0": 0,
+"d": -5
+},
+
+"latest_start_points": {
+"1": 10,
+"2": 7,
+"3": 5,
+"4": 3,
+"5": 2,
+"0": 0,
+"d": -5
+},
+
+"starts_points": [
+{"min": 0, "max": 5, "points": 0},
+{"min": 6, "max": 15, "points": 5},
+{"min": 16, "max": 30, "points": 10},
+{"min": 31, "max": 60, "points": 15},
+{"min": 61, "max": 9999, "points": 20}
+],
+
+"record_points": [
+{"max": 12.0, "points": 20},
+{"max": 13.0, "points": 16},
+{"max": 14.0, "points": 12},
+{"max": 15.0, "points": 8},
+{"max": 99.0, "points": 0}
+],
+
+"american_wagon_bonus": 5,
+"american_wagon_max_recent_count": 2,
+
+"gallop_penalty": -20,
+"gallop_penalty_min_count": 2,
+
+"gender_penalty_sto_mixed": -5,
+
+"distance_addition_penalty": {
+"1640": -10,
+"2140": -5,
+"2640": -2
+},
+
+"recent_prize_ranges": [
+{"min": 100000, "points": 5},
+{"min": 150000, "points": 8},
+{"min": 200000, "points": 10},
+{"min": 300000, "points": 15}
+]
 }

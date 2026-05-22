@@ -12,6 +12,33 @@ from scripts.speed_feature import (
 )
 from scripts.speed_ranking import speed_score
 from scripts.parser_v2 import parse_input
+from datetime import datetime
+
+def get_inactivity_score(horse):
+    history = horse.get("history", [])
+
+    if not history:
+        return 0
+
+    latest_start = history[0]
+    latest_date = latest_start.get("date", "")
+
+    if not latest_date:
+        return 0
+
+    try:
+        latest_date_obj = datetime.strptime(latest_date, "%Y-%m-%d")
+        today = datetime.today()
+
+        days_since_start = (today - latest_date_obj).days
+
+        if days_since_start > 60:
+            return -10
+
+        return 0
+
+    except:
+        return 0
 
 
 # =========================================================
@@ -293,9 +320,15 @@ def extract_stats_string(raw_text):
     seconds = int(match.group(2))
     thirds = int(match.group(3))
 
-    if len(first_part) >= 4:
+    # Skydd om statistik är t.ex. 0-0-0
+    if len(first_part) == 1:
+        starts = int(first_part)
+        wins = 0
+
+    elif len(first_part) >= 4:
         starts = int(first_part[:-2])
         wins = int(first_part[-2:])
+
     else:
         starts = int(first_part[:-1])
         wins = int(first_part[-1])
@@ -306,7 +339,6 @@ def extract_stats_string(raw_text):
         "seconds": seconds,
         "thirds": thirds
     }
-
 
 def get_starts_score(starts):
     if starts <= 0:
@@ -697,6 +729,24 @@ def get_wagon_score(horse):
 # =========================================================
 
 # scripts/ranking_engine_v3.py
+def get_recent_prize_score(history):
+    total_prize = 0
+
+    for start in history[:5]:
+        raw = start.get("raw", "")
+
+        match = re.search(r"(\d+)'", raw)
+
+        if match:
+            total_prize += int(match.group(1)) * 1000
+
+    score = 0
+
+    for row in scoring_rules.get("recent_prize_ranges", []):
+        if total_prize >= row["min"]:
+            score = row["points"]
+
+    return score
 
 def add_dynamic_scores(horses, race, **kwargs):
 
@@ -805,6 +855,7 @@ def add_dynamic_scores(horses, race, **kwargs):
         horse["spel_score"] = spel_score_map.get(horse["horse"], 0)
         horse["prize_money_score"] = prize_money_score_map.get(horse["horse"], 0)
         horse["avg_odds_score"] = get_avg_odds_score(horse["avg_odds"])
+        horse["recent_prize_score"] = get_recent_prize_score(horse["history"])
 
         horse["distance_addition_score"] = get_distance_addition_score(
             horse,
@@ -822,6 +873,7 @@ def add_dynamic_scores(horses, race, **kwargs):
 
         horse["wagon_score"] = get_wagon_score(horse)
         horse["shoe_score"] = get_shoe_score(horse)
+        horse["inactivity_score"] = get_inactivity_score(horse)
         horse["custom_score"] = get_custom_score(horse)
 
     return horses
@@ -844,12 +896,14 @@ def calculate_total_score(horse):
         horse["place_score"] +
         horse.get("spel_score", 0) +
         horse["prize_money_score"] +
+        horse.get("recent_prize_score", 0) +
         horse["avg_odds_score"] +
         horse["distance_addition_score"] +
         horse["gender_score"] +
         horse["gallop_score"] +
         horse["wagon_score"] +
         horse["shoe_score"] +
+        horse.get("inactivity_score", 0) +
         horse["custom_score"]
     )
 

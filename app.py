@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import docx
+from datetime import datetime
 
 from scripts.ranking_engine_v3 import (
     parse_input,
@@ -40,7 +41,6 @@ def clean_atg_header(raw_data):
     if "Avdelning 1," in raw_data:
         raw_data = raw_data.split("Avdelning 1,", 1)[1]
         raw_data = "Avdelning 1," + raw_data
-
     elif "Avdelning 1" in raw_data:
         raw_data = raw_data.split("Avdelning 1", 1)[1]
         raw_data = "Avdelning 1" + raw_data
@@ -156,6 +156,17 @@ with st.sidebar.expander("Prissumma"):
     )
 
 
+with st.sidebar.expander("Senaste 5 prispengar"):
+    for i, row in enumerate(scoring_rules.get("recent_prize_ranges", [])):
+        row["points"] = int_slider(
+            f"Min {row['min']} kr",
+            row["points"],
+            0,
+            30,
+            f"sidebar_recent_prize_{i}"
+        )
+
+
 with st.sidebar.expander("Form"):
     for placement in list(scoring_rules["form_points"].keys()):
         scoring_rules["form_points"][placement] = int_slider(
@@ -215,6 +226,32 @@ with st.sidebar.expander("Vagn / Skor / Manuell"):
         0,
         5,
         "sidebar_wagon_recent"
+    )
+
+    manual_shoe_bonus = int_slider(
+        "Skorpoäng per ikryssad häst",
+        0,
+        -20,
+        30,
+        "sidebar_manual_shoe_bonus"
+    )
+
+
+with st.sidebar.expander("Inaktivitet"):
+    inactivity_days_limit = int_slider(
+        "Dagar utan start",
+        60,
+        0,
+        365,
+        "sidebar_inactivity_days"
+    )
+
+    inactivity_penalty = int_slider(
+        "Poängavdrag",
+        -10,
+        -50,
+        0,
+        "sidebar_inactivity_penalty"
     )
 
 
@@ -315,15 +352,81 @@ if uploaded_file is not None:
     st.write("Antal tecken inläst:", len(raw_data))
     st.write("Antal avdelningar hittade:", len(races))
 
+    all_drivers = sorted({
+        h.get("driver", "").split("(")[0].strip()
+        for race_data in races
+        for h in race_data["horses"]
+        if h.get("driver", "").strip()
+    })
+
+    driver_score_override = {}
+
+    with st.sidebar.expander("Kuskpoäng"):
+        st.caption("Sätt manuell poäng per kusk för denna omgång.")
+
+        for driver in all_drivers:
+            driver_score_override[driver] = st.slider(
+                driver,
+                min_value=-20,
+                max_value=30,
+                value=0,
+                step=1,
+                key=f"driver_score_{driver}"
+            )
+
     for race_data in races:
         race = race_data["race"]
         horses = race_data["horses"]
 
         horses = add_dynamic_scores(horses, race)
 
+        for horse in horses:
+            driver_name = horse.get("driver", "").split("(")[0].strip()
+            horse["driver_score"] = driver_score_override.get(driver_name, 0)
+
+        for horse in horses:
+            history = horse.get("history", [])
+
+            if history:
+                latest_date = history[0].get("date", "")
+
+                try:
+                    latest_date_obj = datetime.strptime(latest_date, "%Y-%m-%d")
+                    days_since = (datetime.today() - latest_date_obj).days
+
+                    if days_since > inactivity_days_limit:
+                        horse["inactivity_score"] = inactivity_penalty
+                    else:
+                        horse["inactivity_score"] = 0
+
+                except:
+                    horse["inactivity_score"] = 0
+            else:
+                horse["inactivity_score"] = 0
+
         if not use_spel_percent:
             for horse in horses:
                 horse["spel_score"] = 0
+
+        st.subheader(
+            f"{race['track']} - Avdelning {race['race_no']} - "
+            f"{race['distance']}m ({race['start']})"
+        )
+
+        with st.expander(f"Manuell skorjustering - Avdelning {race['race_no']}"):
+            cols = st.columns(3)
+
+            for idx, horse in enumerate(horses):
+                number = horse.get("number", 0)
+                name = horse.get("horse", "")
+
+                checked = cols[idx % 3].checkbox(
+                    f"{number} {name}",
+                    value=False,
+                    key=f"shoe_checkbox_{race['race_no']}_{idx}_{name}"
+                )
+
+                horse["shoe_score"] = manual_shoe_bonus if checked else 0
 
         for horse in horses:
             horse["total_score"] = calculate_total_score(horse)
@@ -334,15 +437,11 @@ if uploaded_file is not None:
             reverse=True
         )
 
-        st.subheader(
-            f"{race['track']} - Avdelning {race['race_no']} - "
-            f"{race['distance']}m ({race['start']})"
-        )
-
         rows = []
 
         for h in horses:
             rows.append({
+                "Nr": h.get("number", 0),
                 "Spår": h.get("post", 0),
                 "Häst": h.get("horse", ""),
                 "Tot": h.get("total_score", 0),
@@ -358,10 +457,12 @@ if uploaded_file is not None:
                 "Plats%": h.get("place_score", 0),
                 "Spel%": h.get("spel_score", 0),
                 "Pris": h.get("prize_money_score", 0),
+                "Senaste pris": h.get("recent_prize_score", 0),
                 "Odds": h.get("avg_odds_score", 0),
                 "SnittOdds": h.get("avg_odds", ""),
                 "Vagn": h.get("wagon_score", 0),
                 "Skor": h.get("shoe_score", 0),
+                "Inaktiv": h.get("inactivity_score", 0),
                 "Manuell": h.get("custom_score", 0),
                 "Tillägg": h.get("distance_addition_score", 0),
                 "Kön": h.get("gender_score", 0),
@@ -379,6 +480,20 @@ if uploaded_file is not None:
 
         st.dataframe(
             df,
-            use_container_width=True,
-            hide_index=True
+            width="stretch",
+            hide_index=True,
+            column_config={
+                "Nr": st.column_config.NumberColumn(
+                    "Nr",
+                    pinned=True
+                ),
+                "Spår": st.column_config.NumberColumn(
+                    "Spår",
+                    pinned=True
+                ),
+                "Häst": st.column_config.TextColumn(
+                    "Häst",
+                    pinned=True
+                )
+            }
         )

@@ -60,7 +60,10 @@ SCORING_RULES_PATH = "config/scoring_rules.json"
 def load_json(path):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
+DRIVER_STATS_PATH = "config/driver_stats.json"
 
+with open(DRIVER_STATS_PATH, "r", encoding="utf-8") as f:
+    driver_stats = json.load(f)
 
 track_points = load_json(TRACK_POINTS_PATH)
 driver_points = load_json(DRIVER_POINTS_PATH)
@@ -136,7 +139,79 @@ def parse_decimal_comma(value):
 # =========================================================
 
 def get_driver_score(driver):
-    return driver_points.get(driver, 0)
+
+    driver_name = driver.split("(")[0].strip()
+
+    if driver_name not in driver_stats:
+        return 0
+
+    stats = driver_stats[driver_name]
+
+    starts = stats.get("starts", 0)
+    win_percent = stats.get("win_percent", 0)
+
+    # Inställningar från sidebar
+    min_starts = scoring_rules.get(
+        "driver_min_starts",
+        70
+    )
+
+    mid_starts = scoring_rules.get(
+        "driver_mid_starts",
+        150
+    )
+
+    high_starts = scoring_rules.get(
+        "driver_high_starts",
+        300
+    )
+
+    low_multiplier = scoring_rules.get(
+        "driver_low_multiplier",
+        0.75
+    )
+
+    mid_multiplier = scoring_rules.get(
+        "driver_mid_multiplier",
+        1.0
+    )
+
+    high_multiplier = scoring_rules.get(
+        "driver_high_multiplier",
+        1.25
+    )
+
+    # Minsta antal lopp
+    if starts < min_starts:
+        return 0
+
+    # Grundpoäng
+    if win_percent >= 19:
+        base_score = 12
+
+    elif win_percent >= 16:
+        base_score = 9
+
+    elif win_percent >= 13:
+        base_score = 6
+
+    elif win_percent >= 10:
+        base_score = 3
+
+    else:
+        base_score = 0
+
+    # Multiplier
+    if starts >= high_starts:
+        multiplier = high_multiplier
+
+    elif starts >= mid_starts:
+        multiplier = mid_multiplier
+
+    else:
+        multiplier = low_multiplier
+
+    return round(base_score * multiplier)
 
 
 def get_shoe_score(horse):
@@ -307,6 +382,7 @@ def get_record_score(record):
 # =========================================================
 
 def extract_stats_string(raw_text):
+
     match = re.search(
         r"\b(\d+)-(\d+)-(\d+)\b",
         raw_text
@@ -320,18 +396,35 @@ def extract_stats_string(raw_text):
     seconds = int(match.group(2))
     thirds = int(match.group(3))
 
-    # Skydd om statistik är t.ex. 0-0-0
-    if len(first_part) == 1:
-        starts = int(first_part)
-        wins = 0
+    starts = 0
+    wins = 0
 
+    # Ex: 1010-0-0
+    # = 10 starter, 10 segrar
+    if len(first_part) == 4 and first_part[:2] == first_part[2:]:
+
+        starts = int(first_part[:2])
+        wins = int(first_part[2:])
+
+    # Ex: 1512
+    # = 15 starter, 12 segrar
     elif len(first_part) >= 4:
+
         starts = int(first_part[:-2])
         wins = int(first_part[-2:])
 
-    else:
+    # Ex: 85
+    # = 8 starter, 5 segrar
+    elif len(first_part) >= 2:
+
         starts = int(first_part[:-1])
         wins = int(first_part[-1])
+
+    # Ex: 5
+    else:
+
+        starts = int(first_part)
+        wins = 0
 
     return {
         "starts": starts,

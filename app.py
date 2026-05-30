@@ -167,6 +167,61 @@ with st.sidebar.expander("Senaste 5 prispengar"):
         )
 
 
+with st.sidebar.expander("Kuskmodell"):
+    st.caption("Automatisk kuskpoäng hämtas från config/driver_stats.json.")
+
+    scoring_rules["driver_min_starts"] = int_slider(
+        "Minsta antal lopp för kuskpoäng",
+        scoring_rules.get("driver_min_starts", 70),
+        0,
+        500,
+        "sidebar_driver_min_starts"
+    )
+
+    scoring_rules["driver_mid_starts"] = int_slider(
+        "Gräns nivå 2",
+        scoring_rules.get("driver_mid_starts", 150),
+        0,
+        1000,
+        "sidebar_driver_mid_starts"
+    )
+
+    scoring_rules["driver_high_starts"] = int_slider(
+        "Gräns nivå 3",
+        scoring_rules.get("driver_high_starts", 300),
+        0,
+        1500,
+        "sidebar_driver_high_starts"
+    )
+
+    scoring_rules["driver_low_multiplier"] = st.slider(
+        "Multiplier låg nivå",
+        min_value=0.0,
+        max_value=2.0,
+        value=float(scoring_rules.get("driver_low_multiplier", 0.75)),
+        step=0.05,
+        key="sidebar_driver_low_multiplier"
+    )
+
+    scoring_rules["driver_mid_multiplier"] = st.slider(
+        "Multiplier mellan nivå",
+        min_value=0.0,
+        max_value=2.0,
+        value=float(scoring_rules.get("driver_mid_multiplier", 1.0)),
+        step=0.05,
+        key="sidebar_driver_mid_multiplier"
+    )
+
+    scoring_rules["driver_high_multiplier"] = st.slider(
+        "Multiplier hög nivå",
+        min_value=0.0,
+        max_value=2.0,
+        value=float(scoring_rules.get("driver_high_multiplier", 1.25)),
+        step=0.05,
+        key="sidebar_driver_high_multiplier"
+    )
+
+
 with st.sidebar.expander("Form"):
     for placement in list(scoring_rules["form_points"].keys()):
         scoring_rules["form_points"][placement] = int_slider(
@@ -352,37 +407,11 @@ if uploaded_file is not None:
     st.write("Antal tecken inläst:", len(raw_data))
     st.write("Antal avdelningar hittade:", len(races))
 
-    all_drivers = sorted({
-        h.get("driver", "").split("(")[0].strip()
-        for race_data in races
-        for h in race_data["horses"]
-        if h.get("driver", "").strip()
-    })
-
-    driver_score_override = {}
-
-    with st.sidebar.expander("Kuskpoäng"):
-        st.caption("Sätt manuell poäng per kusk för denna omgång.")
-
-        for driver in all_drivers:
-            driver_score_override[driver] = st.slider(
-                driver,
-                min_value=-20,
-                max_value=30,
-                value=0,
-                step=1,
-                key=f"driver_score_{driver}"
-            )
-
     for race_data in races:
         race = race_data["race"]
         horses = race_data["horses"]
 
         horses = add_dynamic_scores(horses, race)
-
-        for horse in horses:
-            driver_name = horse.get("driver", "").split("(")[0].strip()
-            horse["driver_score"] = driver_score_override.get(driver_name, 0)
 
         for horse in horses:
             history = horse.get("history", [])
@@ -483,17 +512,8 @@ if uploaded_file is not None:
             width="stretch",
             hide_index=True,
             column_config={
-                "Nr": st.column_config.NumberColumn(
-                    "Nr",
-                    pinned=True
-                ),
-                "Spår": st.column_config.NumberColumn(
-                    "Spår",
-                    pinned=True
-                ),
-                "Häst": st.column_config.TextColumn(
-                    "Häst",
-                    pinned=True
-                )
+                "Nr": st.column_config.NumberColumn("Nr", pinned=True),
+                "Spår": st.column_config.NumberColumn("Spår", pinned=True),
+                "Häst": st.column_config.TextColumn("Häst", pinned=True)
             }
         )

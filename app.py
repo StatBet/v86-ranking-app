@@ -413,6 +413,8 @@ if uploaded_file is not None:
 
         horses = add_dynamic_scores(horses, race)
 
+    
+
         for horse in horses:
             history = horse.get("history", [])
 
@@ -442,6 +444,7 @@ if uploaded_file is not None:
             f"{race['distance']}m ({race['start']})"
         )
 
+        
         with st.expander(f"Manuell skorjustering - Avdelning {race['race_no']}"):
             cols = st.columns(3)
 

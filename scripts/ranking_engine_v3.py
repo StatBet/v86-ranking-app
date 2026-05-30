@@ -8,8 +8,11 @@ import re
 from scripts.speed_feature import (
     calculate_avg_time,
     normalize_distance,
-    speed_score_from_avg_times
+    speed_score_from_avg_times,
+    parse_time_token,
+    normalize_time
 )
+
 from scripts.speed_ranking import speed_score
 from scripts.parser_v2 import parse_input
 from datetime import datetime
@@ -376,13 +379,99 @@ def get_record_score(record):
 
     return 0
 
+def record_score_from_records(
+    horses,
+    target_distance,
+    target_auto
+):
+
+    valid = []
+
+    for horse in horses:
+
+        record = horse.get("record")
+
+        parsed = parse_time_token(record)
+
+        if not parsed:
+            continue
+
+        normalized = normalize_time(
+            historical_time=parsed["time"],
+            historical_distance=target_distance,
+            historical_auto=parsed["auto"],
+            historical_gallop=parsed["gallop"],
+            target_distance=target_distance,
+            target_auto=target_auto
+        )
+
+        valid.append({
+            "horse": horse["horse"],
+            "record_time": normalized
+        })
+
+    sorted_h = sorted(
+        valid,
+        key=lambda x: x["record_time"]
+    )
+
+    threshold = 0.1
+
+    groups = []
+
+    current_group = []
+
+    current_group_start = None
+
+    for h in sorted_h:
+
+        if not current_group:
+
+            current_group = [h]
+
+            current_group_start = h["record_time"]
+
+            continue
+
+        diff = round(
+            h["record_time"] - current_group_start,
+            2
+        )
+
+        if diff <= threshold:
+
+            current_group.append(h)
+
+        else:
+
+            groups.append(current_group)
+
+            current_group = [h]
+
+            current_group_start = h["record_time"]
+
+    if current_group:
+        groups.append(current_group)
+
+    scores = [24, 22, 20, 17, 15, 13, 10, 8]
+
+    result = {}
+
+    for i, group in enumerate(groups):
+
+        score = scores[i] if i < len(scores) else 1
+
+        for h in group:
+
+            result[h["horse"]] = score
+
+    return result
 
 # =========================================================
 # STARTS / WIN% / PLACE%
 # =========================================================
 
 def extract_stats_string(raw_text):
-
     match = re.search(
         r"\b(\d+)-(\d+)-(\d+)\b",
         raw_text
@@ -392,39 +481,40 @@ def extract_stats_string(raw_text):
         return None
 
     first_part = match.group(1)
+    second_part = int(match.group(2))
+    third_part = int(match.group(3))
 
-    seconds = int(match.group(2))
-    thirds = int(match.group(3))
-
-    starts = 0
-    wins = 0
-
-    # Ex: 1010-0-0
-    # = 10 starter, 10 segrar
-    if len(first_part) == 4 and first_part[:2] == first_part[2:]:
-
-        starts = int(first_part[:2])
-        wins = int(first_part[2:])
-
-    # Ex: 1512
-    # = 15 starter, 12 segrar
-    elif len(first_part) >= 4:
-
+    # Standard ATG-format, t.ex:
+    # 254-7-4 = 25 starter, 4 segrar, 7 andraplatser, 4 tredjeplatser
+    if len(first_part) >= 4:
         starts = int(first_part[:-2])
         wins = int(first_part[-2:])
+        seconds = second_part
+        thirds = third_part
 
-    # Ex: 85
-    # = 8 starter, 5 segrar
     elif len(first_part) >= 2:
-
         starts = int(first_part[:-1])
         wins = int(first_part[-1])
+        seconds = second_part
+        thirds = third_part
 
-    # Ex: 5
     else:
-
         starts = int(first_part)
         wins = 0
+        seconds = second_part
+        thirds = third_part
+
+    # Specialfall:
+    # 10-10-0 ska tolkas som 10 starter, 10 segrar, 0 andraplatser, 0 tredjeplatser
+    # om den vanliga tolkningen blir orimlig.
+    if wins + seconds + thirds > starts:
+        starts = int(first_part)
+        wins = second_part
+        seconds = third_part
+        thirds = 0
+
+    print("RAW:", raw_text)
+    print("PARSED:", starts, wins, seconds, thirds)
 
     return {
         "starts": starts,
@@ -869,6 +959,12 @@ def add_dynamic_scores(horses, race, **kwargs):
 
     speed_map = speed_score_from_avg_times(speed_input)
 
+    record_score_map = record_score_from_records(
+    horses,
+    target_distance,
+    target_auto
+)
+
     for horse in horses:
 
         horse["speed_score"] = speed_map.get(horse["horse"], 0)
@@ -940,7 +1036,10 @@ def add_dynamic_scores(horses, race, **kwargs):
         horse["latest_start_score"] = get_latest_start_score(horse["history"])
         horse["post_score"] = get_post_score(horse["post"], race)
         horse["driver_score"] = get_driver_score(horse["driver"])
-        horse["record_score"] = get_record_score(horse["record"])
+        horse["record_score"] = record_score_map.get(
+        horse["horse"],
+        0
+    )
         horse["starts_score"] = get_starts_score(horse["starts"])
 
         horse["win_score"] = win_score_map.get(horse["horse"], 0)

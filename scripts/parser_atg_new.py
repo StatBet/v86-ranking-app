@@ -337,7 +337,7 @@ def parse_new_atg_format(raw_data):
                 stats_line = "000-0-0"
 
                 for j in range(i, min(i + 20, len(lines))):
-                    if re.match(r"^\d{2,3}-\d+-\d+$", lines[j]):
+                    if re.match(r"^\d+-\d+-\d+$", lines[j]) and not looks_like_date(lines[j]):
                         stats_line = lines[j]
 
                     elif lines[j] in ["Vanlig", "Amerikansk", "-"]:
@@ -409,7 +409,7 @@ def parse_new_atg_format(raw_data):
                     prize_money = parse_money(lines[i + 4]) if i + 4 < len(lines) else 0
 
                     for j in range(i, min(i + 20, len(lines))):
-                        if re.match(r"^\d{2,3}-\d+-\d+$", lines[j]):
+                        if re.match(r"^\d+-\d+-\d+$", lines[j]) and not looks_like_date(lines[j]):
                             stats_line = lines[j]
 
                         elif lines[j] in ["Vanlig", "Amerikansk", "-"]:

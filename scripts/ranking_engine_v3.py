@@ -216,6 +216,41 @@ def get_driver_score(driver):
 
     return round(base_score * multiplier)
 
+def get_driver_change_score(horse):
+    current_driver = horse.get("driver", "")
+    current_score = get_driver_score(current_driver)
+
+    history = horse.get("history", [])[:5]
+
+    if not history:
+        return 0
+
+    better_count = 0
+    compared_count = 0
+
+    for race in history:
+        previous_driver = race.get("driver", "")
+
+        if not previous_driver:
+            continue
+
+        previous_score = get_driver_score(previous_driver)
+        compared_count += 1
+
+        if current_score > previous_score:
+            better_count += 1
+
+    if compared_count == 0:
+        return 0
+
+    if better_count >= 4:
+        return 10
+
+    if better_count == 3:
+        return 6
+
+    return 0
+
 
 def get_shoe_score(horse):
     return manual_points.get(
@@ -513,8 +548,7 @@ def extract_stats_string(raw_text):
         seconds = third_part
         thirds = 0
 
-    print("RAW:", raw_text)
-    print("PARSED:", starts, wins, seconds, thirds)
+    
 
     return {
         "starts": starts,
@@ -931,6 +965,72 @@ def get_recent_prize_score(history):
 
     return score
 
+def get_class_change_score(history):
+    class_scores = []
+
+    placement_factor = {
+        "1": 1.0,
+        "2": 0.8,
+        "3": 0.65,
+        "4": 0.45,
+        "5": 0.3,
+        "0": 0.1,
+        "d": 0,
+        "g": 0
+    }
+
+    for race in history[:5]:
+        raw = race.get("raw", "")
+        parts = split_history_parts(raw)
+
+        if len(parts) < 3:
+            continue
+
+        placement = parts[2].strip().lower()
+
+        prize_match = re.search(r"(\d+)'", raw)
+
+        if not prize_match:
+            continue
+
+        prize = int(prize_match.group(1)) * 1000
+
+        factor = placement_factor.get(placement, 0)
+
+        if factor <= 0:
+            continue
+
+        class_scores.append({
+            "prize": prize,
+            "weighted": prize * factor
+        })
+
+    if len(class_scores) < 3:
+        return 0
+
+    high_class_count = sum(
+        1 for row in class_scores
+        if row["prize"] >= 100000
+    )
+
+    if high_class_count < 3:
+        return 0
+
+    avg_weighted = sum(
+        row["weighted"] for row in class_scores
+    ) / len(class_scores)
+
+    if avg_weighted >= 200000:
+        return 10
+
+    if avg_weighted >= 125000:
+        return 6
+
+    if avg_weighted >= 100000:
+        return 3
+
+    return 0
+
 def add_dynamic_scores(horses, race, **kwargs):
 
     target_distance = normalize_distance(
@@ -1036,6 +1136,7 @@ def add_dynamic_scores(horses, race, **kwargs):
         horse["latest_start_score"] = get_latest_start_score(horse["history"])
         horse["post_score"] = get_post_score(horse["post"], race)
         horse["driver_score"] = get_driver_score(horse["driver"])
+        horse["driver_change_score"] = get_driver_change_score(horse)
         horse["record_score"] = record_score_map.get(
         horse["horse"],
         0
@@ -1048,7 +1149,7 @@ def add_dynamic_scores(horses, race, **kwargs):
         horse["prize_money_score"] = prize_money_score_map.get(horse["horse"], 0)
         horse["avg_odds_score"] = get_avg_odds_score(horse["avg_odds"])
         horse["recent_prize_score"] = get_recent_prize_score(horse["history"])
-
+        horse["class_change_score"] = get_class_change_score(horse["history"])
         horse["distance_addition_score"] = get_distance_addition_score(
             horse,
             race
@@ -1079,9 +1180,11 @@ def calculate_total_score(horse):
     total = (
         horse["speed_score"] +
         horse["form_score"] +
+        horse.get("stallform_score", 0) +
         horse["latest_start_score"] +
         horse["post_score"] +
         horse["driver_score"] +
+        horse.get("driver_change_score", 0) +
         horse["record_score"] +
         horse["starts_score"] +
         horse["win_score"] +
@@ -1089,6 +1192,7 @@ def calculate_total_score(horse):
         horse.get("spel_score", 0) +
         horse["prize_money_score"] +
         horse.get("recent_prize_score", 0) +
+        horse.get("class_change_score", 0) +
         horse["avg_odds_score"] +
         horse["distance_addition_score"] +
         horse["gender_score"] +

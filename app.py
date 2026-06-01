@@ -256,14 +256,7 @@ with st.sidebar.expander("Starter"):
 
 
 with st.sidebar.expander("Rekord"):
-    for i, row in enumerate(scoring_rules["record_points"]):
-        row["points"] = int_slider(
-            f"Rekord ≤ {row['max']}",
-            row["points"],
-            0,
-            25,
-            f"sidebar_record_{i}"
-        )
+    st.caption("Rekordpoängen beräknas nu relativt inom loppet.")
 
 
 with st.sidebar.expander("Vagn / Skor / Manuell"):
@@ -291,11 +284,19 @@ with st.sidebar.expander("Vagn / Skor / Manuell"):
         "sidebar_manual_shoe_bonus"
     )
 
+    manual_stallform_bonus = int_slider(
+        "Stallformpoäng per ikryssad häst",
+        8,
+        0,
+        30,
+        "sidebar_manual_stallform_bonus"
+    )
+
 
 with st.sidebar.expander("Inaktivitet"):
     inactivity_days_limit = int_slider(
         "Dagar utan start",
-        60,
+        90,
         0,
         365,
         "sidebar_inactivity_days"
@@ -303,7 +304,7 @@ with st.sidebar.expander("Inaktivitet"):
 
     inactivity_penalty = int_slider(
         "Poängavdrag",
-        -10,
+        -5,
         -50,
         0,
         "sidebar_inactivity_penalty"
@@ -413,8 +414,6 @@ if uploaded_file is not None:
 
         horses = add_dynamic_scores(horses, race)
 
-    
-
         for horse in horses:
             history = horse.get("history", [])
 
@@ -430,7 +429,7 @@ if uploaded_file is not None:
                     else:
                         horse["inactivity_score"] = 0
 
-                except:
+                except Exception:
                     horse["inactivity_score"] = 0
             else:
                 horse["inactivity_score"] = 0
@@ -444,7 +443,6 @@ if uploaded_file is not None:
             f"{race['distance']}m ({race['start']})"
         )
 
-        
         with st.expander(f"Manuell skorjustering - Avdelning {race['race_no']}"):
             cols = st.columns(3)
 
@@ -459,6 +457,21 @@ if uploaded_file is not None:
                 )
 
                 horse["shoe_score"] = manual_shoe_bonus if checked else 0
+
+        with st.expander(f"Manuell stallform - Avdelning {race['race_no']}"):
+            cols = st.columns(3)
+
+            for idx, horse in enumerate(horses):
+                number = horse.get("number", 0)
+                name = horse.get("horse", "")
+
+                checked = cols[idx % 3].checkbox(
+                    f"{number} {name}",
+                    value=False,
+                    key=f"stall_checkbox_{race['race_no']}_{idx}_{name}"
+                )
+
+                horse["stallform_score"] = manual_stallform_bonus if checked else 0
 
         for horse in horses:
             horse["total_score"] = calculate_total_score(horse)
@@ -480,9 +493,11 @@ if uploaded_file is not None:
                 "Speed": h.get("speed_score", 0),
                 "AvgTid": h.get("avg_time", ""),
                 "Form": h.get("form_score", 0),
+                "Stallform": h.get("stallform_score", 0),
                 "Senaste": h.get("latest_start_score", 0),
                 "Spårpoäng": h.get("post_score", 0),
                 "Kusk": h.get("driver_score", 0),
+                "Kuskbyte": h.get("driver_change_score", 0),
                 "Rek": h.get("record_score", 0),
                 "Starter": h.get("starts_score", 0),
                 "Seger%": h.get("win_score", 0),
@@ -490,6 +505,7 @@ if uploaded_file is not None:
                 "Spel%": h.get("spel_score", 0),
                 "Pris": h.get("prize_money_score", 0),
                 "Senaste pris": h.get("recent_prize_score", 0),
+                "Klass": h.get("class_change_score", 0),
                 "Odds": h.get("avg_odds_score", 0),
                 "SnittOdds": h.get("avg_odds", ""),
                 "Vagn": h.get("wagon_score", 0),

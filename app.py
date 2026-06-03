@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import docx
 from datetime import datetime
+from badge_engine import assign_badges, calculate_spike_score
 
 from scripts.ranking_engine_v3 import (
     parse_input,
@@ -405,15 +406,18 @@ if uploaded_file is not None:
         and r["race"].get("start") != "unknown"
     ]
 
+    all_spike_candidates = []
+
     st.write("Antal tecken inläst:", len(raw_data))
     st.write("Antal avdelningar hittade:", len(races))
+    processed_races = []
 
     for race_data in races:
         race = race_data["race"]
         horses = race_data["horses"]
 
         horses = add_dynamic_scores(horses, race)
-
+      
         for horse in horses:
             history = horse.get("history", [])
 
@@ -476,6 +480,37 @@ if uploaded_file is not None:
         for horse in horses:
             horse["total_score"] = calculate_total_score(horse)
 
+        race_for_badges = dict(race)
+        race_for_badges["horses"] = horses
+
+        horses = assign_badges(horses, race_for_badges)
+
+        for h in horses:
+            if "🟩 Toppspik" in h.get("badges", []):
+                h["badges"].remove("🟩 Toppspik")
+
+            if "🟦 Spik" in h.get("badges", []):
+                h["badges"].remove("🟦 Spik")
+
+        for h in horses:
+            h["race_no"] = race.get("race_no", "")
+            h["race_track"] = race.get("track", "")
+            h["spike_score"] = calculate_spike_score(h, race_for_badges)
+
+        ranked_for_spikes = sorted(
+            horses,
+            key=lambda x: x.get("total_score", 0),
+            reverse=True
+        )
+
+        if ranked_for_spikes:
+            all_spike_candidates.append(ranked_for_spikes[0])
+
+            processed_races.append({
+             "race": race,
+             "horses": horses
+        })  
+
         horses = sorted(
             horses,
             key=lambda x: x.get("total_score", 0),
@@ -489,6 +524,8 @@ if uploaded_file is not None:
                 "Nr": h.get("number", 0),
                 "Spår": h.get("post", 0),
                 "Häst": h.get("horse", ""),
+                "Badges": "  ".join(h.get("badges", [])),
+                "SpikeScore": round(h.get("spike_score", 0), 1),
                 "Tot": h.get("total_score", 0),
                 "Speed": h.get("speed_score", 0),
                 "AvgTid": h.get("avg_time", ""),
@@ -536,3 +573,5 @@ if uploaded_file is not None:
                 "Häst": st.column_config.TextColumn("Häst", pinned=True)
             }
         )
+
+       

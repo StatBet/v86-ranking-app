@@ -442,10 +442,10 @@ if uploaded_file is not None:
             for horse in horses:
                 horse["spel_score"] = 0
 
-        st.subheader(
-            f"{race['track']} - Avdelning {race['race_no']} - "
-            f"{race['distance']}m ({race['start']})"
-        )
+       # st.subheader(
+           # f"{race['track']} - Avdelning {race['race_no']} - "
+           # f"{race['distance']}m ({race['start']})"
+       # )
 
         with st.expander(f"Manuell skorjustering - Avdelning {race['race_no']}"):
             cols = st.columns(3)

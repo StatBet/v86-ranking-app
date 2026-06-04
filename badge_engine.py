@@ -54,20 +54,14 @@ def assign_badges(horses, race):
         horse["badges"] = []
         horse["spike_score"] = calculate_spike_score(horse, race)
 
-    spike_ranked = sorted(
-        horses,
-        key=lambda h: h.get("spike_score", 0),
-        reverse=True
-    )
-
-    
-
     ranked_horses = ranked[:5]
 
     for horse in ranked_horses:
         horse["badges"].append("🟧 Topp 5")
 
-    for horse in horses:
+    model_top_3 = ranked[:3]
+
+    for horse in model_top_3:
         if (
             horse.get("percent", 0) >= 30
             and is_back_post_large_field(horse, race)

@@ -410,42 +410,20 @@ if uploaded_file is not None:
 
     st.write("Antal tecken inläst:", len(raw_data))
     st.write("Antal avdelningar hittade:", len(races))
+
     processed_races = []
+    summary_placeholder = st.empty()
 
     for race_data in races:
         race = race_data["race"]
         horses = race_data["horses"]
 
         horses = add_dynamic_scores(horses, race)
-      
-        for horse in horses:
-            history = horse.get("history", [])
 
-            if history:
-                latest_date = history[0].get("date", "")
-
-                try:
-                    latest_date_obj = datetime.strptime(latest_date, "%Y-%m-%d")
-                    days_since = (datetime.today() - latest_date_obj).days
-
-                    if days_since > inactivity_days_limit:
-                        horse["inactivity_score"] = inactivity_penalty
-                    else:
-                        horse["inactivity_score"] = 0
-
-                except Exception:
-                    horse["inactivity_score"] = 0
-            else:
-                horse["inactivity_score"] = 0
-
-        if not use_spel_percent:
-            for horse in horses:
-                horse["spel_score"] = 0
-
-       # st.subheader(
-           # f"{race['track']} - Avdelning {race['race_no']} - "
-           # f"{race['distance']}m ({race['start']})"
-       # )
+        st.subheader(
+            f"{race['track']} - Avdelning {race['race_no']} - "
+            f"{race['distance']}m ({race['start']})"
+        )
 
         with st.expander(f"Manuell skorjustering - Avdelning {race['race_no']}"):
             cols = st.columns(3)
@@ -478,6 +456,30 @@ if uploaded_file is not None:
                 horse["stallform_score"] = manual_stallform_bonus if checked else 0
 
         for horse in horses:
+            history = horse.get("history", [])
+
+            if history:
+                latest_date = history[0].get("date", "")
+
+                try:
+                    latest_date_obj = datetime.strptime(latest_date, "%Y-%m-%d")
+                    days_since = (datetime.today() - latest_date_obj).days
+
+                    if days_since > inactivity_days_limit:
+                        horse["inactivity_score"] = inactivity_penalty
+                    else:
+                        horse["inactivity_score"] = 0
+
+                except Exception:
+                    horse["inactivity_score"] = 0
+            else:
+                horse["inactivity_score"] = 0
+
+        if not use_spel_percent:
+            for horse in horses:
+                horse["spel_score"] = 0
+
+        for horse in horses:
             horse["total_score"] = calculate_total_score(horse)
 
         race_for_badges = dict(race)
@@ -486,33 +488,34 @@ if uploaded_file is not None:
         horses = assign_badges(horses, race_for_badges)
 
         for h in horses:
-            if "🟩 Toppspik" in h.get("badges", []):
-                h["badges"].remove("🟩 Toppspik")
-
-            if "🟦 Spik" in h.get("badges", []):
-                h["badges"].remove("🟦 Spik")
-
-        for h in horses:
             h["race_no"] = race.get("race_no", "")
             h["race_track"] = race.get("track", "")
             h["spike_score"] = calculate_spike_score(h, race_for_badges)
 
-        ranked_for_spikes = sorted(
-            horses,
-            key=lambda x: x.get("total_score", 0),
-            reverse=True
-        )
+        table_placeholder = st.empty()
 
-        if ranked_for_spikes:
-            all_spike_candidates.append(ranked_for_spikes[0])
+        processed_races.append({
+            "race": race,
+            "horses": horses,
+            "placeholder": table_placeholder
+        })
 
-            processed_races.append({
-             "race": race,
-             "horses": horses
-        })  
+    top_spikes = get_round_spikes(processed_races)
 
+    with summary_placeholder.container():
+        st.subheader("🎯 Omgångens spikförslag")
+
+        for i, horse in enumerate(top_spikes, start=1):
+            badge = "🟩 Toppspik" if i <= 2 else "🟦 Spik"
+            st.write(
+                f"{badge} {i}. {horse.get('horse', '')} "
+                f"— Avd {horse.get('race_no', '')} "
+                f"— SpikeScore: {round(horse.get('spike_score', 0), 1)}"
+            )
+
+    for race_data in processed_races:
         horses = sorted(
-            horses,
+            race_data["horses"],
             key=lambda x: x.get("total_score", 0),
             reverse=True
         )
@@ -563,7 +566,7 @@ if uploaded_file is not None:
 
         df = pd.DataFrame(rows)
 
-        st.dataframe(
+        race_data["placeholder"].dataframe(
             df,
             width="stretch",
             hide_index=True,
@@ -573,5 +576,3 @@ if uploaded_file is not None:
                 "Häst": st.column_config.TextColumn("Häst", pinned=True)
             }
         )
-
-       

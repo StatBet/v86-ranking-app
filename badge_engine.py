@@ -89,6 +89,12 @@ def get_round_spikes(all_races):
         race_for_badges = dict(race)
         race_for_badges["horses"] = horses
 
+        for horse in horses:
+            horse["badges"] = [
+                badge for badge in horse.get("badges", [])
+                if badge not in ["🟩 Toppspik", "🟦 Spik"]
+            ]
+
         ranked = sorted(
             horses,
             key=lambda h: h.get("total_score", 0),

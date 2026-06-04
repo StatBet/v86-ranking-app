@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import docx
 from datetime import datetime
-from badge_engine import assign_badges, calculate_spike_score
+from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
 
 from scripts.ranking_engine_v3 import (
     parse_input,

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+
+ml_dataset.csv
+
+*.log
+*.tmp

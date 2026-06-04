@@ -77,4 +77,42 @@ def assign_badges(horses, race):
     return horses
 
 def get_round_spikes(all_races):
-    return []
+    candidates = []
+
+    for race_data in all_races:
+        race = race_data["race"]
+        horses = race_data["horses"]
+
+        if not horses:
+            continue
+
+        race_for_badges = dict(race)
+        race_for_badges["horses"] = horses
+
+        ranked = sorted(
+            horses,
+            key=lambda h: h.get("total_score", 0),
+            reverse=True
+        )
+
+        best_horse = ranked[0]
+        best_horse["spike_score"] = calculate_spike_score(
+            best_horse,
+            race_for_badges
+        )
+
+        candidates.append(best_horse)
+
+    selected = sorted(
+        candidates,
+        key=lambda h: h.get("spike_score", 0),
+        reverse=True
+    )[:4]
+
+    for i, horse in enumerate(selected):
+        if i < 2:
+            horse.setdefault("badges", []).append("🟩 Toppspik")
+        else:
+            horse.setdefault("badges", []).append("🟦 Spik")
+
+    return selected

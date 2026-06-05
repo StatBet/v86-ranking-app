@@ -38,7 +38,7 @@ def calculate_spike_score(horse, race):
         score += max(0, 20 - avg_odds) * 4
 
     if is_back_post_large_field(horse, race):
-    score -= 120
+        score -= 120
 
     if horse.get("win_percent", 0) >= 60:
         score -= 40
@@ -105,6 +105,23 @@ def get_round_spikes(all_races):
         )
 
         best_horse = ranked[0]
+
+        if len(ranked) > 1:
+            rank1 = ranked[0]
+            rank2 = ranked[1]
+
+        score_gap = (
+            rank1.get("total_score", 0)
+            - rank2.get("total_score", 0)
+        )
+
+        if (
+            rank1.get("post", 99) >= 6
+            and rank2.get("post", 99) <= 8
+            and score_gap < 10
+        ):
+            best_horse = rank2
+
         best_horse["spike_score"] = calculate_spike_score(
             best_horse,
             race_for_badges

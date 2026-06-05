@@ -48,8 +48,42 @@ valid_races = (
 valid_races = valid_races[valid_races["won"] == 1]["race_id"]
 df = df[df["race_id"].isin(valid_races)].copy()
 
-# Bara våra förstarankade
-rank1 = df[df["model_rank"] == 1].copy()
+# Välj spikkandidat per lopp:
+# normalt rank 1, men rank 2 om override-regeln slår in
+candidate_rows = []
+
+for race_id, race in df.groupby("race_id"):
+    race = race.sort_values(
+        "total_score",
+        ascending=False
+    ).reset_index(drop=True)
+
+    if len(race) < 1:
+        continue
+
+    best_horse = race.iloc[0].copy()
+
+    if len(race) > 1:
+        rank1_horse = race.iloc[0]
+        rank2_horse = race.iloc[1]
+
+        score_gap = (
+            rank1_horse["total_score"]
+            - rank2_horse["total_score"]
+        )
+
+        if (
+            rank1_horse["post"] >= 6
+            and rank2_horse["post"] <= 8
+            and score_gap < 10
+        ):
+            best_horse = rank2_horse.copy()
+
+        best_horse["score_gap_to_top"] = score_gap
+
+    candidate_rows.append(best_horse)
+
+rank1 = pd.DataFrame(candidate_rows)
 
 for feature in SPIKE_FEATURES:
     rank1[f"{feature}_norm"] = normalize_feature(rank1, feature)
@@ -94,10 +128,10 @@ rank1.loc[
 
 rank1["score_gap_bonus"] = 0
 
-rank1.loc[rank1["score_gap_to_top"] >= 10, "score_gap_bonus"] = 25
-rank1.loc[rank1["score_gap_to_top"] >= 20, "score_gap_bonus"] = 50
-rank1.loc[rank1["score_gap_to_top"] >= 25, "score_gap_bonus"] = 75
-rank1.loc[rank1["score_gap_to_top"] >= 30, "score_gap_bonus"] = 100
+rank1.loc[rank1["score_gap_to_top"] >= 10, "score_gap_bonus"] = 10
+rank1.loc[rank1["score_gap_to_top"] >= 20, "score_gap_bonus"] = 20
+rank1.loc[rank1["score_gap_to_top"] >= 25, "score_gap_bonus"] = 30
+rank1.loc[rank1["score_gap_to_top"] >= 30, "score_gap_bonus"] = 40
 rank1["post_bonus"] = 0
 rank1["field_size_penalty"] = 0
 
@@ -178,7 +212,48 @@ for picks_per_date in [2, 3, 4]:
 
         selected_rows.append(picks)
 
-    selected = pd.concat(selected_rows)
+        selected = pd.concat(selected_rows)
+        cols = [
+        "horse",
+        "spike_score",
+        "win_percent",
+        "place_percent",
+        "form_score",
+        "avg_odds",
+        "latest_start_score",
+        "environment_score",
+        "score_gap_bonus"
+    ]
+
+    print(
+        selected[cols]
+        .sort_values("spike_score", ascending=False)
+        .head(20)
+        .to_string(index=False)
+    )
+
+    print()
+    print("=" * 80)
+    print("TOPP SPIKAR")
+    print("=" * 80)
+
+    cols = [
+        "date",
+        "race_no",
+        "horse",
+        "spike_score",
+        "won"
+    ]
+
+    print(
+        selected[cols]
+        .sort_values(
+            "spike_score",
+            ascending=False
+        )
+        .head(30)
+        .to_string(index=False)
+    )
 
     total = len(selected)
     wins = int(selected["won"].sum())

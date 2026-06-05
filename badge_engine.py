@@ -110,17 +110,17 @@ def get_round_spikes(all_races):
             rank1 = ranked[0]
             rank2 = ranked[1]
 
-        score_gap = (
-            rank1.get("total_score", 0)
-            - rank2.get("total_score", 0)
-        )
+            score_gap = (
+                rank1.get("total_score", 0)
+                - rank2.get("total_score", 0)
+            )
 
-        if (
-            rank1.get("post", 99) >= 6
-            and rank2.get("post", 99) <= 8
-            and score_gap < 10
-        ):
-            best_horse = rank2
+            if (
+                rank1.get("post", 99) >= 6
+                and rank2.get("post", 99) <= 8
+                and score_gap < 10
+            ):
+                best_horse = rank2
 
         best_horse["spike_score"] = calculate_spike_score(
             best_horse,

@@ -90,7 +90,50 @@ rank1.loc[
     (rank1["post"].between(8, 15)) &
     (rank1["field_size"] >= 12),
     "post_risk"
-] = -80
+] = -120
+
+rank1["score_gap_bonus"] = 0
+
+rank1.loc[rank1["score_gap_to_top"] >= 10, "score_gap_bonus"] = 25
+rank1.loc[rank1["score_gap_to_top"] >= 20, "score_gap_bonus"] = 50
+rank1.loc[rank1["score_gap_to_top"] >= 25, "score_gap_bonus"] = 75
+rank1.loc[rank1["score_gap_to_top"] >= 30, "score_gap_bonus"] = 100
+rank1["post_bonus"] = 0
+rank1["field_size_penalty"] = 0
+
+rank1.loc[rank1["field_size"] >= 13, "field_size_penalty"] = -100
+rank1.loc[rank1["field_size"] == 12, "field_size_penalty"] = -50
+
+rank1.loc[rank1["post"].between(1, 3), "post_bonus"] = 60
+rank1.loc[rank1["post"].between(4, 6), "post_bonus"] = 35
+rank1.loc[rank1["post"].between(7, 8), "post_bonus"] = -50
+rank1.loc[rank1["post"] >= 9, "post_bonus"] = -80
+
+rank1["environment_score"] = 0
+
+# Bonuszon: bra spår + mindre fält + tydligt gap
+rank1.loc[
+    (rank1["post"] <= 6) &
+    (rank1["field_size"] <= 10) &
+    (rank1["score_gap_to_top"] >= 10),
+    "environment_score"
+] += 60
+
+# Miljözon: okej/gynnsam miljö
+rank1.loc[
+    (rank1["post"] <= 6) &
+    (rank1["field_size"] <= 12) &
+    (rank1["score_gap_to_top"] >= 10),
+    "environment_score"
+] += 30
+
+# Varningszon: sämre spår + större fält + inget stort gap
+rank1.loc[
+    (rank1["post"] >= 7) &
+    (rank1["field_size"] >= 11) &
+    (rank1["score_gap_to_top"] < 20),
+    "environment_score"
+] -= 200
 
 rank1["spike_score"] = (
     rank1["win_percent_norm"] * 2
@@ -102,6 +145,11 @@ rank1["spike_score"] = (
     + rank1["form_stability"]
     + rank1["place_stability"]
     + rank1["post_risk"]
+    + rank1["score_gap_bonus"]
+    + rank1["post_bonus"]
+    + rank1["field_size_penalty"]
+    + rank1["environment_score"]
+    
     )
 
 print("=" * 80)

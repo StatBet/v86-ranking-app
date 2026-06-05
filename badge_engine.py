@@ -38,7 +38,16 @@ def calculate_spike_score(horse, race):
         score += max(0, 20 - avg_odds) * 4
 
     if is_back_post_large_field(horse, race):
-        score -= 80
+    score -= 120
+
+    if horse.get("win_percent", 0) >= 60:
+        score -= 40
+
+    if horse.get("place_percent", 0) >= 80:
+        score -= 30
+
+    if horse.get("avg_odds", 0) and horse.get("avg_odds", 0) < 3:
+        score -= 30
 
     return round(score, 2)
 

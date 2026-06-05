@@ -107,7 +107,8 @@ rank1.loc[rank1["field_size"] == 12, "field_size_penalty"] = -50
 rank1.loc[rank1["post"].between(1, 3), "post_bonus"] = 60
 rank1.loc[rank1["post"].between(4, 6), "post_bonus"] = 35
 rank1.loc[rank1["post"].between(7, 8), "post_bonus"] = -50
-rank1.loc[rank1["post"] >= 9, "post_bonus"] = -80
+rank1.loc[rank1["post"].between(9, 10), "post_bonus"] = -75
+rank1.loc[rank1["post"] >= 11, "post_bonus"] = -100
 
 rank1["environment_score"] = 0
 
@@ -135,6 +136,13 @@ rank1.loc[
     "environment_score"
 ] -= 200
 
+rank1["latest_bonus"] = 0
+
+rank1.loc[
+    rank1["latest_start_score"] >= 5,
+    "latest_bonus"
+] = 40
+
 rank1["spike_score"] = (
     rank1["win_percent_norm"] * 2
     + rank1["form_score_norm"] * 1.5
@@ -149,6 +157,7 @@ rank1["spike_score"] = (
     + rank1["post_bonus"]
     + rank1["field_size_penalty"]
     + rank1["environment_score"]
+    + rank1["latest_bonus"]
     
     )
 

@@ -2,6 +2,9 @@ __pycache__/
 *.pyc
 
 ml_dataset.csv
+spike_dataset.csv
 
-*.log
-*.tmp
+*.pkl
+*.joblib
+
+output/

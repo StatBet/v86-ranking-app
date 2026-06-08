@@ -281,7 +281,7 @@ def split_horse_blocks(race_text):
 
     current = []
 
-    horse_start_pattern = re.compile(r".+[vhs]\d$")
+    horse_start_pattern = re.compile(r".+[vhs]\d+$")
 
     for line in lines:
 

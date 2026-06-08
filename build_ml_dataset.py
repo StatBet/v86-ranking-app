@@ -27,9 +27,28 @@ def load_text(path):
 
 
 def clean_name(name):
-    name = name.replace("\xa0", " ").strip()
-    name = re.sub(r"^\d+\s*", "", name)
-    return name.lower().strip()
+    if not isinstance(name, str):
+        return ""
+
+    name = name.lower()
+
+    # Ta bort konstiga separatorer från parser/startlistor
+    name = name.replace("á", " ")
+    name = name.replace(" ", " ")
+
+    # Ta bort startnummer i början
+    name = re.sub(r"^\s*\d+\s*", "", name)
+
+    # Ta bort spår-/heat-suffix som ibland fastnar, t.ex. h10
+    name = re.sub(r"h\d+\s*$", "", name)
+
+    # Behåll bara bokstäver/siffror
+    name = re.sub(r"[^a-zåäöéüæø0-9 ]", "", name)
+
+    # Normalisera mellanslag
+    name = re.sub(r"\s+", " ", name).strip()
+
+    return name
 
 
 def get_date_from_filename(filename):
@@ -134,22 +153,92 @@ def extract_avg_time_raw(raw):
 
     return round(sum(values) / len(values), 2)
 
+def is_decimal_token(token):
+    token = token.strip()
+
+    try:
+        float(token.replace(",", "."))
+        return True
+    except:
+        return False
+
+
+def is_time_token(token):
+    token = token.strip().lower()
+
+    if "," not in token:
+        return False
+
+    return any(
+        c in token
+        for c in ["a", "g", "k", "m"]
+    ) or token.replace(",", "").replace(".", "").isdigit()
+
+
+def split_history_parts(raw):
+    return [
+        p.strip()
+        for p in raw.splitlines()
+        if p.strip()
+    ]
+
+
+def parse_decimal_comma(value):
+    try:
+        return float(
+            value.replace(",", ".")
+        )
+    except:
+        return None
+
 
 def extract_avg_odds_raw(raw):
-    odds = re.findall(r"\n(\d+,\d+)\n\d+'", raw)
 
-    values = []
+    lines = [
+        x.strip()
+        for x in raw.splitlines()
+        if x.strip()
+    ]
 
-    for o in odds:
-        try:
-            values.append(float(o.replace(",", ".")))
-        except Exception:
-            pass
+    odds_values = []
 
-    if not values:
+    for i, line in enumerate(lines):
+
+        if not is_time_token(line):
+            continue
+
+        for j in range(i + 1, min(i + 4, len(lines))):
+
+            candidate = lines[j].strip()
+
+            if candidate in ["--", "-"]:
+                continue
+
+            if candidate.lower() == "gdk":
+                continue
+
+            if "'" in candidate:
+                continue
+
+            if is_decimal_token(candidate):
+
+                value = parse_decimal_comma(candidate)
+
+                if value is not None:
+
+                    if 0.5 <= value <= 200:
+                        odds_values.append(value)
+
+                break
+
+    if not odds_values:
         return 0
 
-    return round(sum(values) / len(values), 2)
+    return round(
+        sum(odds_values[:5])
+        / len(odds_values[:5]),
+        2
+    )
 
 
 def extract_form_score_raw(raw):

@@ -1,0 +1,122 @@
+import pandas as pd
+
+df = pd.read_csv("ml_dataset.csv").fillna(0)
+
+df["spike_score"] = (
+    df["win_percent"] * 2
+    + df["place_percent"]
+    + df["form_score"] * 1.5
+)
+
+spreads = {}
+
+for race_id, race in df.groupby("race_id"):
+
+    r1 = race[race["model_rank"] == 1]
+    r8 = race[race["model_rank"] == 8]
+
+    if r1.empty or r8.empty:
+        continue
+
+    spreads[race_id] = (
+        r1.iloc[0]["total_score"]
+        - r8.iloc[0]["total_score"]
+    )
+
+df["spread"] = df["race_id"].map(spreads)
+
+# --------------------------------------------------
+# V1
+# --------------------------------------------------
+
+v1 = df[
+    (df["model_rank"].between(6, 8))
+    &
+    (df["spike_score"] >= 170)
+    &
+    (df["spread"] <= 51)
+    &
+    (df["total_score"].between(99, 139))
+]
+
+# --------------------------------------------------
+# V2 Bas
+# --------------------------------------------------
+
+v2_base = df[
+    (df["model_rank"].between(6, 8))
+    &
+    (df["spike_score"] >= 120)
+    &
+    (df["spread"] <= 50)
+    &
+    (df["total_score"] >= 105)
+    &
+    (df["avg_odds"] <= 15)
+]
+
+# --------------------------------------------------
+# V2 Strong
+# --------------------------------------------------
+
+v2_strong = v2_base[
+    (v2_base["post"] <= 4)
+    |
+    (v2_base["latest_start_score"] >= 10)
+    |
+    (v2_base["form_score"] >= 35)
+]
+
+base_keys = set(
+    pd.concat([v1, v2_base])[
+        ["date", "race_no", "horse"]
+    ].apply(tuple, axis=1)
+)
+
+strong_keys = set(
+    pd.concat([v1, v2_strong])[
+        ["date", "race_no", "horse"]
+    ].apply(tuple, axis=1)
+)
+
+lost_keys = base_keys - strong_keys
+
+lost = df[
+    df[
+        ["date", "race_no", "horse"]
+    ].apply(tuple, axis=1).isin(lost_keys)
+]
+
+print("=" * 80)
+print("VINNARE SOM FÖRSVINNER I V2 STRONG")
+print("=" * 80)
+
+print()
+
+print(
+    lost[
+        lost["won"] == 1
+    ][
+        [
+            "date",
+            "race_no",
+            "horse",
+            "model_rank",
+            "post",
+            "latest_start_score",
+            "form_score",
+            "driver_score",
+            "win_percent",
+            "place_percent",
+            "total_score",
+            "spike_score",
+            "spread",
+            "avg_odds"
+        ]
+    ]
+    .sort_values(
+        "spike_score",
+        ascending=False
+    )
+    .to_string(index=False)
+)

@@ -100,6 +100,26 @@ def extract_prize_money_raw(raw):
         .replace(" ", "")
     )
 
+def extract_spel_percent_raw(raw):
+    lines = [
+        x.strip()
+        for x in raw.splitlines()
+        if x.strip()
+    ]
+
+    for i, line in enumerate(lines):
+        # Driver-raden brukar innehålla kusk + tränare inom parentes
+        if "(" in line and ")" in line:
+            if i + 1 < len(lines):
+                next_line = lines[i + 1].strip()
+
+                match = re.match(r"^(\d+)%$", next_line)
+
+                if match:
+                    return int(match.group(1))
+
+    return 0
+
 def extract_start_number_raw(name):
     match = re.match(r"^\s*(\d+)", str(name).replace("\xa0", " "))
     return int(match.group(1)) if match else 0
@@ -330,6 +350,7 @@ def apply_raw_fallbacks(horse):
     raw = horse.get("raw", "")
 
     horse["prize_money"] = extract_prize_money_raw(raw)
+    horse["percent"] = extract_spel_percent_raw(raw)
     horse["record"] = extract_record_raw(raw)
     horse["avg_time"] = extract_avg_time_raw(raw)
     horse["avg_odds"] = extract_avg_odds_raw(raw)

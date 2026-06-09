@@ -1,45 +1,68 @@
+DARK_GREEN = "🟩"   # 80.0 - 84.9%
+LIGHT_GREEN = "🟢"  # 85.0 - 89.9%
+YELLOW = "🟨"       # 90.0%+
+
+def confidence_square(hit_rate):
+    if hit_rate >= 90:
+        return YELLOW
+    if hit_rate >= 85:
+        return LIGHT_GREEN
+    if hit_rate >= 80:
+        return DARK_GREEN
+    return ""
+
+
 def get_loppbadge(metrics):
     spread = metrics.get("spread_1_8", 0)
     gap_13 = metrics.get("gap_1_3", 0)
     gap_14 = metrics.get("gap_1_4", 0)
 
     if spread >= 80:
+        hit_rate = 81.0
         return {
-            "label": "🔥 3-hästarslopp",
+            "label": "3-hästarslopp",
+            "square": confidence_square(hit_rate),
             "main_group": 3,
-            "hit_rate": "81.0%",
+            "hit_rate": hit_rate,
             "reason": "spread_1_8 >= 80",
         }
 
     if spread >= 75:
+        hit_rate = 82.6
         return {
-            "label": "⭐ 4-hästarslopp",
+            "label": "4-hästarslopp",
+            "square": confidence_square(hit_rate),
             "main_group": 4,
-            "hit_rate": "82.6%",
+            "hit_rate": hit_rate,
             "reason": "spread_1_8 >= 75",
         }
 
     if gap_14 >= 30:
+        hit_rate = 80.4
         return {
-            "label": "🎯 5-hästarslopp",
+            "label": "5-hästarslopp",
+            "square": confidence_square(hit_rate),
             "main_group": 5,
-            "hit_rate": "80.4%",
+            "hit_rate": hit_rate,
             "reason": "gap_1_4 >= 30",
         }
 
     if gap_13 >= 30:
+        hit_rate = 80.2
         return {
-            "label": "🎯 5-hästarslopp",
+            "label": "5-hästarslopp",
+            "square": confidence_square(hit_rate),
             "main_group": 5,
-            "hit_rate": "80.2%",
+            "hit_rate": hit_rate,
             "reason": "gap_1_3 >= 30",
         }
 
     return {
-        "label": "⚠ Öppet lopp",
+        "label": "Öppet lopp",
+        "square": "",
         "main_group": 5,
         "hit_rate": None,
-        "reason": "ingen stark loppbadge",
+        "reason": "ingen loppbadge",
     }
 
 
@@ -57,14 +80,8 @@ def get_horse_badges(horse):
     driver = horse.get("driver_score", 0)
     win_pct = horse.get("win_percent", 0)
     percent = horse.get("percent", 0)
-    speed = horse.get("speed_score", 0)
 
-    if (
-        6 <= rank <= 8
-        and spike >= 170
-        and spread <= 51
-        and 99 <= total <= 139
-    ):
+    if 6 <= rank <= 8 and spike >= 170 and spread <= 51 and 99 <= total <= 139:
         badges.append("Underskattad V1")
 
     if (
@@ -87,11 +104,7 @@ def get_horse_badges(horse):
     ):
         badges.append("Form/Kusk V3")
 
-    if (
-        percent <= 14
-        and 7 <= latest <= 10
-        and 19 <= form <= 40
-    ):
+    if percent <= 14 and 7 <= latest <= 10 and 19 <= form <= 40:
         badges.append("Skrällvarning")
 
     return badges
@@ -125,7 +138,6 @@ def get_loser_flags(horse):
 
     if loser_b and speed <= 14:
         flags.append("Röd loserflagga")
-
     elif loser_b:
         flags.append("Gul loserflagga")
 

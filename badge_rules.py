@@ -1,147 +1,103 @@
-DARK_GREEN = "🟩"   # 80.0 - 84.9%
-LIGHT_GREEN = "🟢"  # 85.0 - 89.9%
-YELLOW = "🟨"       # 90.0%+
+DARK_GREEN = "🟩"
 
-def confidence_square(hit_rate):
-    if hit_rate >= 90:
-        return YELLOW
-    if hit_rate >= 85:
-        return LIGHT_GREEN
-    if hit_rate >= 80:
-        return DARK_GREEN
-    return ""
+
+def _iter_rows(race_or_horses):
+    if hasattr(race_or_horses, "iterrows"):
+        for _, row in race_or_horses.iterrows():
+            yield row.to_dict()
+    else:
+        for row in race_or_horses:
+            yield row
+
+
+def get_race_metrics(race_or_horses):
+    scores = {}
+
+    for i, r in enumerate(_iter_rows(race_or_horses), start=1):
+        rank = int(r.get("model_rank", i))
+        scores[rank] = r.get("total_score", 0)
+
+    r1 = scores.get(1, 0)
+
+    return {
+        "spread_1_8": r1 - scores.get(8, 0),
+        "gap_1_2": r1 - scores.get(2, 0),
+        "gap_1_3": r1 - scores.get(3, 0),
+        "gap_1_4": r1 - scores.get(4, 0),
+        "gap_1_5": r1 - scores.get(5, 0),
+    }
 
 
 def get_loppbadge(metrics):
     spread = metrics.get("spread_1_8", 0)
-    gap_13 = metrics.get("gap_1_3", 0)
-    gap_14 = metrics.get("gap_1_4", 0)
 
     if spread >= 80:
-        hit_rate = 81.0
         return {
             "label": "3-hästarslopp",
-            "square": confidence_square(hit_rate),
+            "square": DARK_GREEN,
             "main_group": 3,
-            "hit_rate": hit_rate,
+            "hit_rate": 81.0,
             "reason": "spread_1_8 >= 80",
+            "loser_filter": "Loser B",
         }
 
-    if spread >= 75:
-        hit_rate = 82.6
+    if 60 <= spread <= 69:
         return {
             "label": "4-hästarslopp",
-            "square": confidence_square(hit_rate),
+            "square": DARK_GREEN,
             "main_group": 4,
-            "hit_rate": hit_rate,
-            "reason": "spread_1_8 >= 75",
-        }
-
-    if gap_14 >= 30:
-        hit_rate = 80.4
-        return {
-            "label": "5-hästarslopp",
-            "square": confidence_square(hit_rate),
-            "main_group": 5,
-            "hit_rate": hit_rate,
-            "reason": "gap_1_4 >= 30",
-        }
-
-    if gap_13 >= 30:
-        hit_rate = 80.2
-        return {
-            "label": "5-hästarslopp",
-            "square": confidence_square(hit_rate),
-            "main_group": 5,
-            "hit_rate": hit_rate,
-            "reason": "gap_1_3 >= 30",
+            "hit_rate": 79.5,
+            "reason": "spread_1_8 60-69",
+            "loser_filter": "Loser D",
         }
 
     return {
         "label": "Öppet lopp",
         "square": "",
-        "main_group": 5,
+        "main_group": None,
         "hit_rate": None,
         "reason": "ingen loppbadge",
+        "loser_filter": None,
     }
 
 
-def get_horse_badges(horse):
-    badges = []
-
-    rank = horse.get("model_rank", 0)
-    spike = horse.get("spike_score", 0)
-    spread = horse.get("spread", 0)
-    total = horse.get("total_score", 0)
-    odds = horse.get("avg_odds", 0)
-    post = horse.get("post", 0)
-    latest = horse.get("latest_start_score", 0)
-    form = horse.get("form_score", 0)
-    driver = horse.get("driver_score", 0)
-    win_pct = horse.get("win_percent", 0)
-    percent = horse.get("percent", 0)
-
-    if 6 <= rank <= 8 and spike >= 170 and spread <= 51 and 99 <= total <= 139:
-        badges.append("Underskattad V1")
-
-    if (
-        6 <= rank <= 8
-        and spike >= 120
-        and spread <= 50
-        and total >= 105
-        and odds <= 15
-        and (post <= 5 or latest >= 7 or form >= 35)
-    ):
-        badges.append("Underskattad V2")
-
-    if (
-        6 <= rank <= 8
-        and 7 <= latest <= 10
-        and 19 <= form <= 40
-        and driver >= 8
-        and odds <= 15
-        and win_pct >= 10
-    ):
-        badges.append("Form/Kusk V3")
-
-    if percent <= 14 and 7 <= latest <= 10 and 19 <= form <= 40:
-        badges.append("Skrällvarning")
-
-    return badges
-
-
-def get_loser_flags(horse):
-    flags = []
-
-    rank = horse.get("model_rank", 0)
-    spike = horse.get("spike_score", 0)
-    driver = horse.get("driver_score", 0)
-    latest = horse.get("latest_start_score", 0)
-    form = horse.get("form_score", 0)
-    odds = horse.get("avg_odds", 0)
-    speed = horse.get("speed_score", 0)
-    percent = horse.get("percent", 0)
-
-    loser_b = (
-        6 <= rank <= 8
-        and (
-            (
-                spike <= 120
-                and driver == 0
-                and latest <= 3
-                and form <= 20
-                and odds > 15
-            )
-            or spike <= 50
+def loser_b(horse):
+    return (
+        (
+            horse.get("spike_score", 0) <= 120
+            and horse.get("driver_score", 0) == 0
+            and horse.get("latest_start_score", 0) <= 3
+            and horse.get("form_score", 0) <= 20
+            and horse.get("avg_odds", 0) > 15
         )
+        or horse.get("spike_score", 0) <= 50
     )
 
-    if loser_b and speed <= 14:
-        flags.append("Röd loserflagga")
-    elif loser_b:
-        flags.append("Gul loserflagga")
 
-    if 6 <= rank <= 8 and percent <= 4 and spike <= 100:
-        flags.append("Loser C")
+def loser_d(horse):
+    return loser_b(horse) and horse.get("speed_score", 0) <= 14
+
+
+def get_loser_flags(horse, loppbadge=None):
+    flags = []
+
+    if loppbadge and loppbadge.get("label") == "3-hästarslopp":
+        if loser_b(horse):
+            flags.append("Loser B")
+
+    elif loppbadge and loppbadge.get("label") == "4-hästarslopp":
+        if loser_d(horse):
+            flags.append("Loser D")
 
     return flags
+
+def format_loppbadge(badge):
+
+    if badge["label"] == "Öppet lopp":
+        return "Öppet lopp"
+
+    return (
+        f"{'🟩' * badge['main_group']} "
+        f"{badge['label']} "
+        f"({badge['hit_rate']}%)"
+    )

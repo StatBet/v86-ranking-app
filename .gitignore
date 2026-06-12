@@ -3,8 +3,11 @@ __pycache__/
 
 ml_dataset.csv
 
-output/
-rankings/
+analyze_*.py
+test_*.py
+preview_*.py
+create_*.py
 
-*.xlsx
-*.csv
+*_summary.csv
+*_candidates.csv
+*_test.csv

@@ -3,6 +3,10 @@ import pandas as pd
 import docx
 from datetime import datetime
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
+from badge_rules import (
+    get_race_metrics,
+    get_loppbadge
+)
 
 from scripts.ranking_engine_v3 import (
     parse_input,
@@ -492,12 +496,12 @@ if uploaded_file is not None:
             h["race_track"] = race.get("track", "")
             h["spike_score"] = calculate_spike_score(h, race_for_badges)
 
-        table_placeholder = st.empty()
+        race_output_placeholder = st.empty()
 
         processed_races.append({
             "race": race,
             "horses": horses,
-            "placeholder": table_placeholder
+            "placeholder": race_output_placeholder
         })
 
     top_spikes = get_round_spikes(processed_races)
@@ -520,6 +524,18 @@ if uploaded_file is not None:
             reverse=True
         )
 
+        for idx, h in enumerate(horses, start=1):
+            h["model_rank"] = idx
+
+        from rank68_badge_helpers import apply_rank68_badges
+
+        for h in horses:
+            h = apply_rank68_badges(h)
+
+        metrics = get_race_metrics(horses)
+        loppbadge = get_loppbadge(metrics)
+
+        
         rows = []
 
         for h in horses:
@@ -527,7 +543,13 @@ if uploaded_file is not None:
                 "Nr": h.get("number", 0),
                 "Spår": h.get("post", 0),
                 "Häst": h.get("horse", ""),
-                "Badges": "  ".join(h.get("badges", [])),
+                "Badges": "  ".join(
+                    b for b in h.get("badges", [])
+                    if "Top5" not in b
+                    and "Topp 5" not in b
+                    and "Topp5" not in b
+                    and "TOP5" not in b
+                ),
                 "SpikeScore": round(h.get("spike_score", 0), 1),
                 "Tot": h.get("total_score", 0),
                 "Speed": h.get("speed_score", 0),
@@ -566,13 +588,26 @@ if uploaded_file is not None:
 
         df = pd.DataFrame(rows)
 
-        race_data["placeholder"].dataframe(
-            df,
-            width="stretch",
-            hide_index=True,
-            column_config={
-                "Nr": st.column_config.NumberColumn("Nr", pinned=True),
-                "Spår": st.column_config.NumberColumn("Spår", pinned=True),
-                "Häst": st.column_config.TextColumn("Häst", pinned=True)
-            }
-        )
+        with race_data["placeholder"].container():
+
+            if loppbadge["label"] != "Öppet lopp":
+                st.success(
+                    f"{'🟩' * loppbadge['main_group']} "
+                    f"{loppbadge['label']} "
+                    f"| rank 1-{loppbadge['main_group']} "
+                    f"| {loppbadge['hit_rate']}% "
+                    f"| {loppbadge['reason']}"
+                )
+            else:
+                st.info("Öppet lopp")
+
+            st.dataframe(
+                df,
+                width="stretch",
+                hide_index=True,
+                column_config={
+                    "Nr": st.column_config.NumberColumn("Nr", pinned=True),
+                    "Spår": st.column_config.NumberColumn("Spår", pinned=True),
+                    "Häst": st.column_config.TextColumn("Häst", pinned=True)
+                }
+            )

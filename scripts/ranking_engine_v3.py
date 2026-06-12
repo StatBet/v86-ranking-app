@@ -5,6 +5,8 @@
 import json
 import re
 
+from rank68_badge_helpers import apply_rank68_badges, remove_old_top5_badges
+
 from scripts.speed_feature import (
     calculate_avg_time,
     normalize_distance,
@@ -16,6 +18,12 @@ from scripts.speed_feature import (
 from scripts.speed_ranking import speed_score
 from scripts.parser_v2 import parse_input
 from datetime import datetime
+
+from badge_rules import (
+    get_race_metrics,
+    get_loppbadge,
+    format_loppbadge
+)
 
 def get_inactivity_score(horse):
     history = horse.get("history", [])
@@ -1259,8 +1267,22 @@ if __name__ == "__main__":
             reverse=True
         )
 
+        for idx, horse in enumerate(ranked, start=1):
+            horse["model_rank"] = idx
+
+        race_metrics = get_race_metrics(ranked)
+
+        loppbadge = get_loppbadge(race_metrics)
+
         print()
         print("=" * 230)
+        print()
+
+        print(
+            format_loppbadge(loppbadge)
+        )
+
+        print()
 
         print(
             f"V86 Avdelning {race['race_no']} "
@@ -1273,6 +1295,25 @@ if __name__ == "__main__":
 
         for i, horse in enumerate(ranked, start=1):
             label = get_label(i, horse)
+            badges = get_horse_badges(horse)
+            h["badges"] = remove_old_top5_badges(h.get("badges", []))
+            h = apply_rank68_badges(h)
+
+            losers = get_loser_flags(
+                horse,
+                loppbadge
+            )
+
+            extra_badges = badges + losers
+
+            badge_text = ""
+
+            if extra_badges:
+                badge_text = (
+                    " ["
+                    + " | ".join(extra_badges)
+                    + "]"
+                )
 
             print(
                 f"{i:>2}. "
@@ -1296,7 +1337,8 @@ if __name__ == "__main__":
                 f"| Till {horse['distance_addition_score']:<3} "
                 f"Kön {horse['gender_score']:<3} "
                 f"Gal {horse['gallop_score']:<3}"
-            )
+                f"{badge_text}"
+                )
 
             print(
                 f"    AvgTid: {format_decimal(horse['avg_time']):<6} "

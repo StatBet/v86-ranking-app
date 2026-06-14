@@ -3,6 +3,7 @@ import pandas as pd
 import docx
 from datetime import datetime
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
+from loser_badge_helpers import apply_loser_badges
 from badge_rules import (
     get_race_metrics,
     get_loppbadge
@@ -531,6 +532,7 @@ if uploaded_file is not None:
 
         for h in horses:
             h = apply_rank68_badges(h)
+            h = apply_loser_badges(h)
 
         metrics = get_race_metrics(horses)
         loppbadge = get_loppbadge(metrics)

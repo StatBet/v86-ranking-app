@@ -3,11 +3,15 @@ import pandas as pd
 import docx
 from datetime import datetime
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
-from loser_badge_helpers import apply_loser_badges
+from loser_badge_helpers import apply_loser_badges_to_race
+from loppbadge_sum_helpers import get_sum_loppbadge
 from badge_rules import (
     get_race_metrics,
     get_loppbadge
 )
+
+from loser_badge_helpers import apply_loser_badges_to_race
+from loppbadge_sum_helpers import get_sum_loppbadge
 
 from scripts.ranking_engine_v3 import (
     parse_input,
@@ -425,10 +429,27 @@ if uploaded_file is not None:
 
         horses = add_dynamic_scores(horses, race)
 
+        horses = apply_loser_badges_to_race(horses)
+
+               
         st.subheader(
             f"{race['track']} - Avdelning {race['race_no']} - "
             f"{race['distance']}m ({race['start']})"
         )
+
+        #sum_badge = get_sum_loppbadge(horses)
+
+        #if sum_badge and sum_badge.get("badge"):
+            #st.info(
+                #f"{sum_badge['badge']} | TotalSum: {sum_badge['total_sum']} | SpikeSum: {sum_badge['spike_sum']}"
+            #)
+
+        #sum_badge = get_sum_loppbadge(horses)
+
+        #if sum_badge and sum_badge.get("badge"):
+            #st.info(
+                #f"{sum_badge['badge']} | TotalSum: {sum_badge['total_sum']} | SpikeSum: {sum_badge['spike_sum']}"
+            #)
 
         with st.expander(f"Manuell skorjustering - Avdelning {race['race_no']}"):
             cols = st.columns(3)
@@ -510,6 +531,7 @@ if uploaded_file is not None:
     with summary_placeholder.container():
         st.subheader("🎯 Omgångens spikförslag")
 
+        
         for i, horse in enumerate(top_spikes, start=1):
             badge = "🟩 Toppspik" if i <= 2 else "🟦 Spik"
             st.write(
@@ -532,7 +554,8 @@ if uploaded_file is not None:
 
         for h in horses:
             h = apply_rank68_badges(h)
-            h = apply_loser_badges(h)
+            
+        horses = apply_loser_badges_to_race(horses)
 
         metrics = get_race_metrics(horses)
         loppbadge = get_loppbadge(metrics)

@@ -4,14 +4,14 @@ import docx
 from datetime import datetime
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
 from loser_badge_helpers import apply_loser_badges_to_race
-from loppbadge_sum_helpers import get_sum_loppbadge
+from debug_live_lopp_sums import get_live_lopp_sum_debug
+#from loppbadge_sum_helpers import get_sum_loppbadge
 from badge_rules import (
     get_race_metrics,
     get_loppbadge
 )
 
-from loser_badge_helpers import apply_loser_badges_to_race
-from loppbadge_sum_helpers import get_sum_loppbadge
+
 
 from scripts.ranking_engine_v3 import (
     parse_input,
@@ -423,6 +423,8 @@ if uploaded_file is not None:
     processed_races = []
     summary_placeholder = st.empty()
 
+    live_debug_rows = []
+
     for race_data in races:
         race = race_data["race"]
         horses = race_data["horses"]
@@ -431,11 +433,16 @@ if uploaded_file is not None:
 
         horses = apply_loser_badges_to_race(horses)
 
-               
         st.subheader(
             f"{race['track']} - Avdelning {race['race_no']} - "
             f"{race['distance']}m ({race['start']})"
         )
+
+       
+
+        #if horses:
+            #st.write("DEBUG första häst keys:", list(horses[0].keys()))
+            #st.write("DEBUG första häst:", horses[0])
 
         #sum_badge = get_sum_loppbadge(horses)
 
@@ -517,6 +524,41 @@ if uploaded_file is not None:
             h["race_no"] = race.get("race_no", "")
             h["race_track"] = race.get("track", "")
             h["spike_score"] = calculate_spike_score(h, race_for_badges)
+
+        horses = apply_loser_badges_to_race(horses)
+
+        debug_sums = get_live_lopp_sum_debug(horses)
+
+        badge = None
+
+        if debug_sums["total_sum"] <= 1165 or debug_sums["spike_sum"] <= 1097:
+            badge = "🟢 Kompakt lopp"
+        elif debug_sums["total_sum"] >= 1538:
+           badge = "🔺 Vinnare utanför topp 3?"
+
+        if badge:
+            st.info(
+                f"{badge} | TotalSum: {debug_sums['total_sum']} | SpikeSum: {debug_sums['spike_sum']}"
+            )        
+
+        #st.caption(
+            #f"DEBUG lopp-summor | "        
+            #f"TotalSum: {debug_sums['total_sum']} | "
+            #f"SpikeSum: {debug_sums['spike_sum']} | "
+            #f"CompactTotal: {debug_sums['compact_total']} | "
+            #f"CompactSpike: {debug_sums['compact_spike']} | "
+            #f"ChaosTotal: {debug_sums['chaos_total']} | "
+            #f"ChaosSpike: {debug_sums['chaos_spike']}"
+        #)
+
+        live_debug_rows.append({
+            "race_no": race["race_no"],
+            "track": race["track"],
+            "total_sum": debug_sums["total_sum"],
+            "spike_sum": debug_sums["spike_sum"],
+        })
+
+        pd.DataFrame(live_debug_rows).to_csv("live_lopp_sums_debug.csv", index=False)
 
         race_output_placeholder = st.empty()
 

@@ -576,10 +576,41 @@ if uploaded_file is not None:
         
         for i, horse in enumerate(top_spikes, start=1):
             badge = "🟩 Toppspik" if i <= 2 else "🟦 Spik"
-            st.write(
-                f"{badge} {i}. {horse.get('horse', '')} "
-                f"— Avd {horse.get('race_no', '')} "
-                f"— SpikeScore: {round(horse.get('spike_score', 0), 1)}"
+
+            warning_text = ""
+
+            if horse.get("spik_warning_red", False):
+                warning_text = (
+                    "\n\n🟥 **RÖD SPIKVARNING** – Value-kandidat finns i loppet "
+                    "och score-gap till rank 2 är under 10. "
+                    "Historiskt svag spikmiljö. Spika ej ensam."
+                )
+            elif horse.get("spik_warning_yellow", False):
+                warning_text = (
+                    "\n\n🟨 **SPIKVARNING** – Value-kandidat finns i loppet. "
+                    "Spiken har historiskt lägre träff här. Gardering rekommenderas."
+                )
+
+            value_names = horse.get("value_candidate_names", [])
+            value_text = ""
+
+            if value_names:
+                value_text = (
+                    "\n\nSystem-only valuekandidat(er): "
+                    + ", ".join(value_names)
+                )
+
+            st.markdown(
+                f"""
+        {badge} **{horse.get("horse", horse.get("name", ""))}**
+        — Avd {horse.get("race_no", "")}
+        — Rank: {horse.get("_model_rank_live", horse.get("model_rank", ""))}
+        — Score: {round(horse.get("total_score", 0), 1)}
+        — SpikeScore: {round(horse.get("spike_score", 0), 1)}
+        — Spel%: {horse.get("percent", 0)}%
+        {warning_text}
+        {value_text}
+        """
             )
 
     for race_data in processed_races:

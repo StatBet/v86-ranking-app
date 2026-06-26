@@ -3,11 +3,8 @@ __pycache__/
 
 ml_dataset.csv
 
-analyze_*.py
-test_*.py
-preview_*.py
-create_*.py
-
 *_summary.csv
 *_candidates.csv
+*_details.csv
+*_rounds.csv
 *_test.csv

@@ -16,6 +16,23 @@ from scripts.ranking_engine_v3 import (
 HISTORY_FOLDER = r"C:\Users\Grinvald\Desktop\ranking"
 OUTPUT_FILE = "ml_dataset.csv"
 
+def calculate_spike_score(row):
+    score = 0
+
+    score += row.get("win_percent", 0) * 2
+    score += row.get("form_score", 0) * 1.5
+    score += row.get("place_percent", 0)
+
+    avg_time = row.get("avg_time", 0)
+    avg_odds = row.get("avg_odds", 0)
+
+    if avg_time:
+        score += max(0, 30 - avg_time) * 6
+
+    if avg_odds:
+        score += max(0, 20 - avg_odds) * 4
+
+    return round(score, 2)
 
 def load_text(path):
     try:
@@ -554,6 +571,8 @@ print("=" * 80)
 print("Rader:", len(df))
 print("Lopp:", df["race_id"].nunique() if not df.empty else 0)
 print("Vinnare:", int(df["won"].sum()) if not df.empty else 0)
+
+df["spike_score"] = df.apply(calculate_spike_score, axis=1)
 
 df.to_csv(
     OUTPUT_FILE,

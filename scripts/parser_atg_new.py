@@ -283,7 +283,7 @@ def parse_new_atg_format(raw_data):
                 history_start = None
 
                 for j in range(i, min(i + 20, len(lines))):
-                    if "Senaste 5 starterna" in lines[j]:
+                    if "Senaste" in lines[j] and "starterna" in lines[j]:
                         history_start = j + 1
                         break
 
@@ -349,7 +349,7 @@ def parse_new_atg_format(raw_data):
                 history_start = None
 
                 for j in range(i, min(i + 30, len(lines))):
-                    if "Senaste 5 starterna" in lines[j]:
+                    if "Senaste" in lines[j] and "starterna" in lines[j]:
                         history_start = j + 1
                         break
 
@@ -426,7 +426,7 @@ def parse_new_atg_format(raw_data):
                 history_start = None
 
                 for j in range(i, min(i + 25, len(lines))):
-                    if "Senaste 5 starterna" in lines[j]:
+                    if "Senaste" in lines[j] and "starterna" in lines[j]:
                         history_start = j + 1
                         break
 

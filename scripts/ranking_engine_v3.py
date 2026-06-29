@@ -16,7 +16,8 @@ from scripts.speed_feature import (
 )
 
 from scripts.speed_ranking import speed_score
-from scripts.parser_v2 import parse_input
+from scripts.parser_v2 import parse_input as parse_input_v2
+from scripts.parser_atg_new import parse_new_atg_format
 from datetime import datetime
 
 from badge_rules import (
@@ -24,6 +25,15 @@ from badge_rules import (
     get_loppbadge,
     format_loppbadge
 )
+
+
+def parse_input(raw_data):
+    races = parse_input_v2(raw_data)
+
+    if not any(race_data["horses"] for race_data in races):
+        races = parse_new_atg_format(raw_data)
+
+    return races
 
 def get_inactivity_score(horse):
     history = horse.get("history", [])

@@ -19,11 +19,26 @@ def is_global_loser(h):
     total = _num(h.get("total_score", 0))
     win = _num(h.get("win_score", 0))
 
-    return (
-        (spike < 60 and total < 90)
+    base_loser = (
+        (spike < 140 and total < 80)
         or
-        (spike < 80 and total < 100 and win < 12)
+        (spike < 160 and total < 90 and win < 14)
     )
+
+    weak_count = (
+        int(_num(h.get("place_score", 0)) < 8)
+        + int(_num(h.get("form_score_all_rank", 0)) >= 6)
+        + int(spike < 225)
+        + int(_num(h.get("driver_score", 0)) < 8)
+    )
+
+    speed_post_loser = (
+        _num(h.get("speed_score_all_rank", 0)) >= 10
+        and 9 <= _num(h.get("post", 0)) <= 15
+        and weak_count >= 2
+    )
+
+    return base_loser or speed_post_loser
 
 
 def add_race_gap_fields(horses):

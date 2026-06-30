@@ -533,7 +533,7 @@ if uploaded_file is not None:
 
         if debug_sums["total_sum"] <= 1165 or debug_sums["spike_sum"] <= 1097:
             badge = "🟢 Kompakt lopp"
-        elif debug_sums["total_sum"] >= 1538:
+        elif debug_sums["total_sum"] >= 1550:
            badge = "🔺 Vinnare utanför topp 3?"
 
         if badge:
@@ -573,23 +573,35 @@ if uploaded_file is not None:
     with summary_placeholder.container():
         st.subheader("🎯 Omgångens spikförslag")
 
-        
         for i, horse in enumerate(top_spikes, start=1):
+            if i > 3:
+                continue
+
             badge = "🟩 Toppspik" if i <= 2 else "🟦 Spik"
 
-            warning_text = ""
+            if i == 1:
+                if horse.get("spik_warning_yellow", False):
+                    chance_text = "🟨 **Spikchans: 28%**"
+                elif horse.get("spik_warning_red", False):
+                    chance_text = "**Spikchans: 54%**"
+                else:
+                    chance_text = "**Spikchans: 47%**"
 
-            if horse.get("spik_warning_red", False):
-                warning_text = (
-                    "\n\n🟥 **RÖD SPIKVARNING** – Value-kandidat finns i loppet "
-                    "och score-gap till rank 2 är under 10. "
-                    "Historiskt svag spikmiljö. Spika ej ensam."
-                )
-            elif horse.get("spik_warning_yellow", False):
-                warning_text = (
-                    "\n\n🟨 **SPIKVARNING** – Value-kandidat finns i loppet. "
-                    "Spiken har historiskt lägre träff här. Gardering rekommenderas."
-                )
+            elif i == 2:
+                if horse.get("spik_warning_red", False):
+                    chance_text = "🟥 **Spikchans: 38%**"
+                elif horse.get("spik_warning_yellow", False):
+                    chance_text = "**Spikchans: 58%**"
+                else:
+                    chance_text = "**Spikchans: 50%**"
+
+            elif i == 3:
+                if horse.get("spik_warning_yellow", False):
+                    chance_text = "**Spikchans: 46%**"
+                elif horse.get("spik_warning_red", False):
+                    chance_text = "**Spikchans: 40%**"
+                else:
+                    chance_text = "**Spikchans: 33%**"
 
             value_names = horse.get("value_candidate_names", [])
             value_text = ""
@@ -602,15 +614,15 @@ if uploaded_file is not None:
 
             st.markdown(
                 f"""
-        {badge} **{horse.get("horse", horse.get("name", ""))}**
-        — Avd {horse.get("race_no", "")}
-        — Rank: {horse.get("_model_rank_live", horse.get("model_rank", ""))}
-        — Score: {round(horse.get("total_score", 0), 1)}
-        — SpikeScore: {round(horse.get("spike_score", 0), 1)}
-        — Spel%: {horse.get("percent", 0)}%
-        {warning_text}
-        {value_text}
-        """
+    {badge} **{horse.get("horse", horse.get("name", ""))}**
+    — Avd {horse.get("race_no", "")}
+    — Rank: {horse.get("_model_rank_live", horse.get("model_rank", ""))}
+    — Score: {round(horse.get("total_score", 0), 1)}
+    — SpikeScore: {round(horse.get("spike_score", 0), 1)}
+    — Spel%: {horse.get("percent", 0)}%
+    {chance_text}
+    {value_text}
+    """
             )
 
     for race_data in processed_races:

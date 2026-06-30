@@ -530,16 +530,23 @@ if uploaded_file is not None:
         debug_sums = get_live_lopp_sum_debug(horses)
 
         badge = None
+        badge_reason = None
 
         if debug_sums["total_sum"] <= 1165 or debug_sums["spike_sum"] <= 1097:
             badge = "🟢 Kompakt lopp"
+            badge_reason = "Rank 1–3: 73% | Rank 4–5: 13% | Rank 6+: 14%"
+
         elif debug_sums["total_sum"] >= 1550:
-           badge = "🔺 Vinnare utanför topp 3?"
+            badge = "🔺 Skrällvarning"
+            badge_reason = "Rank 1–3: 41% | Rank 4–5: 15% | Rank 6+: 45%"
+
+        race["primary_loppbadge"] = None
 
         if badge:
             st.info(
-                f"{badge} | TotalSum: {debug_sums['total_sum']} | SpikeSum: {debug_sums['spike_sum']}"
-            )        
+                f"{badge} | {badge_reason} | TotalSum: {debug_sums['total_sum']} | SpikeSum: {debug_sums['spike_sum']}"
+            )     
+            race["primary_loppbadge"] = badge  
 
         #st.caption(
             #f"DEBUG lopp-summor | "        
@@ -700,12 +707,13 @@ if uploaded_file is not None:
 
         with race_data["placeholder"].container():
 
-            if loppbadge["label"] != "Öppet lopp":
+            if (
+                loppbadge["label"] != "Öppet lopp"
+                and not race_data["race"].get("primary_loppbadge")
+            ):
                 st.success(
                     f"{'🟩' * loppbadge['main_group']} "
                     f"{loppbadge['label']} "
-                    f"| rank 1-{loppbadge['main_group']} "
-                    f"| {loppbadge['hit_rate']}% "
                     f"| {loppbadge['reason']}"
                 )
             else:

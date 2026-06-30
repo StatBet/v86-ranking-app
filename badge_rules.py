@@ -20,6 +20,7 @@ def get_race_metrics(race_or_horses):
     r1 = scores.get(1, 0)
 
     return {
+        "total_sum": sum(scores.values()),
         "spread_1_8": r1 - scores.get(8, 0),
         "gap_1_2": r1 - scores.get(2, 0),
         "gap_1_3": r1 - scores.get(3, 0),
@@ -30,25 +31,27 @@ def get_race_metrics(race_or_horses):
 
 def get_loppbadge(metrics):
     spread = metrics.get("spread_1_8", 0)
+    total_sum = metrics.get("total_sum", 0)
+    gap_1_2 = metrics.get("gap_1_2", 0)
 
-    if spread >= 80:
+    if spread >= 70 and total_sum <= 1450 and gap_1_2 >= 5:
         return {
             "label": "3-hästarslopp",
             "square": DARK_GREEN,
             "main_group": 3,
             "hit_rate": 81.0,
-            "reason": "spread_1_8 >= 80",
+            "reason": "rank 1–3: 81% | rank 4–5: 12% | rank 6+: 7%",
             "loser_filter": "Loser B",
         }
 
-    if 60 <= spread <= 69:
+    if spread >= 60 and total_sum <= 1450:
         return {
-            "label": "4-hästarslopp",
+            "label": "Topp 5-profil",
             "square": DARK_GREEN,
-            "main_group": 4,
-            "hit_rate": 79.5,
-            "reason": "spread_1_8 60-69",
-            "loser_filter": "Loser D",
+            "main_group": 5,
+            "hit_rate": 90.0,
+            "reason": "rank 1–3: 69% | rank 4–5: 21% | rank 6+: 10%",
+            "loser_filter": None,
         }
 
     return {
@@ -85,7 +88,7 @@ def get_loser_flags(horse, loppbadge=None):
         if loser_b(horse):
             flags.append("Loser B")
 
-    elif loppbadge and loppbadge.get("label") == "4-hästarslopp":
+    elif loppbadge and loppbadge.get("label") == "Topp 5-profil":
         if loser_d(horse):
             flags.append("Loser D")
 

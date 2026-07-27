@@ -269,6 +269,7 @@ with st.sidebar.expander("Rekord"):
     st.caption("Rekordpoängen beräknas nu relativt inom loppet.")
 
 
+    
 with st.sidebar.expander("Vagn / Skor / Manuell"):
     scoring_rules["american_wagon_bonus"] = int_slider(
         "Amerikansk vagn bonus",

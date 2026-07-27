@@ -1,9 +1,80 @@
+# ==========================================================
+# Python
+# ==========================================================
 __pycache__/
-*.pyc
+**/__pycache__/
+*.py[cod]
+*$py.class
 
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# VS Code
+.vscode/
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# ==========================================================
+# Python cache & build
+# ==========================================================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# ==========================================================
+# Generated datasets
+# ==========================================================
+*.csv
+*.xlsx
+*.xls
+
+historical_rankings.csv
 ml_dataset.csv
+output.csv
 
-*_summary.csv
-*_candidates.csv
-*_details.csv
-*_rounds.csv
+# ==========================================================
+# Generated folders
+# ==========================================================
+master_analysis_output/
+ranking/
+output/
+temp/
+cache/
+
+# ==========================================================
+# Temporary analysis scripts
+# ==========================================================
+analyze_*.py
+test_*.py
+debug_*.py
+inspect_*.py
+simulate_*.py
+optimize_*.py
+discover_*.py
+preview_*.py
+show_*.py
+find_*.py
+calibrate_*.py
+create_*.py
+
+# ==========================================================
+# Logs
+# ==========================================================
+*.log
+
+# ==========================================================
+# Temporary text files
+# ==========================================================
+*.tmp
+*.bak
+*.old

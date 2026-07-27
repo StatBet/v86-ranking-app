@@ -974,3 +974,373 @@ Nivå 3 – Extrem skrällrisk
 38 lopp
 17 vinnare ≤10%
 23 vinnare ≤15%
+
+
+
+
+FAS 1 – REVIDERA SPIKARNA
+
+Vi rör inte lopptyperna än.
+
+Vi börjar bara med spikarna.
+
+Jag skulle göra exakt denna ordning.
+
+Analys 1 (Grundanalys)
+Hur bra är våra spikar?
+
+Separera
+
+🟩 Toppspik (Rank1)
+🟦 Spik (Rank2)
+
+För båda vill vi veta
+
+Typ	Antal	Vinst%
+Rank1-spik		
+Rank2-spik		
+Analys 2
+Hur påverkar spikvarningen?
+
+För båda spiktyperna
+
+Miljö	Antal	Rank1 vinner	Rank4+	Rank7+
+Ingen				
+Gul				
+Röd				
+
+Det här blir vår första "sanningstabell".
+
+Analys 3
+VARFÖR blev den röd?
+
+Inte bara
+
+Röd
+
+utan
+
+Orsak	Antal	Vinst%
+Value		
+Value + gap<10		
+ABC-favoritfälla		
+Level3		
+Top3-warning		
+
+Här tror jag vi hittar mycket.
+
+Analys 4
+Spik + badge
+
+Nu börjar konflikterna.
+
+Exempel
+
+Spik
+
++
+
+3-hästarslopp
+Spik
+
++
+
+4-hästarslopp
+Spik
+
++
+
+Level3
+Spik
+
++
+
+Top3-warning
+Spik
+
++
+
+Open
+
+Nu börjar vi rangordna regler.
+
+Analys 5
+Två konflikter samtidigt
+
+Exempel
+
+Spik
+
++
+
+Röd
+
++
+
+3-hästarslopp
+
+eller
+
+Spik
+
++
+
+Röd
+
++
+
+Level3
+
+Nu börjar vi bygga prioritet.
+
+Först EFTER detta
+
+går vi över till loppen.
+
+FAS 2 – REVIDERA LOPPEN
+
+Nu glömmer vi spikar.
+
+Vi analyserar bara badges.
+
+Exempel
+
+3-hästarslopp
+
+Hur ofta
+
+topp3
+topp4
+rank7+
+
+Sedan
+
+4-hästarslopp
+
+Sedan
+
+Level3
+
+Sedan
+
+Top3-warning
+
+Sedan
+
+Open
+
+Sedan börjar vi kombinera badges.
+
+Resultatet
+
+Till slut vill jag kunna göra detta:
+
+Avd 5
+
+🟦 Spik
+
+🟥 Röd
+
+🟩 3-hästarslopp
+
+↓
+
+Historiskt:
+
+Spik 31%
+
+Top3 84%
+
+Rank7+ 5%
+
+↓
+
+SLUTLIG REKOMMENDATION
+
+Ta rank 1–3.
+Spika inte.
+
+Inte fyra separata råd.
+
+Ett.
+
+Jag skulle dessutom införa en arbetsregel
+
+Vi skriver ett analysprogram per fråga. Vi går inte vidare förrän vi har förstått resultatet från det föregående.
+
+Så första filen blir:
+
+analyze_spik_warning_impact.py
+
+Den ska bli vår "grundlag" för spikar. Alla senare regler om spikar ska bygga på den analysen. Jag tror det är det mest metodiska sättet att undvika att vi drar förhastade slutsatser eller glömmer viktiga samband.
+
+
+
+
+
+ python analyze_toppspik_bins.py
+
+========================================================================================================================
+TOPPSPIK #1
+========================================================================================================================
+
+spik_spike_score
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+ 330-350      5     2       3     0.400             2.80           0.400           0.000
+ 350-370     17     8       9     0.471             4.12           0.471           0.235
+ 370-390     20    10      10     0.500             3.35           0.350           0.150
+390-9999     28     9      19     0.321             4.00           0.500           0.179
+
+spik_total_score
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+-999-150     10     4       6     0.400             3.40           0.400           0.100
+ 150-160     16     7       9     0.438             4.50           0.500           0.312
+ 160-170     13     5       8     0.385             3.15           0.385           0.077
+ 170-180      6     5       1     0.833             2.33           0.167           0.167
+180-9999     25     8      17     0.320             4.08           0.520           0.160
+
+score_gap_1_2
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+  -999-5     16     8       8     0.500             3.50           0.438           0.188
+    5-10     10     6       4     0.600             3.50           0.300           0.200
+   10-15     10     3       7     0.300             4.00           0.500           0.200
+   15-20      8     1       7     0.125             4.25           0.750           0.125
+ 20-9999     26    11      15     0.423             3.77           0.385           0.154
+
+spike_gap_1_2
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+ -999-25     19     9      10     0.474             3.84           0.421           0.211
+   25-50     13     2      11     0.154             5.23           0.692           0.308
+   50-75     15     7       8     0.467             2.73           0.333           0.067
+  75-100     10     4       6     0.400             3.80           0.400           0.200
+100-9999     13     7       6     0.538             3.31           0.385           0.077
+
+spik_percent
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+ -999-20     10     2       8     0.200             3.90           0.600           0.100
+   20-30     14     3      11     0.214             5.21           0.571           0.357
+   30-40      7     4       3     0.571             4.14           0.429           0.286
+   40-50     12     7       5     0.583             3.08           0.333           0.083
+ 50-9999     27    13      14     0.481             3.15           0.370           0.111
+
+spik_post
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+     0-2     18     7      11     0.389             4.78           0.500           0.333
+     2-4     21    11      10     0.524             2.90           0.286           0.143
+     4-6     17     8       9     0.471             3.29           0.471           0.059
+     6-8      8     2       6     0.250             4.75           0.500           0.250
+    8-99      6     1       5     0.167             3.67           0.667           0.000
+
+field_size
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+    0-10     32    18      14     0.562             2.41           0.312           0.000
+   10-20     38    11      27     0.289             4.89           0.553           0.316
+
+========================================================================================================================
+TOPPSPIK #2
+========================================================================================================================
+
+spik_spike_score
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+-999-330      9     3       6     0.333             3.78           0.556           0.222
+ 330-350     17     7      10     0.412             3.12           0.412           0.118
+ 350-370     22    15       7     0.682             1.73           0.091           0.045
+ 370-390     16     8       8     0.500             3.19           0.312           0.188
+390-9999      6     3       3     0.500             2.83           0.333           0.167
+
+spik_total_score
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+-999-150     19     8      11     0.421             3.11           0.316           0.211
+ 150-160      9     5       4     0.556             2.56           0.333           0.000
+ 160-170     18     9       9     0.500             3.22           0.389           0.167
+ 170-180      8     3       5     0.375             3.38           0.375           0.250
+180-9999     16    11       5     0.688             1.62           0.125           0.000
+
+score_gap_1_2
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+  -999-5     11     6       5     0.545             2.09           0.182           0.000
+    5-10     16     9       7     0.562             3.00           0.312           0.188
+   10-15     10     4       6     0.400             3.20           0.400           0.200
+   15-20      6     2       4     0.333             2.67           0.333           0.000
+ 20-9999     27    15      12     0.556             2.74           0.296           0.148
+
+spike_gap_1_2
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+ -999-25     24    12      12     0.500             3.04           0.417           0.125
+   25-50     22    12      10     0.545             2.77           0.273           0.182
+   50-75     15     8       7     0.533             2.53           0.200           0.133
+  75-100      7     3       4     0.429             2.57           0.286           0.000
+100-9999      2     1       1     0.500             1.50           0.000           0.000
+
+spik_percent
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+ -999-20     20     2      18     0.100             4.40           0.600           0.250
+   20-30     11     8       3     0.727             2.55           0.182           0.182
+   30-40     12     6       6     0.500             2.83           0.333           0.167
+   40-50      5     4       1     0.800             1.20           0.000           0.000
+ 50-9999     22    16       6     0.727             1.68           0.136           0.000
+
+spik_post
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+     0-2     21    11      10     0.524             2.67           0.286           0.095
+     2-4     13     9       4     0.692             2.00           0.154           0.077
+     4-6     19    10       9     0.526             2.32           0.263           0.000
+     6-8     12     4       8     0.333             4.33           0.583           0.417
+    8-99      5     2       3     0.400             3.00           0.200           0.200
+
+field_size
+--------------------------------------------------------------------------------
+interval  picks  wins  losses  win_rate  avg_winner_rank  rank4plus_rate  rank7plus_rate
+    0-10     24    15       9     0.625             2.12           0.167           0.083
+   10-20     46    21      25     0.457             3.09           0.370           0.152
+
+Sparat en csv per faktor och Toppspik.
+PS C:\Users\Grinvald\Desktop\Ranking v85>
+
+
+
+
+Toppspik 1
+
+Ingen varning: 15/32 = 46,9 %
+Någon varning: 14/38 = 36,8 %
+Gul varning: 7/25 = 28,0 %
+Röd varning: 7/13 = 53,9 %
+
+Tolkning: gul varning ska visas/behållas. Den sänker tydligt. Röd varning verkar inte vara en faktisk stoppsignal för Toppspik 1 i nuvarande definition.
+
+Toppspik 2
+
+Ingen varning: 19/38 = 50,0 %
+Någon varning: 17/32 = 53,1 %
+Gul varning: 14/24 = 58,3 %
+Röd varning: 3/8 = 37,5 %
+
+Tolkning: För Toppspik 2 ska röd varning visas/behållas. Gul varning ska däremot inte vara negativ – den verkar snarare accepteras.
+
+Min slutsats just nu
+
+Vi ska inte ha samma varningslogik för Toppspik 1 och 2.
+
+Behåll/visa varning:
+
+Toppspik 1 + gul varning
+Toppspik 2 + röd varning
+
+Tona ner/ta bort som spikvarning:
+
+Toppspik 1 + röd varning
+Toppspik 2 + gul varning

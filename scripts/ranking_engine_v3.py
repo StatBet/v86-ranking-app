@@ -16,6 +16,7 @@ from scripts.speed_feature import (
 )
 
 from scripts.speed_ranking import speed_score
+
 from scripts.parser_v2 import parse_input as parse_input_v2
 from scripts.parser_atg_new import parse_new_atg_format
 from datetime import datetime
@@ -35,7 +36,7 @@ def parse_input(raw_data):
 
     return races
 
-def get_inactivity_score(horse):
+def get_inactivity_score(horse, reference_date=None):
     history = horse.get("history", [])
 
     if not history:
@@ -48,17 +49,33 @@ def get_inactivity_score(horse):
         return 0
 
     try:
-        latest_date_obj = datetime.strptime(latest_date, "%Y-%m-%d")
-        today = datetime.today()
+        latest_date_obj = datetime.strptime(
+            latest_date,
+            "%Y-%m-%d"
+        )
 
-        days_since_start = (today - latest_date_obj).days
+        if reference_date is None:
+            comparison_date = datetime.today()
 
-        if days_since_start > 60:
+        elif isinstance(reference_date, datetime):
+            comparison_date = reference_date
+
+        else:
+            comparison_date = datetime.strptime(
+                str(reference_date),
+                "%Y-%m-%d"
+            )
+
+        days_since_start = (
+            comparison_date - latest_date_obj
+        ).days
+
+        if days_since_start >= 120:
             return -10
 
         return 0
 
-    except:
+    except (ValueError, TypeError):
         return 0
 
 
@@ -174,7 +191,7 @@ def get_driver_score(driver):
     # Inställningar från sidebar
     min_starts = scoring_rules.get(
         "driver_min_starts",
-        70
+        100
     )
 
     mid_starts = scoring_rules.get(
@@ -353,9 +370,21 @@ def get_form_score(history):
 
         track_part = parts[0].strip()
 
+        placement_factor = {
+            "1": 1.0,
+            "2": 0.8,
+            "3": 0.65,
+            "4": 0.45,
+            "5": 0.3,
+            "0": 0.1,
+            "d": 0.0,
+        }
+
+        factor = placement_factor.get(placement, 0.1)
+
         for track_name, bonus in track_form_points.items():
             if track_part.startswith(track_name):
-                score += bonus
+                score += bonus * factor
                 break
 
     return score
@@ -965,23 +994,57 @@ def get_wagon_score(horse):
 
 # scripts/ranking_engine_v3.py
 def get_recent_prize_score(history):
-    total_prize = 0
+    score = 0
+
+    placement_factor = {
+        "1": 1.0,
+        "2": 0.8,
+        "3": 0.65,
+        "4": 0.45,
+        "5": 0.3,
+        "0": 0.1,
+        "d": 0.0,
+    }
+
+    prize_ranges = scoring_rules.get(
+        "recent_prize_ranges",
+        []
+    )
 
     for start in history[:5]:
         raw = start.get("raw", "")
+        parts = split_history_parts(raw)
+
+        if len(parts) < 3:
+            continue
+
+        placement = parts[2].strip().lower()
+        factor = placement_factor.get(placement, 0.1)
 
         match = re.search(r"(\d+)'", raw)
 
-        if match:
-            total_prize += int(match.group(1)) * 1000
+        if not match:
+            continue
 
-    score = 0
+        first_prize = int(match.group(1)) * 1000
+        race_points = 0
 
-    for row in scoring_rules.get("recent_prize_ranges", []):
-        if total_prize >= row["min"]:
-            score = row["points"]
+        for row in prize_ranges:
+            minimum = row["min"]
+            maximum = row.get("max")
 
-    return score
+            if first_prize < minimum:
+                continue
+
+            if maximum is not None and first_prize > maximum:
+                continue
+
+            race_points = row["points"]
+            break
+
+        score += race_points * factor
+
+    return round(score, 2)
 
 def get_class_change_score(history):
     class_scores = []
@@ -1049,8 +1112,16 @@ def get_class_change_score(history):
 
     return 0
 
-def add_dynamic_scores(horses, race, **kwargs):
+def add_dynamic_scores(
+    horses,
+    race,
+    race_date=None,
+    use_best_last3=True,
+    best_last3_points=None,
+    best_last3_threshold=0.1,
+):
 
+    
     target_distance = normalize_distance(
         race["distance"]
     )
@@ -1147,9 +1218,11 @@ def add_dynamic_scores(horses, race, **kwargs):
         scoring_rules.get("prize_money_points", []),
         scoring_rules.get("prize_money_group_threshold_percent", 4)
     )
+    
 
     for horse in horses:
 
+        
         horse["form_score"] = get_form_score(horse["history"])
         horse["latest_start_score"] = get_latest_start_score(horse["history"])
         horse["post_score"] = get_post_score(horse["post"], race)
@@ -1184,8 +1257,13 @@ def add_dynamic_scores(horses, race, **kwargs):
 
         horse["wagon_score"] = get_wagon_score(horse)
         horse["shoe_score"] = get_shoe_score(horse)
-        horse["inactivity_score"] = get_inactivity_score(horse)
+        horse["inactivity_score"] = get_inactivity_score(
+            horse,
+            reference_date=race_date
+        )
         horse["custom_score"] = get_custom_score(horse)
+
+        
 
     return horses
 

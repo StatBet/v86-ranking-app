@@ -14,7 +14,7 @@ def get_sum_loppbadge(horses):
 
     if total_sum <= 1165 or spike_sum <= 1097:
         badge = "🟢 Kompakt lopp"
-    elif total_sum >= 1538:
+    elif total_sum >= 1550:
         badge = "🔥 Skrällopp"
     else:
         badge = None

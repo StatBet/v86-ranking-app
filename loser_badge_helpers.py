@@ -1,3 +1,5 @@
+from chanslos_combo_badge import apply_chanslos_combo_badge
+
 def _num(value, default=0):
     try:
         return float(value)
@@ -123,5 +125,11 @@ def apply_loser_badges_to_race(horses):
 
         if is_loser_badge(h) and "🔴" not in h["badges"]:
             h["badges"].append("🔴")
+
+    horses = apply_chanslos_combo_badge(horses)
+
+    for h in horses:
+        if "🟥" in h.get("badges", []):
+            print("🟥", h.get("horse"))
 
     return horses

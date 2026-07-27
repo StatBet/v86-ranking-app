@@ -29,6 +29,12 @@
 "d": -5
 },
 
+"track_form_points": {
+    "Solvalla": 1,
+    "Åby": 1,
+    "Jägersro": 1
+},
+
 "latest_start_points": {
 "1": 10,
 "2": 7,
@@ -70,9 +76,9 @@
 },
 
 "recent_prize_ranges": [
-{"min": 100000, "points": 5},
-{"min": 150000, "points": 8},
-{"min": 200000, "points": 10},
-{"min": 300000, "points": 15}
+    {"min": 81000, "max": 99000, "points": 5},
+    {"min": 100000, "max": 149000, "points": 8},
+    {"min": 150000, "max": 500000, "points": 10},
+    {"min": 501000, "max": null, "points": 15}
 ]
 }

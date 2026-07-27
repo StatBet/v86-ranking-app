@@ -1,86 +1,182 @@
 {
   "Mats E Djuse": {
-    "starts": 733,
-    "win_percent": 19.9
-  },
-  "Carl Johan Jepson": {
-    "starts": 521,
-    "win_percent": 20.9
+    "starts": 1102,
+    "win_percent": 18.1
   },
   "Magnus A Djuse": {
-    "starts": 547,
+    "starts": 847,
+    "win_percent": 18.2
+  },
+  "Carl Johan Jepson": {
+    "starts": 752,
     "win_percent": 19.9
   },
   "Ulf Ohlsson": {
-    "starts": 677,
-    "win_percent": 12.7
-  },
-  "Johan Untersteiner": {
-    "starts": 277,
-    "win_percent": 28.2
+    "starts": 958,
+    "win_percent": 11.9
   },
   "Daniel Wäjersten": {
-    "starts": 239,
-    "win_percent": 27.6
-  },
-  "Rikard N Skoglund": {
-    "starts": 570,
-    "win_percent": 11.4
-  },
-  "Stefan Persson": {
-    "starts": 492,
-    "win_percent": 13.2
+    "starts": 394,
+    "win_percent": 27.9
   },
   "Björn Goop": {
-    "starts": 463,
-    "win_percent": 13.2
+    "starts": 699,
+    "win_percent": 15.3
   },
-  "Claes Sjöström": {
-    "starts": 364,
-    "win_percent": 13.2
+  "Rikard N Skoglund": {
+    "starts": 822,
+    "win_percent": 12.4
+  },
+  "Johan Untersteiner": {
+    "starts": 409,
+    "win_percent": 24.2
+  },
+  "Stefan Persson": {
+    "starts": 726,
+    "win_percent": 13.5
   },
   "Örjan Kihlström": {
-    "starts": 299,
-    "win_percent": 15.4
-  },
-  "Fredrik Plassen": {
-    "starts": 301,
-    "win_percent": 15.0
+    "starts": 508,
+    "win_percent": 16.5
   },
   "Marcus Lilius": {
-    "starts": 430,
-    "win_percent": 9.8
+    "starts": 669,
+    "win_percent": 10.2
+  },
+  "Claes Sjöström": {
+    "starts": 509,
+    "win_percent": 13.2
   },
   "Robert Bergh": {
-    "starts": 131,
-    "win_percent": 29.0
+    "starts": 231,
+    "win_percent": 24.7
   },
-  "Victor Rosleff": {
-    "starts": 464,
-    "win_percent": 7.8
-  },
-  "Dwight Pieters": {
-    "starts": 165,
-    "win_percent": 20.0
+  "Fredrik Plassen": {
+    "starts": 440,
+    "win_percent": 12.7
   },
   "André Eklundh": {
-    "starts": 210,
-    "win_percent": 14.3
+    "starts": 308,
+    "win_percent": 13.0
   },
-  "Jorma Kontio": {
-    "starts": 310,
-    "win_percent": 9.4
+  "Dwight Pieters": {
+    "starts": 245,
+    "win_percent": 16.3
+  },
+  "Ove A Lindqvist": {
+    "starts": 265,
+    "win_percent": 14.0
   },
   "Julian Cordeau": {
-    "starts": 119,
-    "win_percent": 23.5
+    "starts": 184,
+    "win_percent": 19.6
+  },
+  "Markus B Svedberg": {
+    "starts": 213,
+    "win_percent": 15.5
+  },
+  "Sandra Eriksson": {
+    "starts": 149,
+    "win_percent": 22.1
+  },
+  "Tyler Mifsud": {
+    "starts": 232,
+    "win_percent": 13.8
   },
   "Adrian Kolgjini": {
-    "starts": 164,
-    "win_percent": 15.9
+    "starts": 215,
+    "win_percent": 14.0
+  },
+  "Mika Forss": {
+    "starts": 235,
+    "win_percent": 11.9
+  },
+  "Christoffer Eriksson": {
+    "starts": 138,
+    "win_percent": 20.3
+  },
+  "Thomas Dalborg": {
+    "starts": 215,
+    "win_percent": 12.1
+  },
+  "Per Lennartsson": {
+    "starts": 227,
+    "win_percent": 11.5
+  },
+  "Peter Untersteiner": {
+    "starts": 195,
+    "win_percent": 13.3
+  },
+  "Daniel Redén": {
+    "starts": 132,
+    "win_percent": 18.9
   },
   "Conrad Lugauer": {
-    "starts": 84,
-    "win_percent": 20.2
+    "starts": 132,
+    "win_percent": 16.7
+  },
+  "Per Nordström": {
+    "starts": 139,
+    "win_percent": 15.1
+  },
+  "Kristian Lindberg": {
+    "starts": 127,
+    "win_percent": 16.5
+  },
+  "Joakim Lövgren": {
+  "starts": 100,
+  "win_percent": 21.0
+},
+  "Magnus Jakobsson": {
+    "starts": 195,
+    "win_percent": 10.3
+  },
+  "Hans Crebas": {
+    "starts": 145,
+    "win_percent": 13.8
+  },
+  "Hanna Olofsson": {
+    "starts": 155,
+    "win_percent": 12.3
+  },
+  "Jenny Engfors": {
+    "starts": 109,
+    "win_percent": 16.5
+  },
+  "Dante Kolgjini": {
+    "starts": 142,
+    "win_percent": 11.3
+  },
+  "Emilia Leo": {
+    "starts": 149,
+    "win_percent": 10.1
+  },
+  "Robert Dunder": {
+    "starts": 111,
+    "win_percent": 13.5
+  },
+  "Robert Skoglund": {
+    "starts": 106,
+    "win_percent": 14.2
+  },
+  "Bernardo Grasso": {
+    "starts": 121,
+    "win_percent": 12.4
+  },
+  "Markus Waldmüller": {
+    "starts": 132,
+    "win_percent": 10.6
+  },
+  "Andreas Lövdal": {
+    "starts": 105,
+    "win_percent": 13.3
+  },
+  "Ingvar Nyberg": {
+    "starts": 104,
+    "win_percent": 12.5
+  },
+  "Petter Lundberg": {
+    "starts": 118,
+    "win_percent": 11.0
   }
 }

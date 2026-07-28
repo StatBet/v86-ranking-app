@@ -8,7 +8,8 @@ from debug_live_lopp_sums import get_live_lopp_sum_debug
 #from loppbadge_sum_helpers import get_sum_loppbadge
 from badge_rules import (
     get_race_metrics,
-    get_loppbadge
+    get_loppbadge,
+    apply_model_probabilities,
 )
 
 
@@ -641,7 +642,7 @@ if uploaded_file is not None:
         )
 
         for idx, h in enumerate(horses, start=1):
-            h["model_rank"] = idx
+            h["display_rank"] = idx
 
         from rank68_badge_helpers import apply_rank68_badges
 
@@ -652,15 +653,20 @@ if uploaded_file is not None:
 
         metrics = get_race_metrics(horses)
         loppbadge = get_loppbadge(metrics)
+        horses = apply_model_probabilities(horses, loppbadge)
 
         
         rows = []
 
-        for h in horses:
+        for idx, h in enumerate(horses, start=1):
             rows.append({
+                "Rank": idx,
                 "Nr": h.get("number", 0),
-                "Spår": h.get("post", 0),
                 "Häst": h.get("horse", ""),
+                "Modellchans %": round(
+                    h.get("model_probability", 0),
+                    1
+                ),
                 "Badges": "  ".join(
                     b for b in h.get("badges", [])
                     if "Top5" not in b
@@ -668,8 +674,11 @@ if uploaded_file is not None:
                     and "Topp5" not in b
                     and "TOP5" not in b
                 ),
-                "SpikeScore": round(h.get("spike_score", 0), 1),
                 "Tot": h.get("total_score", 0),
+                "SpikeScore": round(
+                    h.get("spike_score", 0),
+                    1
+                ),
                 "Speed": h.get("speed_score", 0),
                 "AvgTid": h.get("avg_time", ""),
                 "Form": h.get("form_score", 0),
@@ -708,25 +717,38 @@ if uploaded_file is not None:
 
         with race_data["placeholder"].container():
 
-            if (
-                loppbadge["label"] != "Öppet lopp"
-                and not race_data["race"].get("primary_loppbadge")
-            ):
+            if loppbadge["label"] != "Öppet lopp":
                 st.success(
                     f"{'🟩' * loppbadge['main_group']} "
                     f"{loppbadge['label']} "
                     f"| {loppbadge['reason']}"
                 )
             else:
-                st.info("Öppet lopp")
+                st.info(
+                    f"Öppet lopp | {loppbadge['reason']}"
+                )
 
             st.dataframe(
                 df,
                 width="stretch",
                 hide_index=True,
                 column_config={
-                    "Nr": st.column_config.NumberColumn("Nr", pinned=True),
-                    "Spår": st.column_config.NumberColumn("Spår", pinned=True),
-                    "Häst": st.column_config.TextColumn("Häst", pinned=True)
+                    "Rank": st.column_config.NumberColumn(
+                        "Rank",
+                        pinned=True
+                    ),
+                    "Nr": st.column_config.NumberColumn(
+                        "Nr",
+                        pinned=True
+                    ),
+                    "Häst": st.column_config.TextColumn(
+                        "Häst",
+                        pinned=True
+                    ),
+                    "Modellchans %":
+                        st.column_config.NumberColumn(
+                            "Modellchans %",
+                            format="%.1f%%"
+                        )
                 }
             )

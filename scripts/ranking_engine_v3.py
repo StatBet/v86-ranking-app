@@ -387,7 +387,7 @@ def get_form_score(history):
                 score += bonus * factor
                 break
 
-    return score
+    return round(score)
 
 
 def get_latest_start_score(history):

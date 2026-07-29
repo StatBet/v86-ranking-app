@@ -531,24 +531,13 @@ if uploaded_file is not None:
 
         debug_sums = get_live_lopp_sum_debug(horses)
 
-        badge = None
-        badge_reason = None
+        is_compact = (
+            debug_sums["total_sum"] <= 1165
+            or debug_sums["spike_sum"] <= 1097
+        )
 
-        if debug_sums["total_sum"] <= 1165 or debug_sums["spike_sum"] <= 1097:
-            badge = "🟢 Kompakt lopp"
-            badge_reason = "Rank 1–3: 73% | Rank 4–5: 13% | Rank 6+: 14%"
-
-        elif debug_sums["total_sum"] >= 1550:
-            badge = "🔺 Skrällvarning"
-            badge_reason = "Rank 1–3: 41% | Rank 4–5: 15% | Rank 6+: 45%"
-
-        race["primary_loppbadge"] = None
-
-        if badge:
-            st.info(
-                f"{badge} | {badge_reason} | TotalSum: {debug_sums['total_sum']} | SpikeSum: {debug_sums['spike_sum']}"
-            )     
-            race["primary_loppbadge"] = badge  
+        race["is_compact"] = is_compact
+        race["debug_sums"] = debug_sums  
 
         #st.caption(
             #f"DEBUG lopp-summor | "        
@@ -653,7 +642,43 @@ if uploaded_file is not None:
 
         metrics = get_race_metrics(horses)
         loppbadge = get_loppbadge(metrics)
-        horses = apply_model_probabilities(horses, loppbadge)
+
+        is_compact = race_data["race"].get("is_compact", False)
+        debug_sums = race_data["race"].get("debug_sums", {})
+
+        is_open = loppbadge.get("label") == "Öppet lopp"
+        is_3horse = loppbadge.get("label") == "3-hästarslopp"
+
+        if is_open:
+            primary_race_type = "OPEN"
+        elif is_compact:
+            primary_race_type = "COMPACT"
+        elif is_3horse:
+            primary_race_type = "3HORSE"
+        else:
+            primary_race_type = "STANDARD"
+
+        if primary_race_type == "OPEN":
+            probability_badge = {
+                "label": "Öppet lopp"
+            }
+
+        elif primary_race_type == "COMPACT":
+            probability_badge = {
+                "label": "Kompakt lopp"
+            }
+
+        elif primary_race_type == "3HORSE":
+            probability_badge = {
+                "label": "3-hästarslopp"
+            }
+
+        else:
+            probability_badge = {
+                "label": "Öppet lopp"
+            }    
+
+        horses = apply_model_probabilities(horses, probability_badge)
 
         
         rows = []
@@ -717,15 +742,22 @@ if uploaded_file is not None:
 
         with race_data["placeholder"].container():
 
-            if loppbadge["label"] != "Öppet lopp":
-                st.success(
-                    f"{'🟩' * loppbadge['main_group']} "
-                    f"{loppbadge['label']} "
-                    f"| {loppbadge['reason']}"
-                )
-            else:
+            if primary_race_type == "OPEN":
                 st.info(
-                    f"Öppet lopp | {loppbadge['reason']}"
+                    f"🔵 Öppet lopp | {loppbadge.get('reason', '')}"
+                )
+
+            elif primary_race_type == "COMPACT":
+                st.success(
+                    "🟢 Kompakt lopp | "
+                    "Rank 1–3: 73% | Rank 4–5: 13% | Rank 6+: 14% | "
+                    f"TotalSum: {debug_sums.get('total_sum', '-')} | "
+                    f"SpikeSum: {debug_sums.get('spike_sum', '-')}"
+                )
+
+            elif primary_race_type == "3HORSE":
+                st.success(
+                    f"🟩🟩🟩 3-hästarslopp | {loppbadge.get('reason', '')}"
                 )
 
             st.dataframe(

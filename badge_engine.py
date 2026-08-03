@@ -1,3 +1,5 @@
+from live_hybrid_spike_engine import get_hybrid_round_spikes
+
 def is_back_post_large_field(horse, race):
     start_type = str(race.get("start", "") or race.get("start_type", "")).lower()
     field_size = len(race.get("horses", [])) if race.get("horses") else race.get("field_size", 0)
@@ -216,80 +218,9 @@ def assign_badges(horses, race):
 
 
 def get_round_spikes(all_races):
-    candidates = []
-
-    for race_data in all_races:
-        race = race_data["race"]
-        horses = race_data["horses"]
-
-        if not horses:
-            continue
-
-        race_for_badges = dict(race)
-        race_for_badges["horses"] = horses
-
-        for horse in horses:
-            horse["badges"] = [
-                badge for badge in horse.get("badges", [])
-                if badge not in ["🟩 Toppspik", "🟦 Spik"]
-            ]
-
-            horse["spike_score"] = calculate_spike_score(
-                horse,
-                race_for_badges
-            )
-
-        ranked = _rank_horses_by_total_score(horses)
-
-        apply_system_only_value_flags(horses, race_for_badges)
-
-        best_horse = ranked[0]
-
-        if len(ranked) > 1:
-            rank1 = ranked[0]
-            rank2 = ranked[1]
-
-            score_gap = (
-                rank1.get("total_score", 0)
-                - rank2.get("total_score", 0)
-            )
-
-            if (
-                rank1.get("post", 99) >= 6
-                and rank2.get("post", 99) <= 8
-                and score_gap < 10
-            ):
-                best_horse = rank2
-
-        best_horse["spike_score"] = calculate_spike_score(
-            best_horse,
-            race_for_badges
-        )
-
-        # Preserve system-only warning fields on the selected spik candidate
-        best_horse["spik_warning_yellow"] = bool(
-            best_horse.get("race_has_value_candidate", False)
-        )
-        best_horse["spik_warning_red"] = bool(
-            best_horse.get("race_has_value_candidate", False)
-            and best_horse.get("score_gap_1_2") is not None
-            and best_horse.get("score_gap_1_2") < 10
-        )
-
-        candidates.append(best_horse)
-
-    selected = sorted(
-        candidates,
-        key=lambda h: h.get("spike_score", 0),
-        reverse=True
-    )[:4]
-
-    for i, horse in enumerate(selected):
-        if i < 2:
-            horse.setdefault("badges", []).append("🟩 Toppspik")
-            horse["spike_badge_type"] = "Toppspik"
-        else:
-            horse.setdefault("badges", []).append("🟦 Spik")
-            horse["spike_badge_type"] = "Spik"
-
-    return selected
+    return get_hybrid_round_spikes(
+        all_races=all_races,
+        calculate_spike_score=calculate_spike_score,
+        rank_horses=_rank_horses_by_total_score,
+        apply_value_flags=apply_system_only_value_flags,
+    )

@@ -567,6 +567,147 @@ if uploaded_file is not None:
         })
 
     top_spikes = get_round_spikes(processed_races)
+    # Endast visning – påverkar inte hybridmotorn eller spikvalen.
+    hybrid_audit_rows = []
+
+    for race_data in processed_races:
+        race = race_data["race"]
+
+        ranked_horses = sorted(
+            race_data["horses"],
+            key=lambda horse: horse.get("total_score", 0),
+            reverse=True,
+        )
+
+        if not ranked_horses:
+            continue
+
+        rank1 = ranked_horses[0]
+
+        metrics = get_race_metrics(ranked_horses)
+        loppbadge = get_loppbadge(metrics)
+
+        spike_percent = rank1.get(
+            "hybrid_spike_percent"
+        )
+
+        environment_percent = rank1.get(
+            "hybrid_environment_percent"
+        )
+
+        available_percentages = [
+            float(value)
+            for value in [
+                spike_percent,
+                environment_percent,
+            ]
+            if value is not None
+        ]
+
+        best_percent = (
+            max(available_percentages)
+            if available_percentages
+            else None
+        )
+
+        selected_position = rank1.get(
+            "hybrid_spike_position"
+        )
+
+        hybrid_audit_rows.append({
+            "Avd": race.get("race_no", ""),
+            "Rank 1": rank1.get(
+                "horse",
+                rank1.get("name", ""),
+            ),
+            "Lopptyp": loppbadge.get(
+                "label",
+                "Okänd",
+            ),
+            "Spread 1–8": round(
+                float(metrics.get("spread_1_8", 0)),
+                1,
+            ),
+            "Score gap 1–2": round(
+                float(metrics.get("gap_1_2", 0)),
+                1,
+            ),
+            "Spike %": (
+                round(float(spike_percent), 2)
+                if spike_percent is not None
+                else None
+            ),
+            "Miljö %": (
+                round(float(environment_percent), 2)
+                if environment_percent is not None
+                else None
+            ),
+            "Bästa motor": (
+                "ENVIRONMENT"
+                if (
+                    environment_percent is not None
+                    and (
+                        spike_percent is None
+                        or float(environment_percent)
+                        > float(spike_percent)
+                    )
+                )
+                else "SPIKE"
+            ),
+            "Bästa %": (
+                round(best_percent, 2)
+                if best_percent is not None
+                else None
+            ),
+
+            "Spike match": (
+                "JA"
+                if rank1.get(
+                    "hybrid_spike_profile_matched",
+                    False,
+                )
+                else "NEJ"
+            ),
+            "Spikeprofil": rank1.get(
+                "hybrid_spike_profile",
+                "",
+            ),
+            
+            "Vald": (
+                "JA"
+                if selected_position is not None
+                else "NEJ"
+            ),
+            "Spikplats": selected_position or "",
+        })
+
+    SHOW_HYBRID_DEBUG = False
+
+    if SHOW_HYBRID_DEBUG:
+        with st.expander(
+            "🔍 Hybridkontroll – alla lopp",
+            expanded=True,
+        ):
+            hybrid_audit_df = pd.DataFrame(
+                hybrid_audit_rows
+            )
+
+            if not hybrid_audit_df.empty:
+                hybrid_audit_df = (
+                    hybrid_audit_df
+                    .sort_values(
+                        ["Bästa %", "Avd"],
+                        ascending=[False, True],
+                    )
+                    .reset_index(drop=True)
+                )
+
+                st.dataframe(
+                    hybrid_audit_df,
+                    width="stretch",
+                    hide_index=True,
+                )
+
 
     with summary_placeholder.container():
         st.subheader("🎯 Omgångens spikförslag")
@@ -577,29 +718,30 @@ if uploaded_file is not None:
 
             badge = "🟩 Toppspik" if i <= 2 else "🟦 Spik"
 
-            if i == 1:
-                if horse.get("spik_warning_yellow", False):
-                    chance_text = "🟨 **Spikchans: 28%**"
-                elif horse.get("spik_warning_red", False):
-                    chance_text = "**Spikchans: 54%**"
-                else:
-                    chance_text = "**Spikchans: 47%**"
+            selected_engine = horse.get(
+                "hybrid_selected_engine",
+                "UNKNOWN"
+            )
 
-            elif i == 2:
-                if horse.get("spik_warning_red", False):
-                    chance_text = "🟥 **Spikchans: 38%**"
-                elif horse.get("spik_warning_yellow", False):
-                    chance_text = "**Spikchans: 58%**"
-                else:
-                    chance_text = "**Spikchans: 50%**"
+            selected_percent = horse.get(
+                "hybrid_selected_percent"
+            )
 
-            elif i == 3:
-                if horse.get("spik_warning_yellow", False):
-                    chance_text = "**Spikchans: 46%**"
-                elif horse.get("spik_warning_red", False):
-                    chance_text = "**Spikchans: 40%**"
-                else:
-                    chance_text = "**Spikchans: 33%**"
+            if selected_percent is not None:
+                chance_text = (
+                    f"**Hybridchans: {float(selected_percent):.1f}%** "
+                    f"({selected_engine})"
+                )
+            else:
+                chance_text = "**Hybridchans: saknas**"
+
+            st.caption(
+                f"Hybridmotor: {selected_engine} | "
+                f"Spikeprofil: "
+                f"{horse.get('hybrid_spike_percent', 'saknas')} | "
+                f"Rank1-miljö: "
+                f"{horse.get('hybrid_environment_percent', 'saknas')}"
+            )
 
             value_names = horse.get("value_candidate_names", [])
             value_text = ""

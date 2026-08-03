@@ -1,3 +1,6 @@
 streamlit
 pandas
 python-docx
+numpy
+joblib
+scikit-learn

@@ -761,6 +761,75 @@ def get_hybrid_round_spikes(
             }
         )
 
+    # -------------------------------------------------
+    # DEBUG: ALLA KANDIDATER FÖRE TOPP 3
+    # -------------------------------------------------
+
+    debug_dir = ROOT / "output" / "live_hybrid_debug"
+    debug_dir.mkdir(parents=True, exist_ok=True)
+
+    candidate_rows = []
+
+    for candidate in candidates:
+        horse = candidate["horse"]
+
+        candidate_rows.append(
+            {
+                "Avd": candidate["race_no"],
+                "Häst": horse.get(
+                    "horse",
+                    horse.get("name", ""),
+                ),
+                "Motor": candidate["engine"],
+                "Kandidat %": candidate["percent"],
+                "Observationer": candidate["observations"],
+                "Spike %": horse.get("hybrid_spike_percent"),
+                "Miljö %": horse.get(
+                    "hybrid_environment_percent"
+                ),
+                "Totalrank": horse.get(
+                    "_model_rank_live",
+                    horse.get("model_rank"),
+                ),
+                "Score": horse.get("total_score"),
+                "SpikeScore": horse.get("spike_score"),
+                "Spel %": horse.get("percent"),
+                "Leaf": horse.get(
+                    "hybrid_environment_leaf_id"
+                ),
+                "Spikeprofil": horse.get(
+                    "hybrid_spike_profile"
+                ),
+            }
+        )
+
+    candidate_debug = pd.DataFrame(candidate_rows)
+
+    candidate_debug = candidate_debug.sort_values(
+        [
+            "Kandidat %",
+            "Observationer",
+            "SpikeScore",
+            "Score",
+            "Avd",
+            "Motor",
+        ],
+        ascending=[
+            False,
+            False,
+            False,
+            False,
+            True,
+            True,
+        ],
+    )
+
+    candidate_debug.to_csv(
+        debug_dir / "latest_round_all_candidates.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
     ordered = sorted(
         candidates,
         key=lambda candidate: (
@@ -819,5 +888,36 @@ def get_hybrid_round_spikes(
                 [],
             ).append("🟦 Spik")
             horse["spike_badge_type"] = "Spik"
+
+    # -------------------------------------------------
+    # DEBUG EXPORT
+    # -------------------------------------------------
+
+    debug_dir = ROOT / "output" / "live_hybrid_debug"
+    debug_dir.mkdir(parents=True, exist_ok=True)
+
+    debug_rows = []
+
+    for horse in selected:
+        debug_rows.append(
+            {
+                "Avd": horse.get("race_no"),
+                "Häst": horse.get("horse", horse.get("name")),
+                "Motor": horse.get("hybrid_selected_engine"),
+                "Hybrid %": horse.get("hybrid_selected_percent"),
+                "Spike %": horse.get("hybrid_spike_percent"),
+                "Miljö %": horse.get("hybrid_environment_percent"),
+                "Rank": horse.get("_model_rank_live", horse.get("model_rank")),
+                "Score": horse.get("total_score"),
+                "SpikeScore": horse.get("spike_score"),
+                "Spel %": horse.get("percent"),
+            }
+        )
+
+    pd.DataFrame(debug_rows).to_csv(
+        debug_dir / "latest_round_selected.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
 
     return selected

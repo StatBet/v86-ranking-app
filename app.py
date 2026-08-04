@@ -12,6 +12,9 @@ from badge_rules import (
     apply_model_probabilities,
 )
 
+from live_rank_probability_engine_v2 import (
+    assign_rank_probabilities,
+)
 
 
 from scripts.ranking_engine_v3 import (
@@ -862,7 +865,45 @@ if uploaded_file is not None:
                 "label": "Öppet lopp"
             }    
 
-        horses = apply_model_probabilities(horses, probability_badge)
+        rank1_horse = horses[0] if horses else {}
+
+        leaf_id = rank1_horse.get(
+            "hybrid_environment_leaf_id",
+            rank1_horse.get(
+                "rank1_environment_leaf_id"
+            ),
+        )
+
+        spike_percent = rank1_horse.get(
+            "hybrid_spike_percent"
+        )
+
+        environment_percent = rank1_horse.get(
+            "hybrid_environment_percent"
+        )
+
+        available_percentages = [
+            float(value)
+            for value in [
+                spike_percent,
+                environment_percent,
+            ]
+            if value is not None
+        ]
+
+        hybrid_rank1_percent = (
+            max(available_percentages)
+            if available_percentages
+            else None
+        )
+
+        probability_result = assign_rank_probabilities(
+            horses=horses,
+            leaf_id=leaf_id,
+            hybrid_rank1_percent=hybrid_rank1_percent,
+        )
+
+        horses = probability_result["horses"]
 
         
         rows = []
@@ -873,8 +914,11 @@ if uploaded_file is not None:
                 "Nr": h.get("number", 0),
                 "Häst": h.get("horse", ""),
                 "Modellchans %": round(
-                    h.get("model_probability", 0),
-                    1
+                    h.get(
+                        "rank_probability_percent",
+                        0,
+                    ),
+                    1,
                 ),
                 "Badges": "  ".join(
                     b for b in h.get("badges", [])

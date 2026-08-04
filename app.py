@@ -785,6 +785,48 @@ if uploaded_file is not None:
         metrics = get_race_metrics(horses)
         loppbadge = get_loppbadge(metrics)
 
+        rank1_horse = horses[0] if horses else {}
+
+        leaf_id = rank1_horse.get(
+            "hybrid_environment_leaf_id"
+        )
+
+        try:
+            leaf_id = int(leaf_id)
+        except (TypeError, ValueError):
+            leaf_id = None
+
+        environment_badges = {
+            20: {
+                "type": "success",
+                "text": "🟢 Favoritmiljö | Rank 1–3: 76%",
+            },
+            19: {
+                "type": "success",
+                "text": "🟢 Favoritmiljö | Rank 1–3: 73%",
+            },
+            8: {
+                "type": "info",
+                "text": "🔵 Kompakt miljö | Rank 1–5: 80%",
+            },
+            4: {
+                "type": "warning",
+                "text": "🟠 Jämnt lopp | Rank 6+: 33%",
+            },
+            10: {
+                "type": "warning",
+                "text": "🟠 Skrällmiljö | Rank 6+: 31%",
+            },
+            5: {
+                "type": "error",
+                "text": "🔴 Kaosmiljö | Rank 6+: 43%",
+            },
+        }
+
+        environment_badge = environment_badges.get(
+            leaf_id
+        )
+
         is_compact = race_data["race"].get("is_compact", False)
         debug_sums = race_data["race"].get("debug_sums", {})
 
@@ -884,24 +926,22 @@ if uploaded_file is not None:
 
         with race_data["placeholder"].container():
 
-            if primary_race_type == "OPEN":
-                st.info(
-                    f"🔵 Öppet lopp | {loppbadge.get('reason', '')}"
-                )
+            if environment_badge:
+                badge_type = environment_badge["type"]
+                badge_text = environment_badge["text"]
 
-            elif primary_race_type == "COMPACT":
-                st.success(
-                    "🟢 Kompakt lopp | "
-                    "Rank 1–3: 73% | Rank 4–5: 13% | Rank 6+: 14% | "
-                    f"TotalSum: {debug_sums.get('total_sum', '-')} | "
-                    f"SpikeSum: {debug_sums.get('spike_sum', '-')}"
-                )
+                if badge_type == "success":
+                    st.success(badge_text)
 
-            elif primary_race_type == "3HORSE":
-                st.success(
-                    f"🟩🟩🟩 3-hästarslopp | {loppbadge.get('reason', '')}"
-                )
+                elif badge_type == "info":
+                    st.info(badge_text)
 
+                elif badge_type == "warning":
+                    st.warning(badge_text)
+
+                elif badge_type == "error":
+                    st.error(badge_text)
+            
             st.dataframe(
                 df,
                 width="stretch",

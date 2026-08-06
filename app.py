@@ -47,7 +47,7 @@ try:
             "offset": 0,
         },
     )
-    st.success("Supabase-anslutning fungerar.")
+    
 except Exception as error:
     st.error(f"Supabase-anslutning misslyckades: {error}")
     st.stop()

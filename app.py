@@ -34,6 +34,9 @@ st.title("V86 Ranking App")
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 
+st.write("SUPABASE_URL:", SUPABASE_URL)
+st.write("SUPABASE_KEY:", SUPABASE_KEY)
+
 supabase = create_client(
     SUPABASE_URL,
     SUPABASE_KEY,

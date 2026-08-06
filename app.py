@@ -399,17 +399,55 @@ with st.sidebar.expander("Tillägg distans"):
         "sidebar_dist_2640"
     )
 
+st.subheader("📚 Startfiler")
+
+try:
+    files = supabase.storage.from_("startfiler").list(
+        "",
+        {
+            "limit": 1000,
+            "offset": 0,
+        },
+    )
+
+    file_names = sorted(
+        [
+            file["name"]
+            for file in files
+            if file.get("name", "").lower().endswith(".txt")
+        ],
+        reverse=True,
+    )
+
+except Exception as error:
+    st.error(f"Kunde inte läsa startfiler:\n\n{error}")
+    file_names = []
+
+
+selected_library_file = st.selectbox(
+    "Välj en sparad startfil",
+    options=["— Välj fil —"] + file_names,
+    key="supabase_startfile_select",
+)
+
 
 uploaded_file = st.file_uploader(
     "Ladda upp startlista (.txt eller .docx)",
     type=["txt", "docx"],
-    key="main_file_uploader"
+    key="main_file_uploader",
 )
 
 
+raw_data = None
+source_name = None
+
+
+# En lokalt uppladdad fil har företräde.
 if uploaded_file is not None:
 
-    if uploaded_file.name.endswith(".txt"):
+    source_name = uploaded_file.name
+
+    if uploaded_file.name.lower().endswith(".txt"):
         file_bytes = uploaded_file.getvalue()
 
         try:
@@ -422,6 +460,30 @@ if uploaded_file is not None:
     else:
         raw_data = read_docx(uploaded_file)
         raw_data = clean_atg_header(raw_data)
+
+
+# Om ingen lokal fil är uppladdad kan en fil från biblioteket användas.
+elif selected_library_file != "— Välj fil —":
+
+    source_name = selected_library_file
+
+    try:
+        file_bytes = supabase.storage.from_("startfiler").download(
+            selected_library_file
+        )
+
+        try:
+            raw_data = file_bytes.decode("utf-8")
+        except UnicodeDecodeError:
+            raw_data = file_bytes.decode("latin-1")
+
+        raw_data = clean_atg_header(raw_data)
+
+    except Exception as error:
+        st.error(f"Kunde inte hämta startfilen:\n\n{error}")
+
+
+if raw_data is not None:
 
     races = parse_input(raw_data)
 
@@ -441,6 +503,35 @@ if uploaded_file is not None:
         and r["race"].get("distance", 0) > 0
         and r["race"].get("start") != "unknown"
     ]
+
+
+    # Spara automatiskt en giltig lokalt uppladdad TXT-fil i Supabase.
+    if (
+        uploaded_file is not None
+        and uploaded_file.name.lower().endswith(".txt")
+        and races
+        and uploaded_file.name not in file_names
+    ):
+        try:
+            supabase.storage.from_("startfiler").upload(
+                path=uploaded_file.name,
+                file=uploaded_file.getvalue(),
+                file_options={
+                    "content-type": "text/plain",
+                },
+            )
+
+            st.success(
+                f"☁️ {uploaded_file.name} sparades automatiskt "
+                "i det gemensamma biblioteket."
+            )
+
+        except Exception as error:
+            st.warning(
+                "Rankingen kan fortsätta, men filen kunde inte sparas "
+                f"i biblioteket:\n\n{error}"
+            )
+
 
     all_spike_candidates = []
 

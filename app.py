@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import docx
 from datetime import datetime
+from supabase import create_client
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
 from loser_badge_helpers import apply_loser_badges_to_race
 from debug_live_lopp_sums import get_live_lopp_sum_debug
@@ -29,6 +30,27 @@ from scripts.parser_atg_new import parse_new_atg_format
 
 st.set_page_config(page_title="V86 Ranking App", layout="wide")
 st.title("V86 Ranking App")
+
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+
+supabase = create_client(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+)
+
+try:
+    supabase.storage.from_("startfiler").list(
+        "",
+        {
+            "limit": 1,
+            "offset": 0,
+        },
+    )
+    st.success("Supabase-anslutning fungerar.")
+except Exception as error:
+    st.error(f"Supabase-anslutning misslyckades: {error}")
+    st.stop()
 
 
 def read_docx(file):

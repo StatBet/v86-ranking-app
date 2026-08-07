@@ -1,0 +1,734 @@
+﻿leaf_group,parameters,signature,skrallwinner_hits,skrallwinner_coverage,all_horse_matches
+Leaf 4,2,driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,11,22.448979591836736,606
+Leaf 4,2,spike_score_race_rank<=Top3 + place_score_race_rank<=Top3,9,18.367346938775512,590
+Leaf 4,2,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3,9,18.367346938775512,433
+Leaf 4,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top3,9,18.367346938775512,526
+Leaf 4,2,win_score_race_rank<=Top3 + place_score_race_rank<=Top3,9,18.367346938775512,734
+Leaf 4,2,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3,8,16.3265306122449,315
+Leaf 4,2,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3,8,16.3265306122449,429
+Leaf 4,2,driver_score_race_rank<=Top2 + starts_score_race_rank<=Top3,8,16.3265306122449,453
+Leaf 4,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,8,16.3265306122449,353
+Leaf 4,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top3,7,14.285714285714285,490
+Leaf 4,2,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3,7,14.285714285714285,359
+Leaf 4,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top3,7,14.285714285714285,418
+Leaf 4,2,driver_score_race_rank<=Top2 + starts_score_race_rank<=Top2,7,14.285714285714285,341
+Leaf 4,2,driver_score_race_rank<=Top3 + starts_score_race_rank<=Top2,7,14.285714285714285,436
+Leaf 4,2,win_score_race_rank<=Top2 + place_score_race_rank<=Top3,7,14.285714285714285,578
+Leaf 4,2,spike_score_race_rank<=Top2 + place_score_race_rank<=Top3,6,12.244897959183673,447
+Leaf 4,2,spike_score_race_rank<=Top3 + place_score_race_rank<=Top2,6,12.244897959183673,457
+Leaf 4,2,spike_score_race_rank<=Top3 + starts_score_race_rank<=Top3,6,12.244897959183673,267
+Leaf 4,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top3,6,12.244897959183673,314
+Leaf 4,2,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top3,6,12.244897959183673,287
+Leaf 4,2,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top2,6,12.244897959183673,357
+Leaf 4,2,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3,6,12.244897959183673,488
+Leaf 4,2,driver_score_race_rank<=Top1 + starts_score_race_rank<=Top3,6,12.244897959183673,302
+Leaf 4,2,driver_score_race_rank<=Top2 + starts_score_race_rank<=Top1,6,12.244897959183673,226
+Leaf 4,2,driver_score_race_rank<=Top3 + starts_score_race_rank<=Top1,6,12.244897959183673,291
+Leaf 4,2,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2,5,10.204081632653061,222
+Leaf 4,2,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3,5,10.204081632653061,309
+Leaf 4,2,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3,5,10.204081632653061,395
+Leaf 4,2,spike_score_race_rank<=Top3 + record_score_race_rank<=Top3,5,10.204081632653061,276
+Leaf 4,2,spike_score_race_rank<=Top2 + win_score_race_rank<=Top2,5,10.204081632653061,422
+Leaf 4,2,spike_score_race_rank<=Top2 + win_score_race_rank<=Top3,5,10.204081632653061,484
+Leaf 4,2,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2,5,10.204081632653061,512
+Leaf 4,2,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3,5,10.204081632653061,635
+Leaf 4,2,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top3,5,10.204081632653061,180
+Leaf 4,2,speed_score_race_rank<=Top2 + place_score_race_rank<=Top3,5,10.204081632653061,271
+Leaf 4,2,speed_score_race_rank<=Top3 + place_score_race_rank<=Top3,5,10.204081632653061,384
+Leaf 4,2,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top2,5,10.204081632653061,294
+Leaf 4,2,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top1,5,10.204081632653061,244
+Leaf 4,2,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3,5,10.204081632653061,514
+Leaf 4,2,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3,5,10.204081632653061,407
+Leaf 4,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top3,5,10.204081632653061,350
+Leaf 4,2,driver_score_race_rank<=Top3 + form_score_race_rank<=Top3,5,10.204081632653061,336
+Leaf 4,2,driver_score_race_rank<=Top1 + starts_score_race_rank<=Top2,5,10.204081632653061,228
+Leaf 4,2,win_score_race_rank<=Top2 + place_score_race_rank<=Top2,5,10.204081632653061,466
+Leaf 4,2,win_score_race_rank<=Top3 + place_score_race_rank<=Top2,5,10.204081632653061,557
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3,5,10.204081632653061,293
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,5,10.204081632653061,353
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,5,10.204081632653061,394
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,5,10.204081632653061,403
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,5,10.204081632653061,479
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,5,10.204081632653061,182
+Leaf 4,2,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2,4,8.16326530612245,338
+Leaf 4,2,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top3,4,8.16326530612245,370
+Leaf 4,2,spike_score_race_rank<=Top3 + record_score_race_rank<=Top2,4,8.16326530612245,193
+Leaf 4,2,spike_score_race_rank<=Top2 + win_score_race_rank<=Top1,4,8.16326530612245,274
+Leaf 4,2,spike_score_race_rank<=Top3 + win_score_race_rank<=Top1,4,8.16326530612245,313
+Leaf 4,2,spike_score_race_rank<=Top2 + place_score_race_rank<=Top2,4,8.16326530612245,366
+Leaf 4,2,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3,4,8.16326530612245,209
+Leaf 4,2,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3,4,8.16326530612245,306
+Leaf 4,2,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top2,4,8.16326530612245,152
+Leaf 4,2,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top2,4,8.16326530612245,253
+Leaf 4,2,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top2,4,8.16326530612245,335
+Leaf 4,2,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top2,4,8.16326530612245,234
+Leaf 4,2,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top1,4,8.16326530612245,202
+Leaf 4,2,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3,4,8.16326530612245,442
+Leaf 4,2,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2,4,8.16326530612245,386
+Leaf 4,2,latest_start_score_race_rank<=Top1 + place_score_race_rank<=Top3,4,8.16326530612245,343
+Leaf 4,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top1,4,8.16326530612245,251
+Leaf 4,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top2,4,8.16326530612245,388
+Leaf 4,2,driver_score_race_rank<=Top3 + win_score_race_rank<=Top3,4,8.16326530612245,499
+Leaf 4,2,driver_score_race_rank<=Top3 + place_score_race_rank<=Top3,4,8.16326530612245,449
+Leaf 4,2,driver_score_race_rank<=Top1 + starts_score_race_rank<=Top1,4,8.16326530612245,149
+Leaf 4,2,form_score_race_rank<=Top3 + starts_score_race_rank<=Top3,4,8.16326530612245,370
+Leaf 4,2,record_score_race_rank<=Top3 + place_score_race_rank<=Top3,4,8.16326530612245,360
+Leaf 4,2,win_score_race_rank<=Top1 + place_score_race_rank<=Top3,4,8.16326530612245,351
+Leaf 4,2,win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,4,8.16326530612245,214
+Leaf 4,2,win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,4,8.16326530612245,371
+Leaf 4,2,place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,4,8.16326530612245,211
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3,4,8.16326530612245,251
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,4,8.16326530612245,242
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,4,8.16326530612245,262
+Leaf 4,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,4,8.16326530612245,141
+Leaf 4,3,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3,4,8.16326530612245,107
+Leaf 4,3,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3,4,8.16326530612245,145
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,4,8.16326530612245,118
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,4,8.16326530612245,176
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top3,4,8.16326530612245,152
+Leaf 4,3,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,4,8.16326530612245,344
+Leaf 4,2,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top1,3,6.122448979591836,133
+Leaf 4,2,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3,3,6.122448979591836,276
+Leaf 4,2,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top1,3,6.122448979591836,290
+Leaf 4,2,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top2,3,6.122448979591836,282
+Leaf 4,2,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3,3,6.122448979591836,459
+Leaf 4,2,spike_score_race_rank<=Top3 + record_score_race_rank<=Top1,3,6.122448979591836,112
+Leaf 4,2,spike_score_race_rank<=Top1 + place_score_race_rank<=Top3,3,6.122448979591836,246
+Leaf 4,2,spike_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,153
+Leaf 4,2,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top1,3,6.122448979591836,65
+Leaf 4,2,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2,3,6.122448979591836,81
+Leaf 4,2,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3,3,6.122448979591836,100
+Leaf 4,2,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top1,3,6.122448979591836,136
+Leaf 4,2,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2,3,6.122448979591836,164
+Leaf 4,2,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top1,3,6.122448979591836,202
+Leaf 4,2,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2,3,6.122448979591836,241
+Leaf 4,2,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top1,3,6.122448979591836,97
+Leaf 4,2,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top1,3,6.122448979591836,165
+Leaf 4,2,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top1,3,6.122448979591836,220
+Leaf 4,2,speed_score_race_rank<=Top2 + place_score_race_rank<=Top2,3,6.122448979591836,181
+Leaf 4,2,speed_score_race_rank<=Top3 + place_score_race_rank<=Top2,3,6.122448979591836,258
+Leaf 4,2,speed_score_race_rank<=Top1 + starts_score_race_rank<=Top3,3,6.122448979591836,163
+Leaf 4,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top1,3,6.122448979591836,218
+Leaf 4,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,6.122448979591836,359
+Leaf 4,2,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top1,3,6.122448979591836,161
+Leaf 4,2,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3,3,6.122448979591836,404
+Leaf 4,2,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3,3,6.122448979591836,468
+Leaf 4,2,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2,3,6.122448979591836,338
+Leaf 4,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top1,3,6.122448979591836,168
+Leaf 4,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top2,3,6.122448979591836,258
+Leaf 4,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top1,3,6.122448979591836,197
+Leaf 4,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,6.122448979591836,311
+Leaf 4,2,driver_score_race_rank<=Top2 + form_score_race_rank<=Top3,3,6.122448979591836,266
+Leaf 4,2,driver_score_race_rank<=Top3 + win_score_race_rank<=Top2,3,6.122448979591836,375
+Leaf 4,2,form_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,495
+Leaf 4,2,form_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,235
+Leaf 4,2,record_score_race_rank<=Top2 + place_score_race_rank<=Top3,3,6.122448979591836,257
+Leaf 4,2,record_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,471
+Leaf 4,2,record_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,673
+Leaf 4,2,win_score_race_rank<=Top1 + place_score_race_rank<=Top2,3,6.122448979591836,295
+Leaf 4,2,win_score_race_rank<=Top2 + place_score_race_rank<=Top1,3,6.122448979591836,297
+Leaf 4,2,win_score_race_rank<=Top3 + place_score_race_rank<=Top1,3,6.122448979591836,358
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + place_score_race_rank<=Top3,3,6.122448979591836,152
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,213
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,73
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,100
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2,3,6.122448979591836,218
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3,3,6.122448979591836,241
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2,3,6.122448979591836,254
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3,3,6.122448979591836,305
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,223
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top1 + place_score_race_rank<=Top3,3,6.122448979591836,213
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,121
+Leaf 4,3,spike_score_race_rank<=Top3 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,174
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top2,3,6.122448979591836,208
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top2,3,6.122448979591836,296
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top2,3,6.122448979591836,326
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top2,3,6.122448979591836,222
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top2,3,6.122448979591836,330
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top2,3,6.122448979591836,383
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,79
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,106
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,105
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,153
+Leaf 4,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,95
+Leaf 4,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,93
+Leaf 4,3,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top3,3,6.122448979591836,33
+Leaf 4,3,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3,3,6.122448979591836,44
+Leaf 4,3,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3,3,6.122448979591836,54
+Leaf 4,3,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top3,3,6.122448979591836,66
+Leaf 4,3,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3,3,6.122448979591836,85
+Leaf 4,3,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top3,3,6.122448979591836,91
+Leaf 4,3,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3,3,6.122448979591836,117
+Leaf 4,3,speed_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,88
+Leaf 4,3,speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,125
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3,3,6.122448979591836,206
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,123
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,147
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top1 + starts_score_race_rank<=Top3,3,6.122448979591836,99
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top1,3,6.122448979591836,70
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,6.122448979591836,112
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top1,3,6.122448979591836,80
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,6.122448979591836,126
+Leaf 4,3,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,294
+Leaf 4,3,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,3,6.122448979591836,282
+Leaf 4,3,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,6.122448979591836,86
+Leaf 4,3,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,145
+Leaf 4,3,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,128
+Leaf 4,3,driver_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,311
+Leaf 4,3,win_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,110
+Leaf 4,3,win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,169
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,3,6.122448979591836,184
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,201
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,3,6.122448979591836,209
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,6.122448979591836,243
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,65
+Leaf 4,4,spike_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,58
+Leaf 4,4,spike_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,74
+Leaf 4,4,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,69
+Leaf 4,4,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,6.122448979591836,95
+Leaf 4,2,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2,2,4.081632653061225,139
+Leaf 4,2,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3,2,4.081632653061225,199
+Leaf 4,2,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2,2,4.081632653061225,140
+Leaf 4,2,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3,2,4.081632653061225,162
+Leaf 4,2,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2,2,4.081632653061225,237
+Leaf 4,2,spike_score_race_rank<=Top2 + driver_score_race_rank<=Top3,2,4.081632653061225,243
+Leaf 4,2,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top1,2,4.081632653061225,187
+Leaf 4,2,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3,2,4.081632653061225,198
+Leaf 4,2,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3,2,4.081632653061225,340
+Leaf 4,2,spike_score_race_rank<=Top3 + form_score_race_rank<=Top2,2,4.081632653061225,344
+Leaf 4,2,spike_score_race_rank<=Top1 + record_score_race_rank<=Top3,2,4.081632653061225,85
+Leaf 4,2,spike_score_race_rank<=Top2 + record_score_race_rank<=Top3,2,4.081632653061225,174
+Leaf 4,2,spike_score_race_rank<=Top1 + win_score_race_rank<=Top1,2,4.081632653061225,187
+Leaf 4,2,spike_score_race_rank<=Top1 + win_score_race_rank<=Top2,2,4.081632653061225,240
+Leaf 4,2,spike_score_race_rank<=Top1 + win_score_race_rank<=Top3,2,4.081632653061225,262
+Leaf 4,2,spike_score_race_rank<=Top1 + place_score_race_rank<=Top2,2,4.081632653061225,213
+Leaf 4,2,spike_score_race_rank<=Top2 + place_score_race_rank<=Top1,2,4.081632653061225,241
+Leaf 4,2,spike_score_race_rank<=Top3 + place_score_race_rank<=Top1,2,4.081632653061225,285
+Leaf 4,2,speed_score_race_rank<=Top2 + record_score_race_rank<=Top2,2,4.081632653061225,285
+Leaf 4,2,speed_score_race_rank<=Top2 + record_score_race_rank<=Top3,2,4.081632653061225,375
+Leaf 4,2,speed_score_race_rank<=Top3 + record_score_race_rank<=Top2,2,4.081632653061225,373
+Leaf 4,2,speed_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,4.081632653061225,513
+Leaf 4,2,speed_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,4.081632653061225,185
+Leaf 4,2,speed_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,4.081632653061225,282
+Leaf 4,2,speed_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,269
+Leaf 4,2,speed_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,396
+Leaf 4,2,speed_score_race_rank<=Top1 + starts_score_race_rank<=Top1,2,4.081632653061225,64
+Leaf 4,2,speed_score_race_rank<=Top1 + starts_score_race_rank<=Top2,2,4.081632653061225,118
+Leaf 4,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,4.081632653061225,133
+Leaf 4,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,4.081632653061225,226
+Leaf 4,2,latest_start_score_race_rank<=Top1 + form_score_race_rank<=Top3,2,4.081632653061225,345
+Leaf 4,2,latest_start_score_race_rank<=Top1 + record_score_race_rank<=Top3,2,4.081632653061225,235
+Leaf 4,2,latest_start_score_race_rank<=Top2 + record_score_race_rank<=Top3,2,4.081632653061225,289
+Leaf 4,2,latest_start_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,4.081632653061225,366
+Leaf 4,2,latest_start_score_race_rank<=Top1 + win_score_race_rank<=Top3,2,4.081632653061225,394
+Leaf 4,2,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1,2,4.081632653061225,192
+Leaf 4,2,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,219
+Leaf 4,2,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top2,2,4.081632653061225,294
+Leaf 4,2,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,4.081632653061225,349
+Leaf 4,2,driver_score_race_rank<=Top1 + form_score_race_rank<=Top3,2,4.081632653061225,179
+Leaf 4,2,driver_score_race_rank<=Top2 + form_score_race_rank<=Top1,2,4.081632653061225,93
+Leaf 4,2,driver_score_race_rank<=Top2 + form_score_race_rank<=Top2,2,4.081632653061225,180
+Leaf 4,2,driver_score_race_rank<=Top3 + form_score_race_rank<=Top1,2,4.081632653061225,115
+Leaf 4,2,driver_score_race_rank<=Top3 + form_score_race_rank<=Top2,2,4.081632653061225,226
+Leaf 4,2,driver_score_race_rank<=Top3 + record_score_race_rank<=Top2,2,4.081632653061225,301
+Leaf 4,2,driver_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,4.081632653061225,445
+Leaf 4,2,driver_score_race_rank<=Top1 + win_score_race_rank<=Top2,2,4.081632653061225,191
+Leaf 4,2,driver_score_race_rank<=Top1 + win_score_race_rank<=Top3,2,4.081632653061225,267
+Leaf 4,2,driver_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,4.081632653061225,288
+Leaf 4,2,driver_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,4.081632653061225,388
+Leaf 4,2,form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,234
+Leaf 4,2,form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,384
+Leaf 4,2,form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,501
+Leaf 4,2,form_score_race_rank<=Top2 + place_score_race_rank<=Top1,2,4.081632653061225,200
+Leaf 4,2,form_score_race_rank<=Top2 + place_score_race_rank<=Top2,2,4.081632653061225,288
+Leaf 4,2,form_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,356
+Leaf 4,2,form_score_race_rank<=Top3 + place_score_race_rank<=Top1,2,4.081632653061225,263
+Leaf 4,2,form_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,4.081632653061225,389
+Leaf 4,2,form_score_race_rank<=Top1 + starts_score_race_rank<=Top1,2,4.081632653061225,47
+Leaf 4,2,form_score_race_rank<=Top1 + starts_score_race_rank<=Top2,2,4.081632653061225,80
+Leaf 4,2,form_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,115
+Leaf 4,2,form_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,4.081632653061225,92
+Leaf 4,2,form_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,4.081632653061225,162
+Leaf 4,2,form_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,4.081632653061225,154
+Leaf 4,2,form_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,4.081632653061225,262
+Leaf 4,2,record_score_race_rank<=Top2 + place_score_race_rank<=Top2,2,4.081632653061225,180
+Leaf 4,2,record_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,4.081632653061225,246
+Leaf 4,2,record_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,274
+Leaf 4,2,win_score_race_rank<=Top1 + place_score_race_rank<=Top1,2,4.081632653061225,215
+Leaf 4,2,win_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,90
+Leaf 4,2,place_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,100
+Leaf 4,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,4.081632653061225,233
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3,2,4.081632653061225,112
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3,2,4.081632653061225,154
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,4.081632653061225,91
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,4.081632653061225,111
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,137
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,161
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,4.081632653061225,113
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,4.081632653061225,155
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,166
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,220
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,112
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,157
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + place_score_race_rank<=Top2,2,4.081632653061225,112
+Leaf 4,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,4.081632653061225,155
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,38
+Leaf 4,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,56
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3,2,4.081632653061225,110
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3,2,4.081632653061225,125
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3,2,4.081632653061225,165
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3,2,4.081632653061225,190
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3,2,4.081632653061225,223
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3,2,4.081632653061225,258
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top1 + record_score_race_rank<=Top3,2,4.081632653061225,84
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + record_score_race_rank<=Top3,2,4.081632653061225,103
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,4.081632653061225,126
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1,2,4.081632653061225,104
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,4.081632653061225,130
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,4.081632653061225,134
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,113
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,146
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,153
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1,2,4.081632653061225,130
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,4.081632653061225,190
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,4.081632653061225,209
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,144
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1,2,4.081632653061225,143
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,4.081632653061225,221
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,4.081632653061225,260
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,161
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,121
+Leaf 4,3,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,142
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,192
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top2,2,4.081632653061225,199
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,4.081632653061225,226
+Leaf 4,3,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,69
+Leaf 4,3,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,102
+Leaf 4,3,spike_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,190
+Leaf 4,3,spike_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,214
+Leaf 4,3,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,230
+Leaf 4,3,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,275
+Leaf 4,3,spike_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,192
+Leaf 4,3,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,247
+Leaf 4,3,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,103
+Leaf 4,3,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,133
+Leaf 4,3,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,172
+Leaf 4,3,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,182
+Leaf 4,3,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,165
+Leaf 4,3,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,254
+Leaf 4,3,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,288
+Leaf 4,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,180
+Leaf 4,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,282
+Leaf 4,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,348
+Leaf 4,3,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,171
+Leaf 4,3,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,272
+Leaf 4,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,333
+Leaf 4,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,98
+Leaf 4,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,133
+Leaf 4,3,spike_score_race_rank<=Top1 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,73
+Leaf 4,3,spike_score_race_rank<=Top2 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,126
+Leaf 4,3,spike_score_race_rank<=Top3 + record_score_race_rank<=Top2 + place_score_race_rank<=Top2,2,4.081632653061225,89
+Leaf 4,3,spike_score_race_rank<=Top3 + record_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,119
+Leaf 4,3,spike_score_race_rank<=Top3 + record_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,4.081632653061225,133
+Leaf 4,3,spike_score_race_rank<=Top1 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,171
+Leaf 4,3,spike_score_race_rank<=Top1 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,210
+Leaf 4,3,spike_score_race_rank<=Top1 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,227
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top1,2,4.081632653061225,152
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top1,2,4.081632653061225,198
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top1,2,4.081632653061225,222
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top1,2,4.081632653061225,161
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top1,2,4.081632653061225,217
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top1,2,4.081632653061225,253
+Leaf 4,3,spike_score_race_rank<=Top2 + win_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,44
+Leaf 4,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,53
+Leaf 4,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,68
+Leaf 4,3,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top2,2,4.081632653061225,30
+Leaf 4,3,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top2,2,4.081632653061225,40
+Leaf 4,3,speed_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top2,2,4.081632653061225,50
+Leaf 4,3,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top2,2,4.081632653061225,57
+Leaf 4,3,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top2,2,4.081632653061225,72
+Leaf 4,3,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top2,2,4.081632653061225,91
+Leaf 4,3,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top2,2,4.081632653061225,75
+Leaf 4,3,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top2,2,4.081632653061225,97
+Leaf 4,3,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top2,2,4.081632653061225,121
+Leaf 4,3,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,87
+Leaf 4,3,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,133
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + record_score_race_rank<=Top2,2,4.081632653061225,140
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,4.081632653061225,178
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + record_score_race_rank<=Top2,2,4.081632653061225,170
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,4.081632653061225,226
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,135
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,178
+Leaf 4,3,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,4.081632653061225,18
+Leaf 4,3,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,4.081632653061225,33
+Leaf 4,3,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,47
+Leaf 4,3,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,4.081632653061225,21
+Leaf 4,3,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,4.081632653061225,42
+Leaf 4,3,speed_score_race_rank<=Top1 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,61
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,4.081632653061225,40
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,4.081632653061225,69
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,95
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,4.081632653061225,46
+Leaf 4,3,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,4.081632653061225,82
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,4.081632653061225,60
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,4.081632653061225,98
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,133
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,4.081632653061225,76
+Leaf 4,3,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,4.081632653061225,125
+Leaf 4,3,speed_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,134
+Leaf 4,3,speed_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,184
+Leaf 4,3,speed_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,198
+Leaf 4,3,speed_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,260
+Leaf 4,3,speed_score_race_rank<=Top2 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,38
+Leaf 4,3,speed_score_race_rank<=Top2 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,82
+Leaf 4,3,speed_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,59
+Leaf 4,3,speed_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,116
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,173
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,161
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,190
+Leaf 4,3,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,4.081632653061225,46
+Leaf 4,3,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,4.081632653061225,72
+Leaf 4,3,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,93
+Leaf 4,3,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,4.081632653061225,51
+Leaf 4,3,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,4.081632653061225,79
+Leaf 4,3,latest_start_score_race_rank<=Top1 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,112
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,82
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,4.081632653061225,57
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,4.081632653061225,93
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,4.081632653061225,65
+Leaf 4,3,latest_start_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,4.081632653061225,104
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top1 + starts_score_race_rank<=Top1,2,4.081632653061225,46
+Leaf 4,3,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top1 + starts_score_race_rank<=Top2,2,4.081632653061225,75
+Leaf 4,3,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,130
+Leaf 4,3,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,205
+Leaf 4,3,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,250
+Leaf 4,3,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,144
+Leaf 4,3,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,230
+Leaf 4,3,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,286
+Leaf 4,3,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,238
+Leaf 4,3,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,277
+Leaf 4,3,latest_start_score_race_rank<=Top1 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,92
+Leaf 4,3,latest_start_score_race_rank<=Top2 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,118
+Leaf 4,3,latest_start_score_race_rank<=Top3 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,153
+Leaf 4,3,latest_start_score_race_rank<=Top1 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,257
+Leaf 4,3,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,160
+Leaf 4,3,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,243
+Leaf 4,3,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,181
+Leaf 4,3,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,78
+Leaf 4,3,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,121
+Leaf 4,3,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,66
+Leaf 4,3,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,104
+Leaf 4,3,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,78
+Leaf 4,3,driver_score_race_rank<=Top3 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,112
+Leaf 4,3,driver_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,254
+Leaf 4,3,driver_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,80
+Leaf 4,3,driver_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,133
+Leaf 4,3,driver_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,110
+Leaf 4,3,form_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,201
+Leaf 4,3,form_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,307
+Leaf 4,3,form_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,377
+Leaf 4,3,form_score_race_rank<=Top2 + place_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,36
+Leaf 4,3,form_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,59
+Leaf 4,3,form_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,91
+Leaf 4,3,form_score_race_rank<=Top3 + place_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,4.081632653061225,48
+Leaf 4,3,form_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,78
+Leaf 4,3,form_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,125
+Leaf 4,3,record_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,103
+Leaf 4,3,record_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,136
+Leaf 4,3,win_score_race_rank<=Top1 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,48
+Leaf 4,3,win_score_race_rank<=Top1 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,60
+Leaf 4,3,win_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,84
+Leaf 4,3,win_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,119
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,84
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,98
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,121
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,138
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,97
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,122
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,138
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,172
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,13
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,23
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,25
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,36
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,20
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,35
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,34
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,52
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,28
+Leaf 4,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,40
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,43
+Leaf 4,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,60
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,81
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,102
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,104
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,88
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,114
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,118
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,94
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,137
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,147
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,104
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,156
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,168
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,104
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,155
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,176
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,4.081632653061225,115
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,4.081632653061225,176
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,4.081632653061225,205
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,94
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,109
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,134
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,156
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,166
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,195
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top1 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,57
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,71
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,88
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,96
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,113
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,116
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,104
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,128
+Leaf 4,4,spike_score_race_rank<=Top1 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,134
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,119
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,160
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,174
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,129
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,126
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,181
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,207
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,139
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,40
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,50
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,51
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,73
+Leaf 4,4,spike_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,40
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,40
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,57
+Leaf 4,4,spike_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,43
+Leaf 4,4,spike_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,158
+Leaf 4,4,spike_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,176
+Leaf 4,4,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,179
+Leaf 4,4,spike_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,208
+Leaf 4,4,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,123
+Leaf 4,4,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,152
+Leaf 4,4,spike_score_race_rank<=Top1 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,160
+Leaf 4,4,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,150
+Leaf 4,4,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,221
+Leaf 4,4,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,243
+Leaf 4,4,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,158
+Leaf 4,4,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,238
+Leaf 4,4,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,281
+Leaf 4,4,spike_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,29
+Leaf 4,4,spike_score_race_rank<=Top2 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,36
+Leaf 4,4,spike_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,45
+Leaf 4,4,spike_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,55
+Leaf 4,4,spike_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,32
+Leaf 4,4,spike_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,39
+Leaf 4,4,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,54
+Leaf 4,4,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,69
+Leaf 4,4,speed_score_race_rank<=Top2 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,38
+Leaf 4,4,speed_score_race_rank<=Top3 + latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,55
+Leaf 4,4,speed_score_race_rank<=Top2 + driver_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,37
+Leaf 4,4,speed_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,46
+Leaf 4,4,speed_score_race_rank<=Top2 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,22
+Leaf 4,4,speed_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,45
+Leaf 4,4,speed_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,38
+Leaf 4,4,speed_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,64
+Leaf 4,4,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,138
+Leaf 4,4,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,4.081632653061225,27
+Leaf 4,4,latest_start_score_race_rank<=Top3 + driver_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,47
+Leaf 4,4,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,111
+Leaf 4,4,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,156
+Leaf 4,4,latest_start_score_race_rank<=Top2 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,184
+Leaf 4,4,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top1 + place_score_race_rank<=Top3,2,4.081632653061225,124
+Leaf 4,4,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,4.081632653061225,179
+Leaf 4,4,latest_start_score_race_rank<=Top3 + form_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,4.081632653061225,214
+Leaf 4,4,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,42
+Leaf 4,4,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,4.081632653061225,64
+Leaf 5+10,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top3,4,22.22222222222222,124
+Leaf 5+10,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top3,4,22.22222222222222,150
+Leaf 5+10,2,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3,3,16.666666666666664,121
+Leaf 5+10,2,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,16.666666666666664,138
+Leaf 5+10,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top1,3,16.666666666666664,71
+Leaf 5+10,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,16.666666666666664,108
+Leaf 5+10,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top1,3,16.666666666666664,89
+Leaf 5+10,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,16.666666666666664,131
+Leaf 5+10,2,record_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,16.666666666666664,118
+Leaf 5+10,2,record_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,16.666666666666664,163
+Leaf 5+10,2,win_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,16.666666666666664,224
+Leaf 5+10,2,win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,16.666666666666664,95
+Leaf 5+10,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,16.666666666666664,85
+Leaf 5+10,2,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3,2,11.11111111111111,97
+Leaf 5+10,2,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3,2,11.11111111111111,123
+Leaf 5+10,2,spike_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,11.11111111111111,17
+Leaf 5+10,2,spike_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,11.11111111111111,31
+Leaf 5+10,2,spike_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,11.11111111111111,38
+Leaf 5+10,2,spike_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,11.11111111111111,32
+Leaf 5+10,2,spike_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,55
+Leaf 5+10,2,spike_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,65
+Leaf 5+10,2,speed_score_race_rank<=Top1 + record_score_race_rank<=Top2,2,11.11111111111111,50
+Leaf 5+10,2,speed_score_race_rank<=Top1 + record_score_race_rank<=Top3,2,11.11111111111111,60
+Leaf 5+10,2,speed_score_race_rank<=Top2 + record_score_race_rank<=Top2,2,11.11111111111111,78
+Leaf 5+10,2,speed_score_race_rank<=Top2 + record_score_race_rank<=Top3,2,11.11111111111111,98
+Leaf 5+10,2,speed_score_race_rank<=Top3 + record_score_race_rank<=Top2,2,11.11111111111111,104
+Leaf 5+10,2,speed_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,11.11111111111111,134
+Leaf 5+10,2,speed_score_race_rank<=Top1 + starts_score_race_rank<=Top2,2,11.11111111111111,37
+Leaf 5+10,2,speed_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,11.11111111111111,41
+Leaf 5+10,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,11.11111111111111,66
+Leaf 5+10,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,11.11111111111111,75
+Leaf 5+10,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,98
+Leaf 5+10,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,113
+Leaf 5+10,2,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,11.11111111111111,135
+Leaf 5+10,2,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,11.11111111111111,152
+Leaf 5+10,2,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top2,2,11.11111111111111,90
+Leaf 5+10,2,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,11.11111111111111,104
+Leaf 5+10,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top1,2,11.11111111111111,62
+Leaf 5+10,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top2,2,11.11111111111111,93
+Leaf 5+10,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,11.11111111111111,107
+Leaf 5+10,2,driver_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,11.11111111111111,106
+Leaf 5+10,2,driver_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,140
+Leaf 5+10,2,form_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,11.11111111111111,40
+Leaf 5+10,2,form_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,70
+Leaf 5+10,2,form_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,86
+Leaf 5+10,2,record_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,11.11111111111111,82
+Leaf 5+10,2,record_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,11.11111111111111,105
+Leaf 5+10,2,record_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,11.11111111111111,78
+Leaf 5+10,2,record_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,11.11111111111111,98
+Leaf 5+10,2,record_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,11.11111111111111,106
+Leaf 5+10,2,record_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,146
+Leaf 5+10,2,win_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,11.11111111111111,50
+Leaf 5+10,2,win_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,76
+Leaf 5+10,2,place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,11.11111111111111,58
+Leaf 5+10,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,11.11111111111111,36
+Leaf 5+10,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,65
+Leaf 5+10,3,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,11.11111111111111,10
+Leaf 5+10,3,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,18
+Leaf 5+10,3,spike_score_race_rank<=Top2 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,23
+Leaf 5+10,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,11.11111111111111,12
+Leaf 5+10,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,11.11111111111111,23
+Leaf 5+10,3,spike_score_race_rank<=Top3 + form_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,29
+Leaf 5+10,3,latest_start_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,11.11111111111111,94
+Leaf 5+10,3,latest_start_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,11.11111111111111,108
+Leaf 5+10,3,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,11.11111111111111,23
+Leaf 5+10,3,latest_start_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,37
+Leaf 5+10,3,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,11.11111111111111,27
+Leaf 5+10,3,latest_start_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,42
+Leaf 5+10,3,record_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,11.11111111111111,54
+Leaf 5+10,3,record_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,11.11111111111111,68
+Leaf 5+10,3,record_score_race_rank<=Top2 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,25
+Leaf 5+10,3,record_score_race_rank<=Top3 + win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,33
+Leaf 5+10,3,record_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,31
+Leaf 5+10,3,record_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,37
+Leaf 5+10,3,win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,51
+Leaf 5+10,4,record_score_race_rank<=Top2 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,20
+Leaf 5+10,4,record_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,11.11111111111111,23
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + place_score_race_rank<=Top3,5,21.73913043478261,398
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top2,5,21.73913043478261,232
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top3,5,21.73913043478261,292
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + place_score_race_rank<=Top2,4,17.391304347826086,323
+Leaf 8+19+20,2,speed_score_race_rank<=Top2 + record_score_race_rank<=Top1,4,17.391304347826086,116
+Leaf 8+19+20,2,speed_score_race_rank<=Top2 + record_score_race_rank<=Top2,4,17.391304347826086,179
+Leaf 8+19+20,2,speed_score_race_rank<=Top2 + record_score_race_rank<=Top3,4,17.391304347826086,234
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + record_score_race_rank<=Top1,4,17.391304347826086,144
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + record_score_race_rank<=Top2,4,17.391304347826086,229
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + record_score_race_rank<=Top3,4,17.391304347826086,308
+Leaf 8+19+20,2,place_score_race_rank<=Top2 + starts_score_race_rank<=Top2,4,17.391304347826086,92
+Leaf 8+19+20,2,place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,4,17.391304347826086,135
+Leaf 8+19+20,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,4,17.391304347826086,153
+Leaf 8+19+20,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,4,17.391304347826086,219
+Leaf 8+19+20,2,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3,3,13.043478260869565,180
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3,3,13.043478260869565,255
+Leaf 8+19+20,2,spike_score_race_rank<=Top2 + place_score_race_rank<=Top2,3,13.043478260869565,259
+Leaf 8+19+20,2,spike_score_race_rank<=Top2 + place_score_race_rank<=Top3,3,13.043478260869565,300
+Leaf 8+19+20,2,spike_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,13.043478260869565,82
+Leaf 8+19+20,2,spike_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,13.043478260869565,114
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,13.043478260869565,134
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,13.043478260869565,186
+Leaf 8+19+20,2,speed_score_race_rank<=Top1 + record_score_race_rank<=Top1,3,13.043478260869565,79
+Leaf 8+19+20,2,speed_score_race_rank<=Top1 + record_score_race_rank<=Top2,3,13.043478260869565,111
+Leaf 8+19+20,2,speed_score_race_rank<=Top1 + record_score_race_rank<=Top3,3,13.043478260869565,144
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + place_score_race_rank<=Top2,3,13.043478260869565,224
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + place_score_race_rank<=Top3,3,13.043478260869565,289
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,13.043478260869565,180
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,13.043478260869565,235
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,13.043478260869565,238
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,13.043478260869565,305
+Leaf 8+19+20,2,record_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,13.043478260869565,307
+Leaf 8+19+20,2,record_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,13.043478260869565,366
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,13.043478260869565,47
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,13.043478260869565,70
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,13.043478260869565,63
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,13.043478260869565,91
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,13.043478260869565,62
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,13.043478260869565,92
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,13.043478260869565,84
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,13.043478260869565,125
+Leaf 8+19+20,3,speed_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top2,3,13.043478260869565,54
+Leaf 8+19+20,3,speed_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,3,13.043478260869565,74
+Leaf 8+19+20,3,speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,3,13.043478260869565,78
+Leaf 8+19+20,3,speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,3,13.043478260869565,108
+Leaf 8+19+20,2,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top2,2,8.695652173913043,138
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top2,2,8.695652173913043,186
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + record_score_race_rank<=Top1,2,8.695652173913043,74
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + record_score_race_rank<=Top2,2,8.695652173913043,140
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + record_score_race_rank<=Top3,2,8.695652173913043,194
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,8.695652173913043,333
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,8.695652173913043,413
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + place_score_race_rank<=Top1,2,8.695652173913043,198
+Leaf 8+19+20,2,spike_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,8.695652173913043,55
+Leaf 8+19+20,2,spike_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,8.695652173913043,92
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + win_score_race_rank<=Top1,2,8.695652173913043,121
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,8.695652173913043,219
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,8.695652173913043,292
+Leaf 8+19+20,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,8.695652173913043,115
+Leaf 8+19+20,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,8.695652173913043,150
+Leaf 8+19+20,2,speed_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,8.695652173913043,194
+Leaf 8+19+20,2,speed_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,8.695652173913043,177
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top2,2,8.695652173913043,141
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,8.695652173913043,192
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,8.695652173913043,130
+Leaf 8+19+20,2,latest_start_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,8.695652173913043,175
+Leaf 8+19+20,2,record_score_race_rank<=Top1 + win_score_race_rank<=Top2,2,8.695652173913043,71
+Leaf 8+19+20,2,record_score_race_rank<=Top1 + win_score_race_rank<=Top3,2,8.695652173913043,96
+Leaf 8+19+20,2,record_score_race_rank<=Top2 + win_score_race_rank<=Top2,2,8.695652173913043,130
+Leaf 8+19+20,2,record_score_race_rank<=Top2 + win_score_race_rank<=Top3,2,8.695652173913043,176
+Leaf 8+19+20,2,record_score_race_rank<=Top3 + win_score_race_rank<=Top2,2,8.695652173913043,172
+Leaf 8+19+20,2,record_score_race_rank<=Top3 + win_score_race_rank<=Top3,2,8.695652173913043,243
+Leaf 8+19+20,2,record_score_race_rank<=Top1 + starts_score_race_rank<=Top2,2,8.695652173913043,119
+Leaf 8+19+20,2,record_score_race_rank<=Top1 + starts_score_race_rank<=Top3,2,8.695652173913043,144
+Leaf 8+19+20,2,record_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,8.695652173913043,207
+Leaf 8+19+20,2,record_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,8.695652173913043,253
+Leaf 8+19+20,2,record_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,8.695652173913043,242
+Leaf 8+19+20,2,win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,8.695652173913043,370
+Leaf 8+19+20,2,win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,8.695652173913043,459
+Leaf 8+19+20,2,win_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,8.695652173913043,94
+Leaf 8+19+20,2,win_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,8.695652173913043,137
+Leaf 8+19+20,2,win_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,8.695652173913043,163
+Leaf 8+19+20,2,win_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,8.695652173913043,230
+Leaf 8+19+20,2,place_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,8.695652173913043,62
+Leaf 8+19+20,2,place_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,8.695652173913043,101
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,8.695652173913043,141
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,8.695652173913043,161
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top2,2,8.695652173913043,169
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,8.695652173913043,201
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,8.695652173913043,48
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,8.695652173913043,66
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,8.695652173913043,78
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,8.695652173913043,103
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top2 + place_score_race_rank<=Top3,2,8.695652173913043,290
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + win_score_race_rank<=Top3 + place_score_race_rank<=Top3,2,8.695652173913043,341
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,8.695652173913043,30
+Leaf 8+19+20,3,spike_score_race_rank<=Top2 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,8.695652173913043,43
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top1,2,8.695652173913043,40
+Leaf 8+19+20,3,spike_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top1,2,8.695652173913043,57
+Leaf 8+19+20,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,8.695652173913043,32
+Leaf 8+19+20,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,8.695652173913043,46
+Leaf 8+19+20,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,8.695652173913043,41
+Leaf 8+19+20,4,spike_score_race_rank<=Top2 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,8.695652173913043,58
+Leaf 8+19+20,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top2,2,8.695652173913043,40
+Leaf 8+19+20,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top2 + starts_score_race_rank<=Top3,2,8.695652173913043,56
+Leaf 8+19+20,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top2,2,8.695652173913043,52
+Leaf 8+19+20,4,spike_score_race_rank<=Top3 + speed_score_race_rank<=Top3 + place_score_race_rank<=Top3 + starts_score_race_rank<=Top3,2,8.695652173913043,74

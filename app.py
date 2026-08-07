@@ -1,8 +1,9 @@
-import streamlit as st
+﻿import streamlit as st
 import pandas as pd
 import docx
 from datetime import datetime
 from supabase import create_client
+from skrall_badge_engine import apply_skrall_badges
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
 from loser_badge_helpers import apply_loser_badges_to_race
 from debug_live_lopp_sums import get_live_lopp_sum_debug
@@ -95,13 +96,13 @@ def int_slider(label, value, min_value=-50, max_value=50, key=None):
     )
 
 
-st.sidebar.title("Poängpanel")
-st.sidebar.caption("Ändra poäng här. Resultatet uppdateras automatiskt.")
+st.sidebar.title("PoÃ¤ngpanel")
+st.sidebar.caption("Ã„ndra poÃ¤ng hÃ¤r. Resultatet uppdateras automatiskt.")
 
 
 with st.sidebar.expander("Spel%", expanded=True):
     use_spel_percent = st.toggle(
-        "Använd spel% i totalpoäng",
+        "AnvÃ¤nd spel% i totalpoÃ¤ng",
         value=False,
         key="sidebar_use_spel_percent"
     )
@@ -116,7 +117,7 @@ with st.sidebar.expander("Spel%", expanded=True):
         )
 
     scoring_rules["spel_percent_group_threshold"] = int_slider(
-        "Gruppgräns %-enheter",
+        "GruppgrÃ¤ns %-enheter",
         scoring_rules["spel_percent_group_threshold"],
         0,
         10,
@@ -127,7 +128,7 @@ with st.sidebar.expander("Spel%", expanded=True):
 with st.sidebar.expander("Snittodds"):
     for i, row in enumerate(scoring_rules["avg_odds_ranges"]):
         row["points"] = int_slider(
-            f"Odds {row['min']}–{row['max']}",
+            f"Odds {row['min']}â€“{row['max']}",
             row["points"],
             0,
             40,
@@ -146,7 +147,7 @@ with st.sidebar.expander("Seger%"):
         )
 
     scoring_rules["win_percent_group_threshold"] = int_slider(
-        "Gruppgräns %-enheter",
+        "GruppgrÃ¤ns %-enheter",
         scoring_rules["win_percent_group_threshold"],
         0,
         10,
@@ -165,7 +166,7 @@ with st.sidebar.expander("Plats%"):
         )
 
     scoring_rules["place_percent_group_threshold"] = int_slider(
-        "Gruppgräns %-enheter",
+        "GruppgrÃ¤ns %-enheter",
         scoring_rules["place_percent_group_threshold"],
         0,
         10,
@@ -184,7 +185,7 @@ with st.sidebar.expander("Prissumma"):
         )
 
     scoring_rules["prize_money_group_threshold_percent"] = int_slider(
-        "Gruppgräns %",
+        "GruppgrÃ¤ns %",
         scoring_rules["prize_money_group_threshold_percent"],
         0,
         20,
@@ -204,10 +205,10 @@ with st.sidebar.expander("Senaste 5 prispengar"):
 
 
 with st.sidebar.expander("Kuskmodell"):
-    st.caption("Automatisk kuskpoäng hämtas från config/driver_stats.json.")
+    st.caption("Automatisk kuskpoÃ¤ng hÃ¤mtas frÃ¥n config/driver_stats.json.")
 
     scoring_rules["driver_min_starts"] = int_slider(
-        "Minsta antal lopp för kuskpoäng",
+        "Minsta antal lopp fÃ¶r kuskpoÃ¤ng",
         scoring_rules.get("driver_min_starts", 70),
         0,
         500,
@@ -215,7 +216,7 @@ with st.sidebar.expander("Kuskmodell"):
     )
 
     scoring_rules["driver_mid_starts"] = int_slider(
-        "Gräns nivå 2",
+        "GrÃ¤ns nivÃ¥ 2",
         scoring_rules.get("driver_mid_starts", 150),
         0,
         1000,
@@ -223,7 +224,7 @@ with st.sidebar.expander("Kuskmodell"):
     )
 
     scoring_rules["driver_high_starts"] = int_slider(
-        "Gräns nivå 3",
+        "GrÃ¤ns nivÃ¥ 3",
         scoring_rules.get("driver_high_starts", 300),
         0,
         1500,
@@ -231,7 +232,7 @@ with st.sidebar.expander("Kuskmodell"):
     )
 
     scoring_rules["driver_low_multiplier"] = st.slider(
-        "Multiplier låg nivå",
+        "Multiplier lÃ¥g nivÃ¥",
         min_value=0.0,
         max_value=2.0,
         value=float(scoring_rules.get("driver_low_multiplier", 0.75)),
@@ -240,7 +241,7 @@ with st.sidebar.expander("Kuskmodell"):
     )
 
     scoring_rules["driver_mid_multiplier"] = st.slider(
-        "Multiplier mellan nivå",
+        "Multiplier mellan nivÃ¥",
         min_value=0.0,
         max_value=2.0,
         value=float(scoring_rules.get("driver_mid_multiplier", 1.0)),
@@ -249,7 +250,7 @@ with st.sidebar.expander("Kuskmodell"):
     )
 
     scoring_rules["driver_high_multiplier"] = st.slider(
-        "Multiplier hög nivå",
+        "Multiplier hÃ¶g nivÃ¥",
         min_value=0.0,
         max_value=2.0,
         value=float(scoring_rules.get("driver_high_multiplier", 1.25)),
@@ -283,7 +284,7 @@ with st.sidebar.expander("Senaste start"):
 with st.sidebar.expander("Starter"):
     for i, row in enumerate(scoring_rules["starts_points"]):
         row["points"] = int_slider(
-            f"{row['min']}–{row['max']} starter",
+            f"{row['min']}â€“{row['max']} starter",
             row["points"],
             -30,
             30,
@@ -292,7 +293,7 @@ with st.sidebar.expander("Starter"):
 
 
 with st.sidebar.expander("Rekord"):
-    st.caption("Rekordpoängen beräknas nu relativt inom loppet.")
+    st.caption("RekordpoÃ¤ngen berÃ¤knas nu relativt inom loppet.")
 
 
     
@@ -314,7 +315,7 @@ with st.sidebar.expander("Vagn / Skor / Manuell"):
     )
 
     manual_shoe_bonus = int_slider(
-        "Skorpoäng per ikryssad häst",
+        "SkorpoÃ¤ng per ikryssad hÃ¤st",
         0,
         -20,
         30,
@@ -322,7 +323,7 @@ with st.sidebar.expander("Vagn / Skor / Manuell"):
     )
 
     manual_stallform_bonus = int_slider(
-        "Stallformpoäng per ikryssad häst",
+        "StallformpoÃ¤ng per ikryssad hÃ¤st",
         8,
         0,
         30,
@@ -340,7 +341,7 @@ with st.sidebar.expander("Inaktivitet"):
     )
 
     inactivity_penalty = int_slider(
-        "Poängavdrag",
+        "PoÃ¤ngavdrag",
         -5,
         -50,
         0,
@@ -348,7 +349,7 @@ with st.sidebar.expander("Inaktivitet"):
     )
 
 
-with st.sidebar.expander("Galopp / Kön"):
+with st.sidebar.expander("Galopp / KÃ¶n"):
     scoring_rules["gallop_penalty"] = int_slider(
         "Galoppavdrag",
         scoring_rules["gallop_penalty"],
@@ -374,7 +375,7 @@ with st.sidebar.expander("Galopp / Kön"):
     )
 
 
-with st.sidebar.expander("Tillägg distans"):
+with st.sidebar.expander("TillÃ¤gg distans"):
     scoring_rules["distance_addition_penalty"]["1640"] = int_slider(
         "1640m per 20m",
         scoring_rules["distance_addition_penalty"]["1640"],
@@ -399,7 +400,7 @@ with st.sidebar.expander("Tillägg distans"):
         "sidebar_dist_2640"
     )
 
-st.subheader("📚 Startfiler")
+st.subheader("ðŸ“š Startfiler")
 
 try:
     files = supabase.storage.from_("startfiler").list(
@@ -420,13 +421,13 @@ try:
     )
 
 except Exception as error:
-    st.error(f"Kunde inte läsa startfiler:\n\n{error}")
+    st.error(f"Kunde inte lÃ¤sa startfiler:\n\n{error}")
     file_names = []
 
 
 selected_library_file = st.selectbox(
-    "Välj en sparad startfil",
-    options=["— Välj fil —"] + file_names,
+    "VÃ¤lj en sparad startfil",
+    options=["â€” VÃ¤lj fil â€”"] + file_names,
     key="supabase_startfile_select",
 )
 
@@ -442,7 +443,7 @@ raw_data = None
 source_name = None
 
 
-# En lokalt uppladdad fil har företräde.
+# En lokalt uppladdad fil har fÃ¶retrÃ¤de.
 if uploaded_file is not None:
 
     source_name = uploaded_file.name
@@ -462,8 +463,8 @@ if uploaded_file is not None:
         raw_data = clean_atg_header(raw_data)
 
 
-# Om ingen lokal fil är uppladdad kan en fil från biblioteket användas.
-elif selected_library_file != "— Välj fil —":
+# Om ingen lokal fil Ã¤r uppladdad kan en fil frÃ¥n biblioteket anvÃ¤ndas.
+elif selected_library_file != "â€” VÃ¤lj fil â€”":
 
     source_name = selected_library_file
 
@@ -480,7 +481,7 @@ elif selected_library_file != "— Välj fil —":
         raw_data = clean_atg_header(raw_data)
 
     except Exception as error:
-        st.error(f"Kunde inte hämta startfilen:\n\n{error}")
+        st.error(f"Kunde inte hÃ¤mta startfilen:\n\n{error}")
 
 
 if raw_data is not None:
@@ -522,20 +523,20 @@ if raw_data is not None:
             )
 
             st.success(
-                f"☁️ {uploaded_file.name} sparades automatiskt "
+                f"â˜ï¸ {uploaded_file.name} sparades automatiskt "
                 "i det gemensamma biblioteket."
             )
 
         except Exception as error:
             st.warning(
-                "Rankingen kan fortsätta, men filen kunde inte sparas "
+                "Rankingen kan fortsÃ¤tta, men filen kunde inte sparas "
                 f"i biblioteket:\n\n{error}"
             )
 
 
     all_spike_candidates = []
 
-    st.write("Antal tecken inläst:", len(raw_data))
+    st.write("Antal tecken inlÃ¤st:", len(raw_data))
     st.write("Antal avdelningar hittade:", len(races))
 
     processed_races = []
@@ -559,8 +560,8 @@ if raw_data is not None:
        
 
         #if horses:
-            #st.write("DEBUG första häst keys:", list(horses[0].keys()))
-            #st.write("DEBUG första häst:", horses[0])
+            #st.write("DEBUG fÃ¶rsta hÃ¤st keys:", list(horses[0].keys()))
+            #st.write("DEBUG fÃ¶rsta hÃ¤st:", horses[0])
 
         #sum_badge = get_sum_loppbadge(horses)
 
@@ -682,8 +683,13 @@ if raw_data is not None:
             "placeholder": race_output_placeholder
         })
 
+    # Fryst skrällmodell: Spår 1 + Spår 2
+
     top_spikes = get_round_spikes(processed_races)
-    # Endast visning – påverkar inte hybridmotorn eller spikvalen.
+
+    # Fryst skr?llmodell: Sp?r 1 + Sp?r 2
+    processed_races = apply_skrall_badges(processed_races)
+    # Endast visning â€“ pÃ¥verkar inte hybridmotorn eller spikvalen.
     hybrid_audit_rows = []
 
     for race_data in processed_races:
@@ -738,13 +744,13 @@ if raw_data is not None:
             ),
             "Lopptyp": loppbadge.get(
                 "label",
-                "Okänd",
+                "OkÃ¤nd",
             ),
-            "Spread 1–8": round(
+            "Spread 1â€“8": round(
                 float(metrics.get("spread_1_8", 0)),
                 1,
             ),
-            "Score gap 1–2": round(
+            "Score gap 1â€“2": round(
                 float(metrics.get("gap_1_2", 0)),
                 1,
             ),
@@ -753,12 +759,12 @@ if raw_data is not None:
                 if spike_percent is not None
                 else None
             ),
-            "Miljö %": (
+            "MiljÃ¶ %": (
                 round(float(environment_percent), 2)
                 if environment_percent is not None
                 else None
             ),
-            "Bästa motor": (
+            "BÃ¤sta motor": (
                 "ENVIRONMENT"
                 if (
                     environment_percent is not None
@@ -770,7 +776,7 @@ if raw_data is not None:
                 )
                 else "SPIKE"
             ),
-            "Bästa %": (
+            "BÃ¤sta %": (
                 round(best_percent, 2)
                 if best_percent is not None
                 else None
@@ -801,7 +807,7 @@ if raw_data is not None:
 
     if SHOW_HYBRID_DEBUG:
         with st.expander(
-            "🔍 Hybridkontroll – alla lopp",
+            "ðŸ” Hybridkontroll â€“ alla lopp",
             expanded=True,
         ):
             hybrid_audit_df = pd.DataFrame(
@@ -812,7 +818,7 @@ if raw_data is not None:
                 hybrid_audit_df = (
                     hybrid_audit_df
                     .sort_values(
-                        ["Bästa %", "Avd"],
+                        ["BÃ¤sta %", "Avd"],
                         ascending=[False, True],
                     )
                     .reset_index(drop=True)
@@ -826,13 +832,13 @@ if raw_data is not None:
 
 
     with summary_placeholder.container():
-        st.subheader("🎯 Omgångens spikförslag")
+        st.subheader("ðŸŽ¯ OmgÃ¥ngens spikfÃ¶rslag")
 
         for i, horse in enumerate(top_spikes, start=1):
             if i > 3:
                 continue
 
-            badge = "🟩 Toppspik" if i <= 2 else "🟦 Spik"
+            badge = "ðŸŸ© Toppspik" if i <= 2 else "ðŸŸ¦ Spik"
 
             selected_engine = horse.get(
                 "hybrid_selected_engine",
@@ -855,7 +861,7 @@ if raw_data is not None:
                 f"Hybridmotor: {selected_engine} | "
                 f"Spikeprofil: "
                 f"{horse.get('hybrid_spike_percent', 'saknas')} | "
-                f"Rank1-miljö: "
+                f"Rank1-miljÃ¶: "
                 f"{horse.get('hybrid_environment_percent', 'saknas')}"
             )
 
@@ -871,11 +877,11 @@ if raw_data is not None:
             st.markdown(
                 f"""
     {badge} **{horse.get("horse", horse.get("name", ""))}**
-    — Avd {horse.get("race_no", "")}
-    — Rank: {horse.get("_model_rank_live", horse.get("model_rank", ""))}
-    — Score: {round(horse.get("total_score", 0), 1)}
-    — SpikeScore: {round(horse.get("spike_score", 0), 1)}
-    — Spel%: {horse.get("percent", 0)}%
+    â€” Avd {horse.get("race_no", "")}
+    â€” Rank: {horse.get("_model_rank_live", horse.get("model_rank", ""))}
+    â€” Score: {round(horse.get("total_score", 0), 1)}
+    â€” SpikeScore: {round(horse.get("spike_score", 0), 1)}
+    â€” Spel%: {horse.get("percent", 0)}%
     {chance_text}
     {value_text}
     """
@@ -915,27 +921,27 @@ if raw_data is not None:
         environment_badges = {
             20: {
                 "type": "success",
-                "text": "🟢 Favoritmiljö | Rank 1–3: 76%",
+                "text": "ðŸŸ¢ FavoritmiljÃ¶ | Rank 1â€“3: 76%",
             },
             19: {
                 "type": "success",
-                "text": "🟢 Favoritmiljö | Rank 1–3: 73%",
+                "text": "ðŸŸ¢ FavoritmiljÃ¶ | Rank 1â€“3: 73%",
             },
             8: {
                 "type": "info",
-                "text": "🔵 Kompakt miljö | Rank 1–5: 80%",
+                "text": "ðŸ”µ Kompakt miljÃ¶ | Rank 1â€“5: 80%",
             },
             4: {
                 "type": "warning",
-                "text": "🟠 Jämnt lopp | Rank 6+: 33%",
+                "text": "ðŸŸ  JÃ¤mnt lopp | Rank 6+: 33%",
             },
             10: {
                 "type": "warning",
-                "text": "🟠 Skrällmiljö | Rank 6+: 31%",
+                "text": "ðŸŸ  SkrÃ¤llmiljÃ¶ | Rank 6+: 31%",
             },
             5: {
                 "type": "error",
-                "text": "🔴 Kaosmiljö | Rank 6+: 43%",
+                "text": "ðŸ”´ KaosmiljÃ¶ | Rank 6+: 43%",
             },
         }
 
@@ -946,8 +952,8 @@ if raw_data is not None:
         is_compact = race_data["race"].get("is_compact", False)
         debug_sums = race_data["race"].get("debug_sums", {})
 
-        is_open = loppbadge.get("label") == "Öppet lopp"
-        is_3horse = loppbadge.get("label") == "3-hästarslopp"
+        is_open = loppbadge.get("label") == "Ã–ppet lopp"
+        is_3horse = loppbadge.get("label") == "3-hÃ¤starslopp"
 
         if is_open:
             primary_race_type = "OPEN"
@@ -960,7 +966,7 @@ if raw_data is not None:
 
         if primary_race_type == "OPEN":
             probability_badge = {
-                "label": "Öppet lopp"
+                "label": "Ã–ppet lopp"
             }
 
         elif primary_race_type == "COMPACT":
@@ -970,12 +976,12 @@ if raw_data is not None:
 
         elif primary_race_type == "3HORSE":
             probability_badge = {
-                "label": "3-hästarslopp"
+                "label": "3-hÃ¤starslopp"
             }
 
         else:
             probability_badge = {
-                "label": "Öppet lopp"
+                "label": "Ã–ppet lopp"
             }    
 
         rank1_horse = horses[0] if horses else {}
@@ -1025,7 +1031,7 @@ if raw_data is not None:
             rows.append({
                 "Rank": idx,
                 "Nr": h.get("number", 0),
-                "Häst": h.get("horse", ""),
+                "HÃ¤st": h.get("horse", ""),
                 "Modellchans %": round(
                     h.get(
                         "rank_probability_percent",
@@ -1050,7 +1056,7 @@ if raw_data is not None:
                 "Form": h.get("form_score", 0),
                 "Stallform": h.get("stallform_score", 0),
                 "Senaste": h.get("latest_start_score", 0),
-                "Spårpoäng": h.get("post_score", 0),
+                "SpÃ¥rpoÃ¤ng": h.get("post_score", 0),
                 "Kusk": h.get("driver_score", 0),
                 "Kuskbyte": h.get("driver_change_score", 0),
                 "Rek": h.get("record_score", 0),
@@ -1067,8 +1073,8 @@ if raw_data is not None:
                 "Skor": h.get("shoe_score", 0),
                 "Inaktiv": h.get("inactivity_score", 0),
                 "Manuell": h.get("custom_score", 0),
-                "Tillägg": h.get("distance_addition_score", 0),
-                "Kön": h.get("gender_score", 0),
+                "TillÃ¤gg": h.get("distance_addition_score", 0),
+                "KÃ¶n": h.get("gender_score", 0),
                 "Galopp": h.get("gallop_score", 0),
                 "Prissumma": h.get("prize_money", 0),
                 "St": h.get("starts", 0),
@@ -1112,8 +1118,8 @@ if raw_data is not None:
                         "Nr",
                         pinned=True
                     ),
-                    "Häst": st.column_config.TextColumn(
-                        "Häst",
+                    "HÃ¤st": st.column_config.TextColumn(
+                        "HÃ¤st",
                         pinned=True
                     ),
                     "Modellchans %":
@@ -1123,3 +1129,4 @@ if raw_data is not None:
                         )
                 }
             )
+

@@ -1,6 +1,6 @@
 import re
 
-from scripts.speed_feature import normalize_time, parse_time_token
+from scripts.speed_feature import normalize_time, parse_time_token, normalize_distance
 
 
 def _extract_distance(distance_post):
@@ -32,6 +32,8 @@ def _get_best_normalized_time_last3(history, target_distance, target_auto):
 
         if historical_distance is None:
             continue
+
+        historical_distance = normalize_distance(historical_distance)
 
         normalized = normalize_time(
             historical_time=parsed["time"],

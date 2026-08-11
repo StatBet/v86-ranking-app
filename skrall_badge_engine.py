@@ -42,7 +42,7 @@ LEAF_GROUPS = {
 }
 
 # ============================================================
-# SPÃ…R 1 - FRYSTA PREMIUMREGLER
+# SPÅR 1 - FRYSTA PREMIUMREGLER
 # ============================================================
 
 TRACK1_PREMIUM = {
@@ -55,7 +55,7 @@ TRACK1_PREMIUM = {
 TRACK1_FALLBACK1_DNA = 1750
 
 # ============================================================
-# SPÃ…R 2 - FRYSTA VARIANTREGLER
+# SPÅR 2 - FRYSTA VARIANTREGLER
 # ============================================================
 
 TRACK2_RULES = [
@@ -151,7 +151,7 @@ def _strength_filename(band):
 
 
 # ============================================================
-# FLATTEN LIVE OMGÃ…NG
+# FLATTEN LIVE OMGÅNG
 # ============================================================
 
 def _round_to_frame(processed_races):
@@ -590,7 +590,7 @@ def _add_variant_similarity(scores, band):
             if not counts:
                 continue
 
-            # Winner-profilefilerna bestÃ¥r av
+            # Winner-profilefilerna består av
             # normaliserade styrkeprofiler.
             total = sum(counts.values())
 
@@ -646,7 +646,7 @@ def _add_variant_similarity(scores, band):
 
 
 # ============================================================
-# SPÃ…R 1
+# SPÅR 1
 # ============================================================
 
 def _select_track1(scores06, scores79):
@@ -758,7 +758,7 @@ def _select_track1(scores06, scores79):
         else []
     )
 
-    # Premium finns -> SpÃ¥r 1 stannar dÃ¤r.
+    # Premium finns -> Spår 1 stannar där.
     if selected:
         return selected
 
@@ -809,7 +809,7 @@ def _select_track1(scores06, scores79):
 
 
 # ============================================================
-# SPÃ…R 2
+# SPÅR 2
 # ============================================================
 
 def _select_track2(scores06, scores79):
@@ -907,13 +907,13 @@ def _select_track2(scores06, scores79):
 
 def apply_skrall_badges(processed_races):
     """
-    Applicerar de tvÃ¥ frysta skrÃ¤llbadgesen Ã¶ver en hel omgÃ¥ng.
+    Applicerar de två frysta skrällbadgesen över en hel omgång.
 
-    SKRÃ„LL PREMIUM:
-        vald av bÃ¥de SpÃ¥r 1 och SpÃ¥r 2
+    SKRÄLL PREMIUM:
+        vald av både Spår 1 och Spår 2
 
-    SKRÃ„LLKANDIDAT:
-        vald av exakt ett av spÃ¥ren
+    SKRÄLLKANDIDAT:
+        vald av exakt ett av spåren
     """
 
     df = _round_to_frame(processed_races)
@@ -973,13 +973,13 @@ def apply_skrall_badges(processed_races):
 
         horse["badges"] = badges
 
-        # SÃ¤kerstÃ¤ll att gamla skrÃ¤llbadges inte ligger kvar
+        # Säkerställ att gamla skrällbadges inte ligger kvar
         badges[:] = [
             b
             for b in badges
             if b not in {
-                "â­ SKRÃ„LL PREMIUM",
-                "ðŸ’¥ SKRÃ„LLKANDIDAT",
+                "⭐ SKRÄLL PREMIUM",
+                "💥 SKRÄLLKANDIDAT",
             }
         ]
 
@@ -1002,11 +1002,11 @@ def apply_skrall_badges(processed_races):
 
         if hit1 and hit2:
             badges.append(
-                "â­ SKRÃ„LL PREMIUM"
+                "⭐ SKRÄLL PREMIUM"
             )
         else:
             badges.append(
-                "ðŸ’¥ SKRÃ„LLKANDIDAT"
+                "💥 SKRÄLLKANDIDAT"
             )
 
     return processed_races

@@ -24,6 +24,42 @@ def parse_distance_post(line):
     return int(match.group(1)), int(match.group(2))
 
 
+def parse_race_distance(line):
+    """
+    Returnerar en rimlig loppdistans i meter från en textrad.
+
+    Exempel som stöds:
+    - 1640 m
+    - 2140m
+    - 2 140 m
+    - 2.140 m
+
+    Orimliga värden, till exempel 28 m, avvisas.
+    """
+    line = clean_text(line)
+
+    match = re.search(
+        r"(?<!\d)(\d{1,2}(?:[\s.]\d{3})|\d{3,4})\s*m\b",
+        line,
+        flags=re.IGNORECASE,
+    )
+
+    if not match:
+        return 0
+
+    value = re.sub(r"[\s.]", "", match.group(1))
+
+    try:
+        distance = int(value)
+    except ValueError:
+        return 0
+
+    if 1000 <= distance <= 4000:
+        return distance
+
+    return 0
+
+
 def parse_percent(line):
     line = clean_text(line).replace("%", "")
 
@@ -40,6 +76,44 @@ def parse_money(line):
         return int(line)
     except:
         return 0
+
+
+def parse_start_points(lines, start_index, lookahead=30):
+    """
+    Läser ATG:s startpoäng från hästens huvudblock.
+
+    Exempel:
+        Poäng:
+        524
+
+    Returnerar 0 om Poäng saknas eller inte kan tolkas.
+    """
+    end = min(start_index + lookahead, len(lines))
+
+    for j in range(start_index, end):
+        value = clean_text(lines[j])
+
+        # Poäng ligger före historikdelen.
+        if "Senaste" in value and "starterna" in value:
+            break
+
+        if is_race_header_line(value):
+            break
+
+        if value.lower() in ["poäng:", "poang:"]:
+            if j + 1 < len(lines):
+                raw_value = clean_text(lines[j + 1])
+
+                try:
+                    return int(
+                        raw_value
+                        .replace(" ", "")
+                        .replace(".", "")
+                    )
+                except (TypeError, ValueError):
+                    return 0
+
+    return 0
 
 
 def parse_horse_name(line):
@@ -225,8 +299,10 @@ def parse_new_atg_format(raw_data):
         lookahead = lines[i:i + 25]
 
         for item in lookahead:
-            if re.search(r"\d+\s*m", item):
-                distance = int(re.search(r"(\d+)\s*m", item).group(1))
+            parsed_distance = parse_race_distance(item)
+
+            if parsed_distance:
+                distance = parsed_distance
 
             if "auto" in item.lower() or "volt" in item.lower():
                 start = normalize_start_method(item)
@@ -241,11 +317,17 @@ def parse_new_atg_format(raw_data):
                 and "volt" not in lowered
                 and "bana" not in lowered
                 and "lätt" not in lowered
-                and not re.search(r"\d+\s*m", item)
+                and not parse_race_distance(item)
                 and not re.search(r"\d{1,2}:\d{2}", item)
             ):
                 track = item
                 break
+
+        if distance == 0:
+            print(
+                f"VARNING: Kunde inte hitta giltig distans "
+                f"för avdelning {race_no}. Bana: {track}"
+            )
 
         race = {
             "race_no": race_no,
@@ -299,6 +381,7 @@ def parse_new_atg_format(raw_data):
                     "horse": horse,
                     "driver": driver,
                     "percent": percent,
+                    "start_points": parse_start_points(lines, i),
                     "distance": race["distance"],
                     "post": post,
                     "prize_money": 0,
@@ -369,6 +452,7 @@ def parse_new_atg_format(raw_data):
                     "horse": horse,
                     "driver": driver.split("(")[0].strip(),
                     "percent": percent,
+                    "start_points": parse_start_points(lines, i),
                     "distance": horse_distance,
                     "post": post,
                     "prize_money": prize_money,
@@ -442,6 +526,7 @@ def parse_new_atg_format(raw_data):
                     "horse": horse,
                     "driver": driver.split("(")[0].strip(),
                     "percent": percent,
+                    "start_points": parse_start_points(lines, i),
                     "distance": horse_distance,
                     "post": post,
                     "prize_money": prize_money,

@@ -372,7 +372,23 @@ def _build_candidate_scores(df, band):
             })
 
     if not matches:
-        return pd.DataFrame()
+        empty = df.iloc[0:0].copy()
+
+        for column, dtype in [
+            ("_row_index", "int64"),
+            ("dna_matches", "float64"),
+            ("dna_score", "float64"),
+            ("best_rule_coverage", "float64"),
+            ("max_parameters", "float64"),
+            ("band", "object"),
+            ("leaf_group", "object"),
+            ("dna_variant", "float64"),
+            ("variant_similarity", "float64"),
+        ]:
+            if column not in empty.columns:
+                empty[column] = pd.Series(dtype=dtype)
+
+        return empty
 
     m = pd.DataFrame(matches)
 
@@ -634,6 +650,20 @@ def _add_variant_similarity(scores, band):
 # ============================================================
 
 def _select_track1(scores06, scores79):
+    required_score_columns = {
+        "_row_index",
+        "dna_score",
+        "best_rule_coverage",
+        "band",
+        "leaf_group",
+    }
+
+    if not required_score_columns.issubset(scores06.columns):
+        scores06 = scores06.iloc[0:0].copy()
+
+    if not required_score_columns.issubset(scores79.columns):
+        scores79 = scores79.iloc[0:0].copy()
+
     all_scores = pd.concat(
         [scores06, scores79],
         ignore_index=True,
@@ -733,10 +763,16 @@ def _select_track1(scores06, scores79):
         return selected
 
     # FALLBACK 1
-    fallback1 = all_scores[
-        all_scores["dna_score"]
-        >= TRACK1_FALLBACK1_DNA
-    ].copy()
+    if all_scores.empty or "dna_score" not in all_scores.columns:
+        fallback1 = pd.DataFrame()
+    else:
+        fallback1 = all_scores[
+            pd.to_numeric(
+                all_scores["dna_score"],
+                errors="coerce",
+            )
+            >= TRACK1_FALLBACK1_DNA
+        ].copy()
 
     if not fallback1.empty:
         best = (
@@ -777,6 +813,19 @@ def _select_track1(scores06, scores79):
 # ============================================================
 
 def _select_track2(scores06, scores79):
+    required_score_columns = {
+        "_row_index",
+        "dna_score",
+        "band",
+        "leaf_group",
+    }
+
+    if not required_score_columns.issubset(scores06.columns):
+        scores06 = scores06.iloc[0:0].copy()
+
+    if not required_score_columns.issubset(scores79.columns):
+        scores79 = scores79.iloc[0:0].copy()
+
     sim = pd.concat(
         [
             _add_variant_similarity(

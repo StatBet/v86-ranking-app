@@ -4,6 +4,7 @@ import docx
 from datetime import datetime
 from supabase import create_client
 from skrall_badge_engine import apply_skrall_badges
+from v8x_postprocess import apply_v8x_postprocess
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
 from loser_badge_helpers import apply_loser_badges_to_race
 from debug_live_lopp_sums import get_live_lopp_sum_debug
@@ -683,8 +684,13 @@ if raw_data is not None:
             "placeholder": race_output_placeholder
         })
 
-    # Fryst skrällmodell: Spår 1 + Spår 2
+    # Fryst skrällmodell: Spår 1 + Spår 2 (candidate generator).
     processed_races = apply_skrall_badges(processed_races)
+
+    # V8X fryst slutlager:
+    # Startpoäng -> EPS -> Spike/EPS-rescues -> final Skräll/Main+Rescue.
+    # total_score/spike_score/hybrid ändras inte.
+    processed_races = apply_v8x_postprocess(processed_races)
 
     top_spikes = get_round_spikes(processed_races)
     # Endast visning – påverkar inte hybridmotorn eller spikvalen.
@@ -886,14 +892,13 @@ if raw_data is not None:
             )
 
     for race_data in processed_races:
+        # Legacy badges, race environment and probability engine keep using the
+        # original total_score order they were trained/validated on.
         horses = sorted(
             race_data["horses"],
             key=lambda x: x.get("total_score", 0),
             reverse=True
         )
-
-        for idx, h in enumerate(horses, start=1):
-            h["display_rank"] = idx
 
         from rank68_badge_helpers import apply_rank68_badges
 
@@ -1022,7 +1027,16 @@ if raw_data is not None:
 
         horses = probability_result["horses"]
 
-        
+        # Only now switch to the V8X final rank for user-facing ranking/output.
+        horses = sorted(
+            horses,
+            key=lambda h: h.get("_final_rank", h.get("base_model_rank", 999)),
+        )
+        race_data["horses"] = horses
+
+        for idx, h in enumerate(horses, start=1):
+            h["display_rank"] = idx
+
         rows = []
 
         for idx, h in enumerate(horses, start=1):
@@ -1045,6 +1059,12 @@ if raw_data is not None:
                     and "TOP5" not in b
                 ),
                 "Tot": h.get("total_score", 0),
+                "Basrank": h.get("base_model_rank", ""),
+                "Startpoäng": h.get("start_points", 0),
+                "SP-rank": h.get("start_points_rank", ""),
+                "EPS": round(h.get("eps_value", 0), 1),
+                "EPS-rank": h.get("eps_rank", ""),
+                "Rankregel": h.get("final_rank_reason", ""),
                 "SpikeScore": round(
                     h.get("spike_score", 0),
                     1

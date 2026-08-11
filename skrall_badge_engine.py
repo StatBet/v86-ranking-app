@@ -640,43 +640,44 @@ def _select_track1(scores06, scores79):
 
     premium_parts = []
 
-    for (
-        band,
-        leaf_group
-    ), (
-        dna_limit,
-        sim_limit
-    ) in TRACK1_PREMIUM.items():
+    if not sim.empty:
+        for (
+            band,
+            leaf_group
+        ), (
+            dna_limit,
+            sim_limit
+        ) in TRACK1_PREMIUM.items():
 
-        x = sim[
-            (sim["band"] == band)
-            &
-            (
-                sim["leaf_group"]
-                == leaf_group
+            x = sim[
+                (sim["band"] == band)
+                &
+                (
+                    sim["leaf_group"]
+                    == leaf_group
+                )
+                &
+                (
+                    sim["dna_score"]
+                    >= dna_limit
+                )
+                &
+                (
+                    sim["variant_similarity"]
+                    >= sim_limit
+                )
+            ].copy()
+
+            if x.empty:
+                continue
+
+            x["_track1_priority"] = (
+                x["dna_score"]
+                / dna_limit
+                * x["variant_similarity"]
             )
-            &
-            (
-                sim["dna_score"]
-                >= dna_limit
-            )
-            &
-            (
-                sim["variant_similarity"]
-                >= sim_limit
-            )
-        ].copy()
 
-        if x.empty:
-            continue
-
-        x["_track1_priority"] = (
-            x["dna_score"]
-            / dna_limit
-            * x["variant_similarity"]
-        )
-
-        premium_parts.append(x)
+            premium_parts.append(x)
 
     if premium_parts:
         premium = pd.concat(

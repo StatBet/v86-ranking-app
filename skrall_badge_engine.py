@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -42,7 +42,7 @@ LEAF_GROUPS = {
 }
 
 # ============================================================
-# SPÅR 1 - FRYSTA PREMIUMREGLER
+# SPÃ…R 1 - FRYSTA PREMIUMREGLER
 # ============================================================
 
 TRACK1_PREMIUM = {
@@ -55,7 +55,7 @@ TRACK1_PREMIUM = {
 TRACK1_FALLBACK1_DNA = 1750
 
 # ============================================================
-# SPÅR 2 - FRYSTA VARIANTREGLER
+# SPÃ…R 2 - FRYSTA VARIANTREGLER
 # ============================================================
 
 TRACK2_RULES = [
@@ -151,7 +151,7 @@ def _strength_filename(band):
 
 
 # ============================================================
-# FLATTEN LIVE OMGÅNG
+# FLATTEN LIVE OMGÃ…NG
 # ============================================================
 
 def _round_to_frame(processed_races):
@@ -574,7 +574,7 @@ def _add_variant_similarity(scores, band):
             if not counts:
                 continue
 
-            # Winner-profilefilerna består av
+            # Winner-profilefilerna bestÃ¥r av
             # normaliserade styrkeprofiler.
             total = sum(counts.values())
 
@@ -610,11 +610,27 @@ def _add_variant_similarity(scores, band):
 
             output.append(item)
 
+    if not output:
+        empty = scores.iloc[0:0].copy()
+
+        for column in [
+            "band",
+            "leaf_group",
+            "dna_score",
+            "dna_variant",
+            "variant_similarity",
+            "_row_index",
+        ]:
+            if column not in empty.columns:
+                empty[column] = pd.Series(dtype="object")
+
+        return empty
+
     return pd.DataFrame(output)
 
 
 # ============================================================
-# SPÅR 1
+# SPÃ…R 1
 # ============================================================
 
 def _select_track1(scores06, scores79):
@@ -712,7 +728,7 @@ def _select_track1(scores06, scores79):
         else []
     )
 
-    # Premium finns -> Spår 1 stannar där.
+    # Premium finns -> SpÃ¥r 1 stannar dÃ¤r.
     if selected:
         return selected
 
@@ -757,7 +773,7 @@ def _select_track1(scores06, scores79):
 
 
 # ============================================================
-# SPÅR 2
+# SPÃ…R 2
 # ============================================================
 
 def _select_track2(scores06, scores79):
@@ -842,13 +858,13 @@ def _select_track2(scores06, scores79):
 
 def apply_skrall_badges(processed_races):
     """
-    Applicerar de två frysta skrällbadgesen över en hel omgång.
+    Applicerar de tvÃ¥ frysta skrÃ¤llbadgesen Ã¶ver en hel omgÃ¥ng.
 
-    SKRÄLL PREMIUM:
-        vald av både Spår 1 och Spår 2
+    SKRÃ„LL PREMIUM:
+        vald av bÃ¥de SpÃ¥r 1 och SpÃ¥r 2
 
-    SKRÄLLKANDIDAT:
-        vald av exakt ett av spåren
+    SKRÃ„LLKANDIDAT:
+        vald av exakt ett av spÃ¥ren
     """
 
     df = _round_to_frame(processed_races)
@@ -908,13 +924,13 @@ def apply_skrall_badges(processed_races):
 
         horse["badges"] = badges
 
-        # Säkerställ att gamla skrällbadges inte ligger kvar
+        # SÃ¤kerstÃ¤ll att gamla skrÃ¤llbadges inte ligger kvar
         badges[:] = [
             b
             for b in badges
             if b not in {
-                "⭐ SKRÄLL PREMIUM",
-                "💥 SKRÄLLKANDIDAT",
+                "â­ SKRÃ„LL PREMIUM",
+                "ðŸ’¥ SKRÃ„LLKANDIDAT",
             }
         ]
 
@@ -937,11 +953,11 @@ def apply_skrall_badges(processed_races):
 
         if hit1 and hit2:
             badges.append(
-                "⭐ SKRÄLL PREMIUM"
+                "â­ SKRÃ„LL PREMIUM"
             )
         else:
             badges.append(
-                "💥 SKRÄLLKANDIDAT"
+                "ðŸ’¥ SKRÃ„LLKANDIDAT"
             )
 
     return processed_races

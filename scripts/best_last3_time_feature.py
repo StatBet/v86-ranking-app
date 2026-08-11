@@ -1,10 +1,10 @@
-import re
+﻿import re
 
 from scripts.speed_feature import normalize_time, parse_time_token, normalize_distance
 
 
 def _extract_distance(distance_post):
-    """Returnerar distansen från exempelvis '2140 : 4'."""
+    """Returnerar distansen frÃ¥n exempelvis '2140 : 4'."""
     if not distance_post:
         return None
 
@@ -16,8 +16,9 @@ def _extract_distance(distance_post):
 
 
 def _get_best_normalized_time_last3(history, target_distance, target_auto):
-    """Bästa normaliserade kilometertiden från hästens tre senaste starter."""
+    """BÃ¤sta normaliserade kilometertiden frÃ¥n hÃ¤stens tre senaste starter."""
     normalized_times = []
+    target_distance = normalize_distance(target_distance)
 
     for start in history[:3]:
         time_token = start.get("time", "")
@@ -61,14 +62,14 @@ def calculate_best_last3_scores(
     threshold=0.1
 ):
     """
-    Räknar bästa normaliserade tid från de tre senaste starterna.
+    RÃ¤knar bÃ¤sta normaliserade tid frÃ¥n de tre senaste starterna.
 
-    Hästar grupperas med 0,1 sekund från gruppens snabbaste tid.
-    Exempel: 12,1 och 12,2 får samma poäng. 12,3 hamnar i nästa grupp.
+    HÃ¤star grupperas med 0,1 sekund frÃ¥n gruppens snabbaste tid.
+    Exempel: 12,1 och 12,2 fÃ¥r samma poÃ¤ng. 12,3 hamnar i nÃ¤sta grupp.
 
     Returnerar:
-        score_map: {hästnamn: poäng}
-        time_map: {hästnamn: bästa normaliserade tid}
+        score_map: {hÃ¤stnamn: poÃ¤ng}
+        time_map: {hÃ¤stnamn: bÃ¤sta normaliserade tid}
     """
     valid = []
     time_map = {}

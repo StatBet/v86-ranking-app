@@ -684,15 +684,17 @@ if raw_data is not None:
             "placeholder": race_output_placeholder
         })
 
-    # Fryst skrällmodell: Spår 1 + Spår 2 (candidate generator).
+    # Hybrid först: skapar leaf/environment-data som Skrällmotorn behöver.
+    top_spikes = get_round_spikes(processed_races)
+
+    # Fryst Skrällmotor: Spår 1 + Spår 2 bygger kandidatpoolen
+    # med korrekt live leaf/environment-data.
     processed_races = apply_skrall_badges(processed_races)
 
     # V8X fryst slutlager:
     # Startpoäng -> EPS -> Spike/EPS-rescues -> final Skräll/Main+Rescue.
     # total_score/spike_score/hybrid ändras inte.
     processed_races = apply_v8x_postprocess(processed_races)
-
-    top_spikes = get_round_spikes(processed_races)
     # Endast visning – påverkar inte hybridmotorn eller spikvalen.
     hybrid_audit_rows = []
 

@@ -7,8 +7,9 @@ Important design rule:
 - The base score model, Spike model, Hybrid engine and frozen Skräll engine run first.
 - This module NEVER changes total_score or spike_score.
 - It creates the final ranking order from the frozen Start Points / EPS rules.
-- It then reduces the frozen Skräll candidate pool to one main pick per round,
-  with at most one tightly controlled Rescue pick.
+- It then reduces the frozen Skräll candidate pool to one Main pick per round,
+  adds the locked broad Rescue 2 candidates from the old candidate pool,
+  and finally keeps the existing tightly controlled external Rescue.
 
 Frozen rule precedence:
 1. Start points top-3 corrections (most cautious / least data)
@@ -19,6 +20,9 @@ Frozen rule precedence:
    - otherwise EPS rescue has precedence for Rank 5
    - Spike rescue is used only if no EPS rescue exists
 5. Skräll final selection uses BASE model rank, not corrected final rank.
+6. Locked Rescue 2 only ADDS removed old Skräll candidates:
+   max_parameters >= 3, dna_score >= 500, dna_matches >= 15, percent <= 8.
+   It never replaces Main, never downgrades Premium, and has no max-1 cap.
 """
 
 from typing import Iterable
@@ -318,14 +322,15 @@ def _clean_skrall_badges(horse: dict) -> list:
 
 def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
     """
-    Frozen two-stage Skräll architecture:
-    - original frozen engine is the candidate generator
-    - choose exactly one main candidate per round when candidates exist
-    - Premium always has first priority
-    - optional one Rescue candidate, never replacing the main pick
-    - Rescue activation: main base rank <=3 and form <=20
-    - Rescue candidate: best remaining 0-9% non-old-candidate in active leaf,
-      base rank asc -> total score desc -> spike desc, latest_start_score >=6
+    Frozen final Skräll architecture:
+    - original frozen engine remains the candidate generator
+    - choose exactly one Main candidate per round when candidates exist
+    - Premium always has first priority for Main
+    - locked Rescue 2 adds every removed old candidate satisfying:
+      max_parameters >= 3, dna_score >= 500, dna_matches >= 15, percent <= 8
+    - there is intentionally no max-1-per-round cap
+    - Premium status/badge is never downgraded
+    - existing external Rescue remains unchanged and can coexist with Rescue 2
     """
     all_horses: list[dict] = []
     original_candidates: list[dict] = []
@@ -336,6 +341,7 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
             horse["skrall_selected"] = False
             horse["skrall_main"] = False
             horse["skrall_rescue"] = False
+            horse["skrall_rescue2"] = False
             all_horses.append(horse)
             if bool(horse.get("skrall_candidate", False)):
                 original_candidates.append(horse)
@@ -363,7 +369,26 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
     else:
         main_badges.append("💥 SKRÄLL")
 
-    # Rescue only for the locked weakness case.
+    # Locked broad Rescue 2. Purely additive; Main is never replaced.
+    rescue2_pool = [
+        h for h in original_candidates
+        if h is not main
+        and _int(h.get("skrall_max_parameters", 0), 0) >= 3
+        and _float(h.get("skrall_dna_score", 0), 0.0) >= 500
+        and _int(h.get("skrall_dna_matches", 0), 0) >= 15
+        and 0 <= _percent(h) <= 8
+    ]
+
+    for rescue2 in rescue2_pool:
+        rescue2["skrall_selected"] = True
+        rescue2["skrall_rescue2"] = True
+
+        if bool(rescue2.get("skrall_premium", False)):
+            rescue2["badges"].append("⭐ SKRÄLL PREMIUM")
+        else:
+            rescue2["badges"].append("💥 SKRÄLL")
+
+    # Existing external Rescue remains exactly as before.
     if not (
         _int(main.get("base_model_rank", 999), 999) <= 3
         and _float(main.get("form_score", 0)) <= 20

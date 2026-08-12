@@ -372,23 +372,7 @@ def _build_candidate_scores(df, band):
             })
 
     if not matches:
-        empty = df.iloc[0:0].copy()
-
-        for column, dtype in [
-            ("_row_index", "int64"),
-            ("dna_matches", "float64"),
-            ("dna_score", "float64"),
-            ("best_rule_coverage", "float64"),
-            ("max_parameters", "float64"),
-            ("band", "object"),
-            ("leaf_group", "object"),
-            ("dna_variant", "float64"),
-            ("variant_similarity", "float64"),
-        ]:
-            if column not in empty.columns:
-                empty[column] = pd.Series(dtype=dtype)
-
-        return empty
+        return pd.DataFrame()
 
     m = pd.DataFrame(matches)
 
@@ -626,22 +610,6 @@ def _add_variant_similarity(scores, band):
 
             output.append(item)
 
-    if not output:
-        empty = scores.iloc[0:0].copy()
-
-        for column in [
-            "band",
-            "leaf_group",
-            "dna_score",
-            "dna_variant",
-            "variant_similarity",
-            "_row_index",
-        ]:
-            if column not in empty.columns:
-                empty[column] = pd.Series(dtype="object")
-
-        return empty
-
     return pd.DataFrame(output)
 
 
@@ -650,20 +618,6 @@ def _add_variant_similarity(scores, band):
 # ============================================================
 
 def _select_track1(scores06, scores79):
-    required_score_columns = {
-        "_row_index",
-        "dna_score",
-        "best_rule_coverage",
-        "band",
-        "leaf_group",
-    }
-
-    if not required_score_columns.issubset(scores06.columns):
-        scores06 = scores06.iloc[0:0].copy()
-
-    if not required_score_columns.issubset(scores79.columns):
-        scores79 = scores79.iloc[0:0].copy()
-
     all_scores = pd.concat(
         [scores06, scores79],
         ignore_index=True,
@@ -686,44 +640,43 @@ def _select_track1(scores06, scores79):
 
     premium_parts = []
 
-    if not sim.empty:
-        for (
-            band,
-            leaf_group
-        ), (
-            dna_limit,
-            sim_limit
-        ) in TRACK1_PREMIUM.items():
+    for (
+        band,
+        leaf_group
+    ), (
+        dna_limit,
+        sim_limit
+    ) in TRACK1_PREMIUM.items():
 
-            x = sim[
-                (sim["band"] == band)
-                &
-                (
-                    sim["leaf_group"]
-                    == leaf_group
-                )
-                &
-                (
-                    sim["dna_score"]
-                    >= dna_limit
-                )
-                &
-                (
-                    sim["variant_similarity"]
-                    >= sim_limit
-                )
-            ].copy()
-
-            if x.empty:
-                continue
-
-            x["_track1_priority"] = (
-                x["dna_score"]
-                / dna_limit
-                * x["variant_similarity"]
+        x = sim[
+            (sim["band"] == band)
+            &
+            (
+                sim["leaf_group"]
+                == leaf_group
             )
+            &
+            (
+                sim["dna_score"]
+                >= dna_limit
+            )
+            &
+            (
+                sim["variant_similarity"]
+                >= sim_limit
+            )
+        ].copy()
 
-            premium_parts.append(x)
+        if x.empty:
+            continue
+
+        x["_track1_priority"] = (
+            x["dna_score"]
+            / dna_limit
+            * x["variant_similarity"]
+        )
+
+        premium_parts.append(x)
 
     if premium_parts:
         premium = pd.concat(
@@ -763,16 +716,10 @@ def _select_track1(scores06, scores79):
         return selected
 
     # FALLBACK 1
-    if all_scores.empty or "dna_score" not in all_scores.columns:
-        fallback1 = pd.DataFrame()
-    else:
-        fallback1 = all_scores[
-            pd.to_numeric(
-                all_scores["dna_score"],
-                errors="coerce",
-            )
-            >= TRACK1_FALLBACK1_DNA
-        ].copy()
+    fallback1 = all_scores[
+        all_scores["dna_score"]
+        >= TRACK1_FALLBACK1_DNA
+    ].copy()
 
     if not fallback1.empty:
         best = (
@@ -813,19 +760,6 @@ def _select_track1(scores06, scores79):
 # ============================================================
 
 def _select_track2(scores06, scores79):
-    required_score_columns = {
-        "_row_index",
-        "dna_score",
-        "band",
-        "leaf_group",
-    }
-
-    if not required_score_columns.issubset(scores06.columns):
-        scores06 = scores06.iloc[0:0].copy()
-
-    if not required_score_columns.issubset(scores79.columns):
-        scores79 = scores79.iloc[0:0].copy()
-
     sim = pd.concat(
         [
             _add_variant_similarity(
@@ -945,6 +879,27 @@ def apply_skrall_badges(processed_races):
 
     selected = track1 | track2
 
+    # Expose frozen DNA values for the later locked Rescue 2 layer.
+    score_parts = [
+        x for x in (scores06, scores79)
+        if x is not None and not x.empty
+    ]
+
+    if score_parts:
+        all_candidate_scores = pd.concat(score_parts, ignore_index=True)
+        dna_lookup = (
+            all_candidate_scores
+            .sort_values(
+                ["dna_score", "dna_matches", "best_rule_coverage"],
+                ascending=False,
+            )
+            .drop_duplicates("_row_index", keep="first")
+            .set_index("_row_index")
+            .to_dict("index")
+        )
+    else:
+        dna_lookup = {}
+
     for idx, row in df.iterrows():
         live_index = row.get(
             "_skrall_live_index"
@@ -972,6 +927,25 @@ def apply_skrall_badges(processed_races):
             badges = list(badges)
 
         horse["badges"] = badges
+
+        # DNA values are copied only; Track 1 / Track 2 logic is unchanged.
+        horse["skrall_dna_score"] = 0.0
+        horse["skrall_dna_matches"] = 0
+        horse["skrall_max_parameters"] = 0
+        horse["skrall_best_rule_coverage"] = 0.0
+        horse["skrall_leaf_group"] = None
+        horse["skrall_band"] = None
+
+        dna_row = dna_lookup.get(idx)
+        if dna_row is not None:
+            horse["skrall_dna_score"] = _safe_float(dna_row.get("dna_score", 0))
+            horse["skrall_dna_matches"] = _safe_int(dna_row.get("dna_matches", 0))
+            horse["skrall_max_parameters"] = _safe_int(dna_row.get("max_parameters", 0))
+            horse["skrall_best_rule_coverage"] = _safe_float(
+                dna_row.get("best_rule_coverage", 0)
+            )
+            horse["skrall_leaf_group"] = dna_row.get("leaf_group")
+            horse["skrall_band"] = dna_row.get("band")
 
         # Säkerställ att gamla skrällbadges inte ligger kvar
         badges[:] = [

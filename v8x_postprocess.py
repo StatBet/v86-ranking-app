@@ -8,8 +8,8 @@ Important design rule:
 - This module NEVER changes total_score or spike_score.
 - It creates the final ranking order from the frozen Start Points / EPS rules.
 - It then reduces the frozen Skräll candidate pool to one Main pick per round,
-  adds the locked broad Rescue 2 candidates from the old candidate pool,
-  and finally keeps the existing tightly controlled external Rescue.
+  adds the locked broad Rescue 2 candidates from the original candidate pool,
+  and keeps the existing tightly controlled external Rescue.
 
 Frozen rule precedence:
 1. Start points top-3 corrections (most cautious / least data)
@@ -22,10 +22,16 @@ Frozen rule precedence:
 5. Skräll final selection uses BASE model rank, not corrected final rank.
 6. Locked Rescue 2 only ADDS removed old Skräll candidates:
    max_parameters >= 3, dna_score >= 500, dna_matches >= 15, percent <= 8.
-   It never replaces Main, never downgrades Premium, and has no max-1 cap.
+   It never replaces Main, never changes Track1/Track2/Premium, and has no max-1 cap.
 """
 
 from typing import Iterable
+
+from skrall_badge_engine import (
+    _round_to_frame as _skrall_round_to_frame,
+    _add_within_race_ranks as _skrall_add_within_race_ranks,
+    _build_candidate_scores as _skrall_build_candidate_scores,
+)
 
 ACTIVE_RESCUE_LEAVES = {4, 5, 10}
 ACTIVE_SKRALL_LEAVES = {4, 5, 8, 10, 19, 20}
@@ -320,17 +326,81 @@ def _clean_skrall_badges(horse: dict) -> list:
     return badges
 
 
+def _rescue2_dna_lookup(processed_races: list[dict]) -> dict[int, dict]:
+    """
+    Calculate the already-defined frozen DNA fields for Rescue 2 without
+    mutating the frozen Skräll engine's Track1/Track2/Premium selection.
+
+    Returns a lookup keyed by id(live_horse).
+    """
+    df = _skrall_round_to_frame(processed_races)
+    if df.empty:
+        return {}
+
+    df = _skrall_add_within_race_ranks(df)
+
+    parts = []
+    for band in ("06", "79"):
+        scores = _skrall_build_candidate_scores(df, band)
+        if scores is not None and not scores.empty:
+            parts.append(scores)
+
+    if not parts:
+        return {}
+
+    import pandas as pd
+
+    scores = pd.concat(parts, ignore_index=True)
+
+    lookup: dict[int, dict] = {}
+
+    for _, row in scores.iterrows():
+        live_index = row.get("_skrall_live_index")
+        if not isinstance(live_index, tuple) or len(live_index) != 2:
+            continue
+
+        race_index, horse_index = live_index
+
+        try:
+            horse = processed_races[race_index]["horses"][horse_index]
+        except (IndexError, KeyError, TypeError):
+            continue
+
+        item = {
+            "dna_score": _float(row.get("dna_score", 0)),
+            "dna_matches": _int(row.get("dna_matches", 0)),
+            "max_parameters": _int(row.get("max_parameters", 0)),
+            "best_rule_coverage": _float(row.get("best_rule_coverage", 0)),
+        }
+
+        old = lookup.get(id(horse))
+        if old is None:
+            lookup[id(horse)] = item
+            continue
+
+        # Defensive duplicate handling: keep the stronger DNA observation.
+        if (
+            item["dna_score"],
+            item["dna_matches"],
+            item["best_rule_coverage"],
+        ) > (
+            old["dna_score"],
+            old["dna_matches"],
+            old["best_rule_coverage"],
+        ):
+            lookup[id(horse)] = item
+
+    return lookup
+
+
 def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
     """
     Frozen final Skräll architecture:
-    - original frozen engine remains the candidate generator
+    - frozen engine remains completely unchanged as candidate generator
     - choose exactly one Main candidate per round when candidates exist
-    - Premium always has first priority for Main
-    - locked Rescue 2 adds every removed old candidate satisfying:
-      max_parameters >= 3, dna_score >= 500, dna_matches >= 15, percent <= 8
-    - there is intentionally no max-1-per-round cap
-    - Premium status/badge is never downgraded
-    - existing external Rescue remains unchanged and can coexist with Rescue 2
+    - Premium always has first priority
+    - Rescue 2 is purely additive on removed old candidates
+    - existing external Rescue remains unchanged
     """
     all_horses: list[dict] = []
     original_candidates: list[dict] = []
@@ -369,26 +439,42 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
     else:
         main_badges.append("💥 SKRÄLL")
 
-    # Locked broad Rescue 2. Purely additive; Main is never replaced.
-    rescue2_pool = [
-        h for h in original_candidates
-        if h is not main
-        and _int(h.get("skrall_max_parameters", 0), 0) >= 3
-        and _float(h.get("skrall_dna_score", 0), 0.0) >= 500
-        and _int(h.get("skrall_dna_matches", 0), 0) >= 15
-        and 0 <= _percent(h) <= 8
-    ]
+    # ---------------------------------------------------------
+    # LOCKED BROAD RESCUE 2
+    # Pure addition. The frozen engine and Premium flags are not changed.
+    # ---------------------------------------------------------
+    rescue2_dna = _rescue2_dna_lookup(processed_races)
+
+    rescue2_pool = []
+    for horse in original_candidates:
+        if horse is main:
+            continue
+
+        dna = rescue2_dna.get(id(horse))
+        if dna is None:
+            continue
+
+        if not (
+            dna["max_parameters"] >= 3
+            and dna["dna_score"] >= 500
+            and dna["dna_matches"] >= 15
+            and 0 <= _percent(horse) <= 8
+        ):
+            continue
+
+        rescue2_pool.append(horse)
 
     for rescue2 in rescue2_pool:
         rescue2["skrall_selected"] = True
         rescue2["skrall_rescue2"] = True
 
+        # Premium status is preserved exactly as generated by the frozen engine.
         if bool(rescue2.get("skrall_premium", False)):
             rescue2["badges"].append("⭐ SKRÄLL PREMIUM")
         else:
             rescue2["badges"].append("💥 SKRÄLL")
 
-    # Existing external Rescue remains exactly as before.
+    # Existing external Rescue only for the locked weakness case.
     if not (
         _int(main.get("base_model_rank", 999), 999) <= 3
         and _float(main.get("form_score", 0)) <= 20

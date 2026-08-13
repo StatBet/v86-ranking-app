@@ -1046,13 +1046,7 @@ if raw_data is not None:
                 "Rank": idx,
                 "Nr": h.get("number", 0),
                 "Häst": h.get("horse", ""),
-                "Modellchans %": round(
-                    h.get(
-                        "rank_probability_percent",
-                        0,
-                    ),
-                    1,
-                ),
+
                 "Badges": "  ".join(
                     b for b in h.get("badges", [])
                     if "Top5" not in b
@@ -1060,20 +1054,28 @@ if raw_data is not None:
                     and "Topp5" not in b
                     and "TOP5" not in b
                 ),
+
                 "Tot": h.get("total_score", 0),
-                "Basrank": h.get("base_model_rank", ""),
-                "Startpoäng": h.get("start_points", 0),
-                "SP-rank": h.get("start_points_rank", ""),
-                "EPS": round(h.get("eps_value", 0), 1),
-                "EPS-rank": h.get("eps_rank", ""),
-                "Rankregel": h.get("final_rank_reason", ""),
+
                 "SpikeScore": round(
                     h.get("spike_score", 0),
                     1
                 ),
+
+                "Form": h.get("form_score", 0),
+
+                "SP-rank": h.get(
+                    "start_points_rank",
+                    ""
+                ),
+
+                "EPS-rank": h.get(
+                    "eps_rank",
+                    ""
+                ),
+
                 "Speed": h.get("speed_score", 0),
                 "AvgTid": h.get("avg_time", ""),
-                "Form": h.get("form_score", 0),
                 "Stallform": h.get("stallform_score", 0),
                 "Senaste": h.get("latest_start_score", 0),
                 "Spårpoäng": h.get("post_score", 0),
@@ -1142,10 +1144,5 @@ if raw_data is not None:
                         "Häst",
                         pinned=True
                     ),
-                    "Modellchans %":
-                        st.column_config.NumberColumn(
-                            "Modellchans %",
-                            format="%.1f%%"
-                        )
                 }
             )

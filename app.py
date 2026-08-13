@@ -1130,6 +1130,7 @@ if raw_data is not None:
             st.dataframe(
                 df,
                 width="stretch",
+                height=(len(df) + 1) * 35 + 3,
                 hide_index=True,
                 column_config={
                     "Rank": st.column_config.NumberColumn(

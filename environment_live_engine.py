@@ -8,11 +8,508 @@ import joblib
 import numpy as np
 import pandas as pd
 
-try:
-    from skrall_v2.BUILD_ENVIRONMENT_MASTER import make_race_row
-except ModuleNotFoundError:
-    from BUILD_ENVIRONMENT_MASTER import make_race_row
+# ============================================================
+# LIVE RACE-FEATURE BUILDER
+#
+# Självbärande kopia av exakt den featurelogik som användes
+# för Environment V2 BUILD-master.
+# Ingen extern analysfil krävs i Streamlit.
+# ============================================================
 
+def _num_series(series):
+    return pd.to_numeric(
+        series,
+        errors="coerce",
+    )
+
+
+def _safe_value(row, key, default=np.nan):
+
+    if key not in row.index:
+        return default
+
+    value = row.get(
+        key,
+        default,
+    )
+
+    # Live kan innehålla listor, t.ex. badges.
+    if isinstance(
+        value,
+        (list, tuple, set),
+    ):
+        return " | ".join(
+            str(item)
+            for item in value
+        )
+
+    try:
+        missing = pd.isna(
+            value
+        )
+
+        if isinstance(
+            missing,
+            (bool, np.bool_),
+        ) and missing:
+            return default
+
+    except Exception:
+        pass
+
+    return value
+
+
+def _get_ranked(race):
+
+    race = race.copy()
+
+    if "model_rank" in race.columns:
+
+        race[
+            "model_rank"
+        ] = pd.to_numeric(
+            race[
+                "model_rank"
+            ],
+            errors="coerce",
+        )
+
+        race = (
+            race
+            .sort_values(
+                "model_rank",
+                ascending=True,
+                kind="stable",
+            )
+            .reset_index(
+                drop=True
+            )
+        )
+
+    else:
+
+        race = race.reset_index(
+            drop=True
+        )
+
+    return race
+
+
+def _at_rank(
+    race,
+    column,
+    rank,
+):
+
+    if column not in race.columns:
+        return np.nan
+
+    index = (
+        rank - 1
+    )
+
+    if (
+        index < 0
+        or index >= len(race)
+    ):
+        return np.nan
+
+    return pd.to_numeric(
+        pd.Series(
+            [
+                race.iloc[
+                    index
+                ].get(
+                    column,
+                    np.nan,
+                )
+            ]
+        ),
+        errors="coerce",
+    ).iloc[0]
+
+
+def _score_spread(
+    race,
+    column,
+    target_rank,
+):
+
+    if (
+        column not in race.columns
+        or len(race) < target_rank
+    ):
+        return np.nan
+
+    first = _at_rank(
+        race,
+        column,
+        1,
+    )
+
+    target = _at_rank(
+        race,
+        column,
+        target_rank,
+    )
+
+    if (
+        pd.isna(first)
+        or pd.isna(target)
+    ):
+        return np.nan
+
+    return (
+        first
+        - target
+    )
+
+
+def _series_stats(
+    race,
+    column,
+    prefix,
+):
+
+    if column not in race.columns:
+        return {}
+
+    series = (
+        _num_series(
+            race[column]
+        )
+        .dropna()
+    )
+
+    if series.empty:
+        return {}
+
+    return {
+        f"{prefix}_sum":
+            series.sum(),
+
+        f"{prefix}_mean":
+            series.mean(),
+
+        f"{prefix}_median":
+            series.median(),
+
+        f"{prefix}_std":
+            series.std(
+                ddof=0
+            ),
+
+        f"{prefix}_max":
+            series.max(),
+
+        f"{prefix}_min":
+            series.min(),
+
+        f"{prefix}_range":
+            (
+                series.max()
+                - series.min()
+            ),
+    }
+
+
+def make_race_row(
+    date,
+    race_no,
+    race,
+):
+
+    race = _get_ranked(
+        race
+    )
+
+    if race.empty:
+        return {}
+
+    rank1 = race.iloc[0]
+
+    race_id = (
+        str(
+            _safe_value(
+                rank1,
+                "race_id",
+                "",
+            )
+        )
+        if "race_id"
+        in race.columns
+        else ""
+    )
+
+    if (
+        not race_id
+        or race_id == "nan"
+    ):
+        race_id = (
+            f"{int(date)}_"
+            f"{int(race_no)}"
+        )
+
+    row = {
+        "date":
+            int(date),
+
+        "race_no":
+            int(race_no),
+
+        "race_id":
+            race_id,
+
+        "track":
+            _safe_value(
+                rank1,
+                "track",
+                "",
+            ),
+
+        "race_type":
+            _safe_value(
+                rank1,
+                "race_type",
+                "",
+            ),
+
+        "start_type":
+            _safe_value(
+                rank1,
+                "start_type",
+                "",
+            ),
+
+        "distance":
+            _safe_value(
+                rank1,
+                "distance",
+                np.nan,
+            ),
+
+        "field_size":
+            len(race),
+
+        "rank1_total":
+            _at_rank(
+                race,
+                "total_score",
+                1,
+            ),
+
+        "rank2_total":
+            _at_rank(
+                race,
+                "total_score",
+                2,
+            ),
+
+        "rank3_total":
+            _at_rank(
+                race,
+                "total_score",
+                3,
+            ),
+
+        "rank4_total":
+            _at_rank(
+                race,
+                "total_score",
+                4,
+            ),
+
+        "rank5_total":
+            _at_rank(
+                race,
+                "total_score",
+                5,
+            ),
+
+        "rank1_spike":
+            _at_rank(
+                race,
+                "spike_score",
+                1,
+            ),
+
+        "rank2_spike":
+            _at_rank(
+                race,
+                "spike_score",
+                2,
+            ),
+
+        "rank3_spike":
+            _at_rank(
+                race,
+                "spike_score",
+                3,
+            ),
+
+        "score_gap_1_2":
+            _score_spread(
+                race,
+                "total_score",
+                2,
+            ),
+
+        "score_gap_1_3":
+            _score_spread(
+                race,
+                "total_score",
+                3,
+            ),
+
+        "score_gap_1_4":
+            _score_spread(
+                race,
+                "total_score",
+                4,
+            ),
+
+        "score_gap_1_5":
+            _score_spread(
+                race,
+                "total_score",
+                5,
+            ),
+
+        "spread_1_8":
+            _score_spread(
+                race,
+                "total_score",
+                8,
+            ),
+
+        "spike_gap_1_2":
+            _score_spread(
+                race,
+                "spike_score",
+                2,
+            ),
+
+        "spike_gap_1_3":
+            _score_spread(
+                race,
+                "spike_score",
+                3,
+            ),
+
+        "spike_gap_1_4":
+            _score_spread(
+                race,
+                "spike_score",
+                4,
+            ),
+    }
+
+    row.update(
+        _series_stats(
+            race,
+            "total_score",
+            "total",
+        )
+    )
+
+    row.update(
+        _series_stats(
+            race,
+            "spike_score",
+            "spike",
+        )
+    )
+
+    score_columns = [
+        "speed_score",
+        "latest_start_score",
+        "form_score",
+        "stallform_score",
+        "post_score",
+        "driver_score",
+        "driver_change_score",
+        "record_score",
+        "starts_score",
+        "win_score",
+        "place_score",
+        "spel_score",
+        "prize_money_score",
+        "recent_prize_score",
+        "class_change_score",
+        "avg_odds_score",
+        "wagon_score",
+        "shoe_score",
+        "inactivity_score",
+        "custom_score",
+        "distance_addition_score",
+        "gender_score",
+        "gallop_score",
+        "start_points",
+        "eps_value",
+    ]
+
+    for column in score_columns:
+
+        if column not in race.columns:
+            continue
+
+        series = (
+            _num_series(
+                race[column]
+            )
+            .dropna()
+        )
+
+        if series.empty:
+            continue
+
+        row[
+            f"{column}_mean"
+        ] = series.mean()
+
+        row[
+            f"{column}_max"
+        ] = series.max()
+
+        row[
+            f"{column}_min"
+        ] = series.min()
+
+        row[
+            f"{column}_range"
+        ] = (
+            series.max()
+            - series.min()
+        )
+
+        row[
+            f"rank1_{column}"
+        ] = _at_rank(
+            race,
+            column,
+            1,
+        )
+
+    # Dessa följer endast med som auditfält.
+    for column in (
+        "loppbadge",
+        "loppbadge_x",
+        "loppbadge_y",
+        "badges",
+    ):
+
+        if column in race.columns:
+
+            row[
+                column
+            ] = _safe_value(
+                rank1,
+                column,
+                "",
+            )
+
+    return row
 
 MODEL_FILE = Path(
     "config/environment_model_v2_frozen.joblib"
@@ -562,4 +1059,5 @@ def environment_label(
         f"| Rank6+ {rank6:.1f}% "
         f"| BUILD n={observations}"
     )
+
 

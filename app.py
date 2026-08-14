@@ -5,6 +5,7 @@ from datetime import datetime
 from supabase import create_client
 from skrall_badge_engine import apply_skrall_badges
 from v8x_postprocess import apply_v8x_postprocess
+from environment_live_engine import environment_label
 from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
 from loser_badge_helpers import apply_loser_badges_to_race
 from debug_live_lopp_sums import get_live_lopp_sum_debug
@@ -1110,6 +1111,99 @@ if raw_data is not None:
         df = pd.DataFrame(rows)
 
         with race_data["placeholder"].container():
+
+            # =================================================
+            # ENVIRONMENT V2 - SLUTLIG LIVE-MILJÖ
+            #
+            # VIKTIGT:
+            # Detta är ENDAST Environment V2-visningen.
+            # Hybrid V3 / gamla miljöleafs / spikuttagning
+            # lämnas helt orörda.
+            # =================================================
+
+            env_race = race_data.get(
+                "race",
+                {},
+            )
+
+            environment_v2 = env_race.get(
+                "final_environment_v2",
+                "UT",
+            )
+
+            environment_profile_v2 = env_race.get(
+                "final_environment_profile_v2",
+            )
+
+            initial_environment_v2 = env_race.get(
+                "initial_environment_v2",
+                environment_v2,
+            )
+
+            initial_leaf_v2 = env_race.get(
+                "initial_environment_leaf_v2",
+            )
+
+            final_leaf_v2 = env_race.get(
+                "final_environment_leaf_v2",
+            )
+
+            environment_text_v2 = environment_label(
+                environment_v2,
+                environment_profile_v2,
+            )
+
+            # Miljöerna visas tydligt men påverkar INTE
+            # Hybrid V3:s spikuttagning.
+            if environment_v2 == "Favoritrank":
+                st.success(
+                    environment_text_v2
+                )
+
+            elif environment_v2 == "Solid":
+                st.success(
+                    environment_text_v2
+                )
+
+            elif environment_v2 == "Neutral":
+                st.info(
+                    environment_text_v2
+                )
+
+            elif environment_v2 == "Öppet":
+                st.warning(
+                    environment_text_v2
+                )
+
+            elif environment_v2 == "Kaos":
+                st.warning(
+                    environment_text_v2
+                )
+
+            elif environment_v2 == "Extrem kaos":
+                st.error(
+                    environment_text_v2
+                )
+
+            else:
+                st.caption(
+                    environment_text_v2
+                )
+
+            # Visa migration endast när själva miljön ändrats.
+            if (
+                initial_environment_v2
+                != environment_v2
+            ):
+                st.caption(
+                    "Environment V2: "
+                    f"{initial_environment_v2} "
+                    f"→ {environment_v2} "
+                    f"| leaf "
+                    f"{initial_leaf_v2} "
+                    f"→ {final_leaf_v2}"
+                )
+
 
             if environment_badge:
                 badge_type = environment_badge["type"]

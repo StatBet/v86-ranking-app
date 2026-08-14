@@ -27,6 +27,8 @@ Frozen rule precedence:
 
 from typing import Iterable
 
+from environment_live_engine import classify_environment
+
 from skrall_badge_engine import (
     _round_to_frame as _skrall_round_to_frame,
     _add_within_race_ranks as _skrall_add_within_race_ranks,
@@ -172,6 +174,24 @@ def _apply_ranking_rules_to_race(race_data: dict) -> None:
     if not base_order:
         return
 
+    # =========================================================
+    # ENVIRONMENT V2 - INITIAL
+    #
+    # Fryst no-market-miljö på den aktuella basrankingen.
+    # Legacy leaf_id ovan lämnas helt orörd eftersom gamla
+    # Hybrid/Skräll-systemet fortfarande använder den.
+    # =========================================================
+    initial_environment_result = classify_environment(
+        race_data,
+        base_order,
+        stage="initial",
+    )
+
+    initial_environment = initial_environment_result.get(
+        "environment",
+        "UT",
+    )
+
     order = list(base_order)
     base_top3 = base_order[:3]
 
@@ -249,58 +269,212 @@ def _apply_ranking_rules_to_race(race_data: dict) -> None:
         _move_to(order, chosen, 3)
         chosen["_final_rank_reasons"].append("Rank4/5 dubbel Spike+EPS → Rank3")
 
+
     # ---------------------------------------------------------
-    # Rank 6+ rescue in Leaf 4/5/10, >=11%.
+    # ENVIRONMENT V2 - NEUTRAL RANK5 PROTECTION
+    #
+    # Låst BUILD81-regel:
+    # Initial Neutral + BASE Rank5 post 1-3
+    # => blockera just 6+ rescue i loppet.
+    #
+    # Start/EPS-toppen och Rank4/5-regeln ovan påverkas inte.
     # ---------------------------------------------------------
-    if leaf_id in ACTIVE_RESCUE_LEAVES:
+    neutral_rank5_protected = False
+
+    if (
+        initial_environment == "Neutral"
+        and len(base_order) >= 5
+    ):
+        base_rank5 = base_order[4]
+
+        if _int(
+            base_rank5.get(
+                "post",
+                999,
+            ),
+            999,
+        ) <= 3:
+            neutral_rank5_protected = True
+            base_rank5[
+                "neutral_rank5_protected"
+            ] = True
+
+    race_data.setdefault(
+        "race",
+        {},
+    )[
+        "neutral_rank5_protected_v2"
+    ] = neutral_rank5_protected
+
+    # ---------------------------------------------------------
+    # Rank 6+ rescue - NY LÅST MILJÖARKITEKTUR
+    #
+    # Regeln testades över samtliga nya miljöer:
+    # BASE Rank >=6 + spel% >=11.
+    #
+    # Samma häst EPS Top4 + Spike Top3 -> Rank3.
+    # Annars EPS har företräde -> Rank5.
+    # Annars Spike -> Rank5.
+    #
+    # Enda miljöundantaget är Neutral-skyddet ovan.
+    # ---------------------------------------------------------
+    if not neutral_rank5_protected:
+
         eligible = [
             h for h in base_order
-            if _int(h.get("base_model_rank", 999), 999) >= 6
+            if _int(
+                h.get(
+                    "base_model_rank",
+                    999,
+                ),
+                999,
+            ) >= 6
             and _percent(h) >= 11
         ]
 
-        eps_eligible = [h for h in eligible if _int(h.get("eps_rank", 999), 999) <= 4]
-        spike_eligible = [h for h in eligible if _int(h.get("spike_rank", 999), 999) <= 3]
+        eps_eligible = [
+            h for h in eligible
+            if _int(
+                h.get(
+                    "eps_rank",
+                    999,
+                ),
+                999,
+            ) <= 4
+        ]
+
+        spike_eligible = [
+            h for h in eligible
+            if _int(
+                h.get(
+                    "spike_rank",
+                    999,
+                ),
+                999,
+            ) <= 3
+        ]
 
         eps_candidate = (
             min(
                 eps_eligible,
                 key=lambda h: (
-                    _int(h.get("eps_rank", 999), 999),
-                    -_float(h.get("eps_value", 0)),
-                    -_float(h.get("total_score", 0)),
+                    _int(
+                        h.get(
+                            "eps_rank",
+                            999,
+                        ),
+                        999,
+                    ),
+                    -_float(
+                        h.get(
+                            "eps_value",
+                            0,
+                        )
+                    ),
+                    -_float(
+                        h.get(
+                            "total_score",
+                            0,
+                        )
+                    ),
                 ),
             )
-            if eps_eligible else None
+            if eps_eligible
+            else None
         )
+
         spike_candidate = (
             min(
                 spike_eligible,
                 key=lambda h: (
-                    _int(h.get("spike_rank", 999), 999),
-                    -_float(h.get("spike_score", 0)),
-                    -_float(h.get("total_score", 0)),
+                    _int(
+                        h.get(
+                            "spike_rank",
+                            999,
+                        ),
+                        999,
+                    ),
+                    -_float(
+                        h.get(
+                            "spike_score",
+                            0,
+                        )
+                    ),
+                    -_float(
+                        h.get(
+                            "total_score",
+                            0,
+                        )
+                    ),
                 ),
             )
-            if spike_eligible else None
+            if spike_eligible
+            else None
         )
 
-        if eps_candidate is not None and eps_candidate is spike_candidate:
-            # Strongest measured rescue (10/39 = 25.6%) gets Rank3 priority.
-            _move_to(order, eps_candidate, 3)
-            eps_candidate["_final_rank_reasons"].append("Dubbel Rescue EPS+Spike → Rank3")
-            eps_candidate["double_rescue"] = True
-            eps_candidate["eps_rescue"] = True
-            eps_candidate["spike_rescue"] = True
+        if (
+            eps_candidate is not None
+            and eps_candidate is spike_candidate
+        ):
+            _move_to(
+                order,
+                eps_candidate,
+                3,
+            )
+
+            eps_candidate[
+                "_final_rank_reasons"
+            ].append(
+                "Dubbel Rescue EPS+Spike → Rank3"
+            )
+
+            eps_candidate[
+                "double_rescue"
+            ] = True
+
+            eps_candidate[
+                "eps_rescue"
+            ] = True
+
+            eps_candidate[
+                "spike_rescue"
+            ] = True
+
         elif eps_candidate is not None:
-            # EPS has precedence when separate rescue candidates conflict.
-            _move_to(order, eps_candidate, 5)
-            eps_candidate["_final_rank_reasons"].append("EPS Rescue → Rank5")
-            eps_candidate["eps_rescue"] = True
+
+            _move_to(
+                order,
+                eps_candidate,
+                5,
+            )
+
+            eps_candidate[
+                "_final_rank_reasons"
+            ].append(
+                "EPS Rescue → Rank5"
+            )
+
+            eps_candidate[
+                "eps_rescue"
+            ] = True
+
         elif spike_candidate is not None:
-            _move_to(order, spike_candidate, 5)
-            spike_candidate["_final_rank_reasons"].append("Spike Rescue → Rank5")
-            spike_candidate["spike_rescue"] = True
+
+            _move_to(
+                order,
+                spike_candidate,
+                5,
+            )
+
+            spike_candidate[
+                "_final_rank_reasons"
+            ].append(
+                "Spike Rescue → Rank5"
+            )
+
+            spike_candidate[
+                "spike_rescue"
+            ] = True
 
     # Final physical order and rank fields.
     race_data["horses"] = order
@@ -311,6 +485,20 @@ def _apply_ranking_rules_to_race(race_data: dict) -> None:
         # Hybrid/probability/legacy badges were trained on that rank and must not be
         # silently redefined by this presentation/output post-process layer.
         horse["final_rank_reason"] = " | ".join(horse.get("_final_rank_reasons", []))
+
+    # =========================================================
+    # ENVIRONMENT V2 - FINAL
+    #
+    # ENDA omklassningen:
+    # initial miljö -> correction -> slutlig miljö.
+    #
+    # Ingen andra correction-pass körs efter detta.
+    # =========================================================
+    classify_environment(
+        race_data,
+        order,
+        stage="final",
+    )
 
 
 def _clean_skrall_badges(horse: dict) -> list:

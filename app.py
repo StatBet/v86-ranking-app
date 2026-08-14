@@ -1,4 +1,4 @@
-import streamlit as st
+﻿import streamlit as st
 import pandas as pd
 import docx
 from datetime import datetime
@@ -1205,21 +1205,6 @@ if raw_data is not None:
                 )
 
 
-            if environment_badge:
-                badge_type = environment_badge["type"]
-                badge_text = environment_badge["text"]
-
-                if badge_type == "success":
-                    st.success(badge_text)
-
-                elif badge_type == "info":
-                    st.info(badge_text)
-
-                elif badge_type == "warning":
-                    st.warning(badge_text)
-
-                elif badge_type == "error":
-                    st.error(badge_text)
             
             st.dataframe(
                 df,

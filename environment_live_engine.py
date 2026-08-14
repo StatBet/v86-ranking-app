@@ -1057,7 +1057,8 @@ def environment_label(
         f"| Top3 {top3:.1f}% "
         f"| Top5 {top5:.1f}% "
         f"| Rank6+ {rank6:.1f}% "
-        f"| BUILD n={observations}"
+        f""
     )
+
 
 

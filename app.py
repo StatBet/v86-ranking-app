@@ -1,4 +1,4 @@
-﻿import streamlit as st
+import streamlit as st
 import pandas as pd
 import docx
 from datetime import datetime
@@ -96,6 +96,32 @@ def int_slider(label, value, min_value=-50, max_value=50, key=None):
         step=1,
         key=key
     )
+
+
+@st.fragment
+def render_manual_adjustments(race_no, horses):
+    """Render manual shoe/stable-form checkboxes without rerunning the full app."""
+    with st.expander(f"Manuell skorjustering - Avdelning {race_no}"):
+        cols = st.columns(3)
+        for idx, horse in enumerate(horses):
+            number = horse.get("number", 0)
+            name = horse.get("horse", "")
+            cols[idx % 3].checkbox(
+                f"{number} {name}",
+                value=False,
+                key=f"shoe_checkbox_{race_no}_{idx}_{name}",
+            )
+
+    with st.expander(f"Manuell stallform - Avdelning {race_no}"):
+        cols = st.columns(3)
+        for idx, horse in enumerate(horses):
+            number = horse.get("number", 0)
+            name = horse.get("horse", "")
+            cols[idx % 3].checkbox(
+                f"{number} {name}",
+                value=False,
+                key=f"stall_checkbox_{race_no}_{idx}_{name}",
+            )
 
 
 st.sidebar.title("Poängpanel")
@@ -318,7 +344,7 @@ with st.sidebar.expander("Vagn / Skor / Manuell"):
 
     manual_shoe_bonus = int_slider(
         "Skorpoäng per ikryssad häst",
-        0,
+        10,
         -20,
         30,
         "sidebar_manual_shoe_bonus"
@@ -541,6 +567,16 @@ if raw_data is not None:
     st.write("Antal tecken inläst:", len(raw_data))
     st.write("Antal avdelningar hittade:", len(races))
 
+    st.button(
+        "🔄 Omräkning",
+        key="global_manual_recalculation",
+        type="primary",
+        help=(
+            "Kryssa först i alla önskade Skor/Stallform. "
+            "Tryck sedan här för att räkna om hela omgången, inklusive miljö och skrällar."
+        ),
+    )
+
     processed_races = []
     summary_placeholder = st.empty()
 
@@ -579,35 +615,25 @@ if raw_data is not None:
                 #f"{sum_badge['badge']} | TotalSum: {sum_badge['total_sum']} | SpikeSum: {sum_badge['spike_sum']}"
             #)
 
-        with st.expander(f"Manuell skorjustering - Avdelning {race['race_no']}"):
-            cols = st.columns(3)
+        # Checkbox interactions rerun only this fragment. The full ranking/miljö/
+        # skräll pipeline is recalculated when the global Omräkning button is pressed.
+        render_manual_adjustments(race["race_no"], horses)
 
-            for idx, horse in enumerate(horses):
-                number = horse.get("number", 0)
-                name = horse.get("horse", "")
+        for idx, horse in enumerate(horses):
+            name = horse.get("horse", "")
+            shoe_key = f"shoe_checkbox_{race['race_no']}_{idx}_{name}"
+            stall_key = f"stall_checkbox_{race['race_no']}_{idx}_{name}"
 
-                checked = cols[idx % 3].checkbox(
-                    f"{number} {name}",
-                    value=False,
-                    key=f"shoe_checkbox_{race['race_no']}_{idx}_{name}"
-                )
-
-                horse["shoe_score"] = manual_shoe_bonus if checked else 0
-
-        with st.expander(f"Manuell stallform - Avdelning {race['race_no']}"):
-            cols = st.columns(3)
-
-            for idx, horse in enumerate(horses):
-                number = horse.get("number", 0)
-                name = horse.get("horse", "")
-
-                checked = cols[idx % 3].checkbox(
-                    f"{number} {name}",
-                    value=False,
-                    key=f"stall_checkbox_{race['race_no']}_{idx}_{name}"
-                )
-
-                horse["stallform_score"] = manual_stallform_bonus if checked else 0
+            horse["shoe_score"] = (
+                manual_shoe_bonus
+                if st.session_state.get(shoe_key, False)
+                else 0
+            )
+            horse["stallform_score"] = (
+                manual_stallform_bonus
+                if st.session_state.get(stall_key, False)
+                else 0
+            )
 
         for horse in horses:
             history = horse.get("history", [])
@@ -1047,6 +1073,7 @@ if raw_data is not None:
                 "Rank": idx,
                 "Nr": h.get("number", 0),
                 "Häst": h.get("horse", ""),
+                "Kusk namn": h.get("driver", ""),
 
                 "Badges": "  ".join(
                     b for b in h.get("badges", [])
@@ -1057,13 +1084,12 @@ if raw_data is not None:
                 ),
 
                 "Tot": h.get("total_score", 0),
-
+                "AvgTid": h.get("avg_time", ""),
+                "Form": h.get("form_score", 0),
                 "SpikeScore": round(
                     h.get("spike_score", 0),
                     1
                 ),
-
-                "Form": h.get("form_score", 0),
 
                 "SP-rank": h.get(
                     "start_points_rank",
@@ -1076,7 +1102,6 @@ if raw_data is not None:
                 ),
 
                 "Speed": h.get("speed_score", 0),
-                "AvgTid": h.get("avg_time", ""),
                 "Stallform": h.get("stallform_score", 0),
                 "Senaste": h.get("latest_start_score", 0),
                 "Spårpoäng": h.get("post_score", 0),
@@ -1104,8 +1129,7 @@ if raw_data is not None:
                 "V%": h.get("win_percent", 0),
                 "P%": h.get("place_percent", 0),
                 "Spelad %": h.get("percent", 0),
-                "Vagn idag": h.get("equipment", ""),
-                "Kusk namn": h.get("driver", "")
+                "Vagn idag": h.get("equipment", "")
             })
 
         df = pd.DataFrame(rows)
@@ -1222,6 +1246,10 @@ if raw_data is not None:
                     ),
                     "Häst": st.column_config.TextColumn(
                         "Häst",
+                        pinned=True
+                    ),
+                    "Kusk namn": st.column_config.TextColumn(
+                        "Kusk namn",
                         pinned=True
                     ),
                 }

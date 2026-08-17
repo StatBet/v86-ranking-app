@@ -662,6 +662,17 @@ if raw_data is not None:
         for horse in horses:
             horse["total_score"] = calculate_total_score(horse)
 
+        # Loser-logiken skyddar model_rank 1-5. Sätt därför den faktiska
+        # totalrankingen innan badges/spike/loser beräknas, i samma ordning
+        # som den historiska rankingbyggaren.
+        ranked_for_model_rank = sorted(
+            horses,
+            key=lambda h: h.get("total_score", 0),
+            reverse=True
+        )
+        for model_rank, horse in enumerate(ranked_for_model_rank, start=1):
+            horse["model_rank"] = model_rank
+
         race_for_badges = dict(race)
         race_for_badges["horses"] = horses
 
@@ -722,6 +733,19 @@ if raw_data is not None:
     # Startpoäng -> EPS -> Spike/EPS-rescues -> final Skräll/Main+Rescue.
     # total_score/spike_score/hybrid ändras inte.
     processed_races = apply_v8x_postprocess(processed_races)
+
+    # Gamla Skräll Premium är avvecklad.
+    # Rensa både flaggan och eventuell kvarvarande badge efter slutmotorn,
+    # så att endast den frysta 06/79/K1/K2-SKRÄLLEN kan visas.
+    for race_data in processed_races:
+        for horse in race_data.get("horses", []):
+            horse["skrall_premium"] = False
+            horse["badges"] = [
+                badge
+                for badge in horse.get("badges", [])
+                if "PREMIUM" not in str(badge).upper()
+            ]
+
     # Endast visning – påverkar inte hybridmotorn eller spikvalen.
     hybrid_audit_rows = []
 
@@ -1081,6 +1105,7 @@ if raw_data is not None:
                     and "Topp 5" not in b
                     and "Topp5" not in b
                     and "TOP5" not in b
+                    and "PREMIUM" not in str(b).upper()
                 ),
 
                 "Tot": h.get("total_score", 0),

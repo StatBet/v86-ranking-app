@@ -1,5 +1,6 @@
 from chanslos_combo_badge import apply_chanslos_combo_badge
 
+
 def _num(value, default=0):
     try:
         return float(value)
@@ -70,8 +71,14 @@ def add_race_gap_fields(horses):
     for h in horses:
         h["race_total_sum"] = round(total_sum, 1)
         h["race_spike_sum"] = round(spike_sum, 1)
-        h["horse_total_gap"] = round(total_leader - _num(h.get("total_score", 0)), 1)
-        h["horse_spike_gap"] = round(spike_leader - _num(h.get("spike_score", 0)), 1)
+        h["horse_total_gap"] = round(
+            total_leader - _num(h.get("total_score", 0)),
+            1
+        )
+        h["horse_spike_gap"] = round(
+            spike_leader - _num(h.get("spike_score", 0)),
+            1
+        )
         h["total_score_rank_in_race"] = total_rank_by_id[id(h)]
         h["spike_score_rank_in_race"] = spike_rank_by_id[id(h)]
 
@@ -112,9 +119,7 @@ def is_loser_badge(h):
     if has_rank68_badge(h):
         return False
 
-    return (
-        is_global_loser(h)
-    )
+    return is_global_loser(h)
 
 
 def apply_loser_badges_to_race(horses):
@@ -123,13 +128,35 @@ def apply_loser_badges_to_race(horses):
     for h in horses:
         h.setdefault("badges", [])
 
-        if is_loser_badge(h) and "🔴" not in h["badges"]:
-            h["badges"].append("🔴")
+        model_rank = int(_num(h.get("model_rank", 99)))
+        protected = (
+            model_rank <= 5
+            or has_rank68_badge(h)
+        )
+
+        # Självrensning:
+        # Om hästen är skyddad av rank 1-5 eller Rank 6-8-badge
+        # får en gammal 🔴 aldrig ligga kvar från en tidigare körning.
+        if protected:
+            h["badges"] = [
+                badge
+                for badge in h.get("badges", [])
+                if badge != "🔴"
+            ]
+            continue
+
+        # För övriga hästar: lägg till eller ta bort 🔴 utifrån
+        # den aktuella loser-regeln, så badgen alltid speglar nuläget.
+        if is_loser_badge(h):
+            if "🔴" not in h["badges"]:
+                h["badges"].append("🔴")
+        else:
+            h["badges"] = [
+                badge
+                for badge in h.get("badges", [])
+                if badge != "🔴"
+            ]
 
     horses = apply_chanslos_combo_badge(horses)
-
-    for h in horses:
-        if "🟥" in h.get("badges", []):
-            print("🟥", h.get("horse"))
 
     return horses

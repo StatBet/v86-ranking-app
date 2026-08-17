@@ -159,4 +159,20 @@ def apply_loser_badges_to_race(horses):
 
     horses = apply_chanslos_combo_badge(horses)
 
+    # Chanslös combo (🟥) körs separat efter den vanliga loser-logiken.
+    # Slutskydd: rank 1-5 och Rank 6-8/6-8+ får varken 🔴 eller 🟥.
+    for h in horses:
+        model_rank = int(_num(h.get("model_rank", 99)))
+        protected = (
+            model_rank <= 5
+            or has_rank68_badge(h)
+        )
+
+        if protected:
+            h["badges"] = [
+                badge
+                for badge in h.get("badges", [])
+                if badge not in {"🔴", "🟥"}
+            ]
+
     return horses

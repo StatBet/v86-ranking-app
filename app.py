@@ -957,7 +957,23 @@ if raw_data is not None:
 
         for h in horses:
             h = apply_rank68_badges(h)
-            
+
+        # Rank 6-8-signaler och loser-signalen är ömsesidigt uteslutande.
+        # Om en häst har fått 🔵/🔹 Rank 6-8 rensas en eventuell gammal 🔴
+        # innan loser-logiken körs igen.
+        for h in horses:
+            badge_text = " ".join(map(str, h.get("badges", [])))
+            if (
+                "Rank 6-8" in badge_text
+                or "🔵" in badge_text
+                or "🔹" in badge_text
+            ):
+                h["badges"] = [
+                    badge
+                    for badge in h.get("badges", [])
+                    if badge != "🔴"
+                ]
+
         horses = apply_loser_badges_to_race(horses)
 
         metrics = get_race_metrics(horses)

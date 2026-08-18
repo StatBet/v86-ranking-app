@@ -5,9 +5,20 @@ from datetime import datetime
 from supabase import create_client
 from skrall_badge_engine import apply_skrall_badges
 from v8x_postprocess import apply_v8x_postprocess
-from environment_live_engine import environment_label
-from badge_engine import assign_badges, calculate_spike_score, get_round_spikes
-from loser_badge_helpers import apply_loser_badges_to_race
+from environment_live_engine import environment_label, classify_environment
+from badge_engine import (
+    assign_badges,
+    calculate_spike_score,
+    _rank_horses_by_total_score,
+    apply_system_only_value_flags,
+)
+from live_hybrid_spike_engine_BEFORE_D_20260818 import (
+    get_hybrid_round_spikes as get_legacy_hybrid_round_spikes,
+)
+from live_hybrid_spike_engine_D import (
+    get_hybrid_round_spikes as get_hybrid_d_round_spikes,
+)
+from loser_badge_helpers_backup import apply_loser_badges_to_race
 from debug_live_lopp_sums import get_live_lopp_sum_debug
 #from loppbadge_sum_helpers import get_sum_loppbadge
 from badge_rules import (
@@ -722,17 +733,66 @@ if raw_data is not None:
             "placeholder": race_output_placeholder
         })
 
-    # Hybrid först: skapar leaf/environment-data som Skrällmotorn behöver.
-    top_spikes = get_round_spikes(processed_races)
+    # ============================================================
+    # ENVIRONMENT V2 + HYBRID D — KORREKT LIVE-ORDNING
+    # ============================================================
 
-    # Fryst Skrällmotor: Spår 1 + Spår 2 bygger kandidatpoolen
-    # med korrekt live leaf/environment-data.
+    # 1) Initial Environment V2 på den ursprungliga TotalScore-rankingen.
+    #    Detta sparas endast för migration/audit.
+    for race_data in processed_races:
+        initial_order = sorted(
+            race_data.get("horses", []),
+            key=lambda h: h.get("total_score", 0),
+            reverse=True,
+        )
+        classify_environment(
+            race_data,
+            initial_order,
+            stage="initial",
+        )
+
+    # 2) LEGACY Hybrid körs fortfarande internt FÖRE Skräll.
+    #    Orsak: den frysta Skräll/V8X-logiken använder gamla leaf/environment-
+    #    fält. Dessa får inte ändras när D införs.
+    legacy_top_spikes = get_legacy_hybrid_round_spikes(
+        all_races=processed_races,
+        calculate_spike_score=calculate_spike_score,
+        rank_horses=_rank_horses_by_total_score,
+        apply_value_flags=apply_system_only_value_flags,
+    )
+
+    # 3) Fryst Skrällmotor får exakt samma legacy leaf-data som tidigare.
     processed_races = apply_skrall_badges(processed_races)
 
-    # V8X fryst slutlager:
-    # Startpoäng -> EPS -> Spike/EPS-rescues -> final Skräll/Main+Rescue.
-    # total_score/spike_score/hybrid ändras inte.
+    # 4) V8X:s frysta rankingkorrigeringar körs.
+    #    Här uppstår den SLUTLIGA rankingordningen.
     processed_races = apply_v8x_postprocess(processed_races)
+
+    # 5) Environment V2 räknas OM på den slutliga fysiska rankingen.
+    #    Om Startpoäng/EPS/Rescue har flyttat hästar kan miljön därför migrera.
+    for race_data in processed_races:
+        final_order = sorted(
+            race_data.get("horses", []),
+            key=lambda h: h.get(
+                "_final_rank",
+                h.get("final_rank", 999),
+            ),
+        )
+        classify_environment(
+            race_data,
+            final_order,
+            stage="final",
+        )
+
+    # 6) Först NU körs den låsta Hybrid D:
+    #    Final Environment V2 -> Spike V2 -> Hybrid-val -> Rescue V1.
+    #    D:s övriga rank/score-features behåller sin frysta basdefinition.
+    top_spikes = get_hybrid_d_round_spikes(
+        all_races=processed_races,
+        calculate_spike_score=calculate_spike_score,
+        rank_horses=_rank_horses_by_total_score,
+        apply_value_flags=apply_system_only_value_flags,
+    )
 
     # Gamla Skräll Premium är avvecklad.
     # Rensa både flaggan och eventuell kvarvarande badge efter slutmotorn,
@@ -1182,8 +1242,7 @@ if raw_data is not None:
             #
             # VIKTIGT:
             # Detta är ENDAST Environment V2-visningen.
-            # Hybrid V3 / gamla miljöleafs / spikuttagning
-            # lämnas helt orörda.
+            # Visningen hämtar samma FINAL Environment V2 som Hybrid D använder.
             # =================================================
 
             env_race = race_data.get(
@@ -1218,8 +1277,7 @@ if raw_data is not None:
                 environment_profile_v2,
             )
 
-            # Miljöerna visas tydligt men påverkar INTE
-            # Hybrid V3:s spikuttagning.
+            # Detta är FINAL Environment V2 och är även input till Hybrid D.
             if environment_v2 == "Favoritrank":
                 st.success(
                     environment_text_v2

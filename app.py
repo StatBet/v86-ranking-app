@@ -18,7 +18,7 @@ from live_hybrid_spike_engine_BEFORE_D_20260818 import (
 from live_hybrid_spike_engine_D import (
     get_hybrid_round_spikes as get_hybrid_d_round_spikes,
 )
-from loser_badge_helpers_backup import apply_loser_badges_to_race
+from loser_badge_helpers import apply_loser_badges_to_race
 from debug_live_lopp_sums import get_live_lopp_sum_debug
 #from loppbadge_sum_helpers import get_sum_loppbadge
 from badge_rules import (

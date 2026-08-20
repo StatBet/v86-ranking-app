@@ -4,7 +4,10 @@ import docx
 from datetime import datetime
 from supabase import create_client
 from skrall_badge_engine import apply_skrall_badges
-from v8x_postprocess import apply_v8x_postprocess
+from v8x_postprocess import (
+    apply_v8x_postprocess,
+    apply_final_skrall_fallback,
+)
 from environment_live_engine import environment_label, classify_environment
 from badge_engine import (
     assign_badges,
@@ -784,6 +787,14 @@ if raw_data is not None:
             stage="final",
         )
 
+    # 5B) SLUTLIG SKRÄLL-FALLBACK.
+    # Körs endast om hela omgången saknar 06/79.
+    # BRED-ENV A använder Final Environment V2.
+    # DIRECT-B använder frysta inom-lopp-ranker.
+    processed_races = apply_final_skrall_fallback(
+        processed_races
+    )
+
     # 6) Först NU körs den låsta Hybrid D:
     #    Final Environment V2 -> Spike V2 -> Hybrid-val -> Rescue V1.
     #    D:s övriga rank/score-features behåller sin frysta basdefinition.
@@ -796,7 +807,7 @@ if raw_data is not None:
 
     # Gamla Skräll Premium är avvecklad.
     # Rensa både flaggan och eventuell kvarvarande badge efter slutmotorn,
-    # så att endast den frysta 06/79/K1/K2-SKRÄLLEN kan visas.
+    # så att endast den frysta 06/79/BRED-ENV A/DIRECT-B-SKRÄLLEN kan visas.
     for race_data in processed_races:
         for horse in race_data.get("horses", []):
             horse["skrall_premium"] = False

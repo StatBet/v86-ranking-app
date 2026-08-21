@@ -311,15 +311,33 @@ def _apply_ranking_rules_to_race(race_data: dict) -> None:
 
 def _clean_skrall_badges(horse: dict) -> list:
     badges = horse.get("badges", [])
+
     if badges is None:
         badges = []
     elif isinstance(badges, str):
         badges = [badges] if badges.strip() else []
     else:
         badges = list(badges)
-    badges = [b for b in badges if b not in SKRALL_BADGES]
-    horse["badges"] = badges
-    return badges
+
+    # Rensa alla gamla/nya skrällbadges från visningen.
+    # Övriga badges lämnas orörda.
+    cleaned = []
+
+    for badge in badges:
+        text = str(badge)
+        upper = text.upper()
+
+        if (
+            "SKRÄLL" in upper
+            or "SKRÃ„LL" in upper
+            or "SKRALL" in upper
+        ):
+            continue
+
+        cleaned.append(badge)
+
+    horse["badges"] = cleaned
+    return cleaned
 
 
 def _feature_rank(horses: list[dict], score_key: str) -> dict[int, int]:
@@ -441,22 +459,21 @@ def _mark_frozen_pick(horse: dict, variant: str) -> None:
     horse["skrall_selected"] = True
     horse["skrall_variant"] = variant
 
-    if variant == "06":
+    if variant in {"06", "79"}:
         horse["skrall_main"] = True
-        horse["badges"].append("ðŸ’¥ SKRÃ„LL 06")
-    elif variant == "79":
-        horse["skrall_main"] = True
-        horse["badges"].append("ðŸ’¥ SKRÃ„LL 79")
     elif variant == "BRED-ENV A":
         horse["skrall_rescue"] = True
-        horse["badges"].append("ðŸ’¥ SKRÃ„LL BRED-ENV A")
     elif variant == "DIRECT-B":
         horse["skrall_rescue2"] = True
-        horse["badges"].append("ðŸ’¥ SKRÃ„LL DIRECT-B")
     elif variant == "BRED-ENV A + DIRECT-B":
         horse["skrall_rescue"] = True
         horse["skrall_rescue2"] = True
-        horse["badges"].append("ðŸ’¥ SKRÃ„LL BRED-ENV A + DIRECT-B")
+
+    # Alla slutliga V8X-varianter visas likadant.
+    display_badge = "💥 SKRÄLLKANDIDAT"
+
+    if display_badge not in horse["badges"]:
+        horse["badges"].append(display_badge)
 
 
 def _apply_final_skrall_selection(processed_races: list[dict]) -> None:

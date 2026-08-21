@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 """
 V8X final post-processing layer.
@@ -484,7 +484,7 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
       1) 06-A CLEAN, percent 5-6
          speed rank <=2 + starts rank <=6
          + driver rank <=7 + prize-money rank <=6
-         No NO PICK rule.
+         NO PICK: post >=12.
 
       2) 79-A, percent 7-9, only Neutral/Solid
          starts rank <=4 AND (
@@ -492,18 +492,12 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
              OR
              win rank <=2 + driver rank <=4
          )
-         NO PICK: driver_score <=4 AND record_score <=13
+         NO PICK:
+             (driver_score == 0 AND latest_start_score <=5) OR
+             (driver_score <=4 AND latest_start_score ==0).
 
-      3) If no surviving 06/79 candidate exists in the WHOLE ROUND:
-         K1, percent 5-9: lowest speed_rank + latest_rank, max one/round.
-         NO PICK: record_rank >=11 OR recent_prize_score <=8.
-
-      4) K2, percent 5-9, after excluding raw K1 horse:
-         record_rank + starts_rank + post_rank <=6 AND base_model_rank <=7.
-         Choose lowest sum, max one/round. No NO PICK rule.
-
-    Important: K1/K2 are recomputed AFTER 06/79 NO PICK, so newly created
-    zero-rounds automatically receive fallback candidates.
+    If no surviving 06/79 candidate exists in the WHOLE ROUND,
+    BRED-ENV A / DIRECT-B are evaluated later after Final Environment V2.
     """
     all_horses = _prepare_frozen_candidate_features(processed_races)
 
@@ -537,7 +531,7 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
     # - No old 06 conditions.
     # - No Spike-rank requirement.
     # - No Form-rank requirement.
-    # - No Post NO PICK.
+    # - Frozen NO PICK: post >=12.
     # - RELATIV <=3 is a separate rule and is NOT part of 06.
     # ---------------------------------------------------------
     selected_06: list[dict] = []
@@ -552,6 +546,12 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
         )
 
         if not qualifies:
+            continue
+
+        # FROZEN NO PICK: 06
+        if _int(h.get("post", 0), 0) >= 12:
+            h["skrall_no_pick"] = True
+            h["skrall_no_pick_reason"] = "06: Post >=12"
             continue
 
         selected_06.append(h)
@@ -586,12 +586,18 @@ def _apply_final_skrall_selection(processed_races: list[dict]) -> None:
         if not qualifies:
             continue
 
+        # FROZEN NO PICK: 79
+        driver_score = _float(h.get("driver_score", 0), 0.0)
+        latest_start_score = _float(h.get("latest_start_score", 0), 0.0)
         if (
-            _float(h.get("driver_score", 0), 0.0) <= 4
-            and _float(h.get("record_score", 0), 0.0) <= 13
+            (driver_score <= 4 and _float(h.get("record_score", 0), 0.0) <= 13)
+            or (driver_score == 0 and latest_start_score <= 5)
+            or (driver_score <= 4 and latest_start_score == 0)
         ):
             h["skrall_no_pick"] = True
-            h["skrall_no_pick_reason"] = "79: Driver score <=4 + Record score <=13"
+            h["skrall_no_pick_reason"] = (
+                "79: Driver=0 + Latest<=5 OR Driver<=4 + Latest=0"
+            )
             continue
 
         selected_79.append(h)
@@ -613,12 +619,14 @@ def apply_final_skrall_fallback(processed_races: list[dict]) -> list[dict]:
         percent 3-8
         frozen_post_rank <= 2
         Final Environment V2 in {"Kaos", "Extrem kaos"}
+        NO PICK: starts <=10 OR win_percent <=5
         Ingen max-1-regel.
 
     DIRECT-B:
         percent 6-9
         frozen_prize_money_rank <= 4
         vÃ¤lj hÃ¶gsta SpikeScore
+        NO PICK pÃ¥ vald kandidat: record_score <=8
         max 1 per omgÃ¥ng.
 
     BÃ¥da reglerna kÃ¶rs som union. Samma hÃ¤st rÃ¤knas bara en gÃ¥ng.
@@ -659,6 +667,17 @@ def apply_final_skrall_fallback(processed_races: list[dict]) -> list[dict]:
                     999,
                 ) <= 2
             ):
+                # FROZEN NO PICK: BRED-ENV A
+                if (
+                    _float(h.get("starts", 0), 0.0) <= 10
+                    or _float(h.get("win_percent", 0), 0.0) <= 5
+                ):
+                    h["skrall_no_pick"] = True
+                    h["skrall_no_pick_reason"] = (
+                        "BRED-ENV A: Starts<=10 OR Win%<=5"
+                    )
+                    continue
+
                 bred_selected.append(h)
 
     for h in bred_selected:
@@ -693,7 +712,18 @@ def apply_final_skrall_fallback(processed_races: list[dict]) -> list[dict]:
             ),
         )[0]
 
-        if direct_b in bred_selected:
+        # FROZEN NO PICK: DIRECT-B.
+        # IMPORTANT: choose the same raw DIRECT-B candidate first, then apply
+        # record_score <=8. This preserves the frozen DIRECT-B selection logic.
+        direct_b_no_pick = _float(direct_b.get("record_score", 0), 0.0) <= 8
+
+        if direct_b_no_pick:
+            # DIRECT-B is removed, but if the same horse independently survived
+            # BRED-ENV A it remains a valid BRED-ENV A candidate.
+            if direct_b not in bred_selected:
+                direct_b["skrall_no_pick"] = True
+                direct_b["skrall_no_pick_reason"] = "DIRECT-B: Record score <=8"
+        elif direct_b in bred_selected:
             # Union: samma hÃ¤st ska endast vara en kandidat.
             direct_b["badges"] = [
                 b

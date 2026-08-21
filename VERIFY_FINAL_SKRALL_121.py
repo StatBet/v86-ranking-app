@@ -24,16 +24,16 @@ HIST = ROOT / "historical_rankings.csv"
 
 EXPECTED = {
     "rounds": 121,
-    "06_candidates": 91,
+    "06_candidates": 82,
     "06_winners": 16,
-    "79_candidates": 55,
+    "79_candidates": 45,
     "79_winners": 12,
-    "main_candidates": 146,
+    "main_candidates": 127,
     "main_winners": 28,
-    "fallback_candidates": 53,
-    "fallback_winners": 13,
-    "total_candidates": 199,
-    "total_winners": 41,
+    "fallback_candidates": 56,
+    "fallback_winners": 14,
+    "total_candidates": 183,
+    "total_winners": 42,
 }
 
 def as_int(value, default=0):
